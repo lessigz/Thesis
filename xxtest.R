@@ -6,6 +6,11 @@ names(data1)
 head(data1)
 data1
 
+data1metab=read.csv("trans_short_metab_r.csv",header=TRUE)
+
+data1omit=na.omit(data1metab)
+
+data1cut=read.csv("trans_short_cut_r.csv",header=TRUE)
 
 data2=read.csv("all_trans_long_r.csv",header=TRUE) #load data in long format
 names(data2)
@@ -60,7 +65,8 @@ data2
 ####################################################################################################
 
 source("AEDgraphingfunctions.R") #we used this alot in advanced biostats
-############ data exploration
+
+############ data exploration starting with likely PREDICTOR variables
 
 #site specific non seasonal variables
 dotchart(data2$elev,      xlab="elev (m)",          cex.lab=1.5,pch=16,group=data2$basin.stream)
@@ -69,7 +75,7 @@ dotchart(data2$from.north,xlab="deg from.north",cex.lab=1.5,pch=16,group=data2$b
 dotchart(data2$slope,     xlab="slope (%)",         cex.lab=1.5,pch=16,group=data2$basin.stream)
 dotchart(data2$bf,        xlab="bank full (m)",     cex.lab=1.5,pch=16,group=data2$basin.stream)
 dotchart(data2$pebble,    xlab="pebble median (mm)", cex.lab=1.5,pch=16,group=data2$basin.stream)
-#variables that are more subject to change
+#variables that are more subject to seasonal change 
 op=par(mfrow=c(3,1))
 dotchart(data2$width.sum17,    xlab="wetted width sum 17 (m)",  xlim=c(0,2.5),cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$width.fall17,    xlab="wetted width fall 17 (m)",  xlim=c(0,2.5),cex.lab=1.5,pch=16,group=data2$basin)
@@ -94,65 +100,312 @@ op=par(mfrow=c(3,1))
 dotchart(data2$nitrate.sum17,xlab="nitrate sum 17 (mg N/L)",xlim=c(-.002,.3),cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$nitrate.fall17,xlab="nitrate fall 17 (mg N/L)",xlim=c(-.002,.3),cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$nitrate.sum18,xlab="nitrate sum 18 (mg N/L)",xlim=c(-.002,.3),  cex.lab=1.5,pch=16,group=data2$basin)
+op=par(mfrow=c(1,1))
+dotchart(data1$nitrate,xlab="nitrate (mg N/L)",xlim=c(-.002,.3),  cex.lab=1.5,pch=16,group=data1$basin.stream.season.yr)
+#nitrate transformation attempt
+data1$t.nitrate=log10((10*(1+data1$nitrate)))
+op=par(mfrow=c(1,1))
+dotchart(data1$t.nitrate,xlab="nitrate transformed",cex.lab=1.5,pch=16,group=data1$basin.stream.season.yr)
 op=par(mfrow=c(3,1))
 dotchart(data2$phosphate.sum17,xlab="phosphate sum 17 (mg P/L)",xlim=c(0,.06)   ,cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$phosphate.fall17,xlab="phosphate fall 17 (mg P/L)",xlim=c(0,.06) ,cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$phosphate.sum18,xlab="phosphate sum 18 (mg P/L)"  ,xlim=c(0,.06) ,cex.lab=1.5,pch=16,group=data2$basin)
-
+op=par(mfrow=c(3,1))
 dotchart(data2$canopy.sum17,xlab="canopy sum 17 (%open)",xlim=c(5,80)   ,cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$canopy.fall17,xlab="canopy fall 17 (%open)",xlim=c(5,80) ,cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$canopy.sum18,xlab="canopy sum 18 (%open)" ,xlim=c(5,80)  ,cex.lab=1.5,pch=16,group=data2$basin)
-
+op=par(mfrow=c(3,1))
 dotchart(data2$par.integrative.sum17,xlab="integrative PAR sum 17 (mol/m2/d)" ,xlim=c(0,3.5)  ,cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$par.integrative.fall17,xlab="integrative PAR fall 17 (mol/m2/d)",xlim=c(0,3.5) ,cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$par.integrative.sum18,xlab="integrative PAR sum 18 (mol/m2/d)"  ,xlim=c(0,3.5) ,cex.lab=1.5,pch=16,group=data2$basin)
-
+op=par(mfrow=c(3,1))
 dotchart(data2$par.mean.sum17,xlab="mean PAR sum 17 (umol/m2/s)" ,xlim=c(0,12000)  ,cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$par.mean.fall17,xlab="mean PAR fall 17 (umol/m2/s)",xlim=c(0,12000) ,cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$par.mean.sum18,xlab="mean PAR sum 18 (umol/m2/s)" ,xlim=c(0,12000)  ,cex.lab=1.5,pch=16,group=data2$basin)
-
+op=par(mfrow=c(3,1))
 dotchart(data2$par.max.sum17,xlab="max PAR sum 17 (umol/m2/s)" ,xlim=c(0,70000)  ,cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$par.max.fall17,xlab="max PAR fall 17 (umol/m2/s)",xlim=c(0,70000) ,cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$par.max.sum18,xlab="max PAR sum 18 (umol/m2/s)" ,xlim=c(0,70000)  ,cex.lab=1.5,pch=16,group=data2$basin)
-
+op=par(mfrow=c(3,1))
 dotchart(data2$temp.max.sum17,xlab="max temp sum 17 (deg C)" ,xlim=c(0,15)  ,cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$temp.max.fall17,xlab="max temp fall 17 (deg C)",xlim=c(0,15) ,cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$temp.max.sum18,xlab="max temp sum 18 (deg C)" ,xlim=c(0,15)  ,cex.lab=1.5,pch=16,group=data2$basin)
-
+op=par(mfrow=c(3,1))
 dotchart(data2$temp.min.sum17,xlab="min temp sum 17 (deg C)" ,xlim=c(0,15)  ,cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$temp.min.fall17,xlab="min temp fall 17 (deg C)",xlim=c(0,15) ,cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$temp.min.sum18,xlab="min temp sum 18 (deg C)" ,xlim=c(0,15)  ,cex.lab=1.5,pch=16,group=data2$basin)
-
+op=par(mfrow=c(3,1))
 dotchart(data2$temp.mean.sum17,xlab="mean temp sum 17 (deg C)" ,xlim=c(0,15)  ,cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$temp.mean.fall17,xlab="mean temp fall 17 (deg C)",xlim=c(0,15) ,cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$temp.mean.sum18,xlab="mean temp sum 18 (deg C)" ,xlim=c(0,15)  ,cex.lab=1.5,pch=16,group=data2$basin)
-
 #I selected believable k600's from my data and replaced what appeared to be erroneous ones, some values were still left out
-
+op=par(mfrow=c(3,1))
 dotchart(data2$k600.sum17,xlab="k600 sum 17 (1/d)" ,xlim=c(20,90)  ,cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$k600.fall17,xlab="k600 fall 17 (1/d)",xlim=c(20,90) ,cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$k600.sum18,xlab="k600 sum 18 (1/d)" ,xlim=c(20,90)  ,cex.lab=1.5,pch=16,group=data2$basin)
+#only 2 fish sampling times instead of 3 for most of the rest of the variables
+op=par(mfrow=c(2,1))
+dotchart(data2$sculp.mass.m.sum17,xlab="sculpin biomass sum 17 (g/m)"  ,xlim=c(0,8),cex.lab=1,pch=16,group=data2$basin)
+dotchart(data2$sculp.mass.m.sum18,xlab="sculpin biomass sum 18 (g/m)",xlim=c(0,8)   ,cex.lab=1,pch=16,group=data2$basin)
+#only 2 fish sampling times instead of 3 for most of the rest of the variables
+op=par(mfrow=c(2,1))
+dotchart(data2$cut.capt.sum17,xlab="cutthroat capture probability sum 17"  ,xlim=c(0,1) ,cex.lab=1,pch=16,group=data2$basin)
+dotchart(data2$cut.capt.sum18,xlab="cutthroat capture probability sum 18" ,xlim=c(0,1)  ,cex.lab=1,pch=16,group=data2$basin)
+
+############ exploration of likely RESPONSE variables
 
 #some values left out as NA's
-
+op=par(mfrow=c(3,1))
 dotchart(data2$gpp.sum17,xlab="gpp sum 17 (g 02/m2/d)" ,xlim=c(0,.14)  ,cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$gpp.fall17,xlab="gpp fall 17 (g 02/m2/d)" ,xlim=c(0,.14),cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$gpp.sum18,xlab="gpp sum 18 (g 02/m2/d)" ,xlim=c(0,.14)  ,cex.lab=1.5,pch=16,group=data2$basin)
-
+op=par(mfrow=c(1,1))
+dotchart(data1$gpp,xlab="all gpp (g 02/m2/d)",xlim=c(0,.14),cex.lab=1.5,pch=16,group=data1$basin)
+hist(data1$gpp,xlab="all gpp (g 02/m2/d)",cex.lab=1.5)
 #some values left out as NA's
-
+op=par(mfrow=c(3,1))
 dotchart(data2$er.sum17,xlab="ER sum 17 (g 02/m2/d)" ,xlim=c(-10,0)  ,cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$er.fall17,xlab="ER fall 17 (g 02/m2/d)",xlim=c(-10,0) ,cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$er.sum18,xlab="ER sum 18 (g 02/m2/d)" ,xlim=c(-10,0)  ,cex.lab=1.5,pch=16,group=data2$basin)
-
+op=par(mfrow=c(1,1))
+dotchart(data1$er,xlab="all ER (g 02/m2/d)",xlim=c(-10,0),cex.lab=1.5,pch=16,group=data1$basin)
+hist(data1$er,xlab="all ER (g 02/m2/d)",cex.lab=1.5)
 #some values left out as NA's
-
+# really just divide +P by -R ?
+op=par(mfrow=c(3,1))
 dotchart(data2$pr.ratio.sum17,xlab="P/R sum 17"  ,xlim=c(-.035,0) ,cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$pr.ratio.fall17,xlab="P/R fall 17",xlim=c(-.035,0) ,cex.lab=1.5,pch=16,group=data2$basin)
 dotchart(data2$pr.ratio.sum18,xlab="P/R sum 18" ,xlim=c(-.035,0)  ,cex.lab=1.5,pch=16,group=data2$basin)
+op=par(mfrow=c(1,1))
+dotchart(data1$pr.ratio,xlab="all P/R (ratio)",xlim=c(-.035,0),cex.lab=1.5,pch=16,group=data1$basin)
+hist(data1$pr.ratio,xlab="all P/R (ratio)",cex.lab=1.5)
+#only 2 fish sampling times instead of 3 for most of the rest of the variables
+op=par(mfrow=c(2,1))
+dotchart(data2$cut.mass.m.sum17,xlab="cutthroat biomass sum 17 (g/m)"  ,xlim=c(0,14),cex.lab=1,pch=16,group=data2$basin)
+dotchart(data2$cut.mass.m.sum18,xlab="cutthroat biomass sum 18 (g/m)",xlim=c(0,14)   ,cex.lab=1,pch=16,group=data2$basin)
+op=par(mfrow=c(1,1))
+dotchart(data1$cut.mass.m,xlab="cutthroat biomass (g/m)",xlim=c(0,14),cex.lab=1.5,pch=16,group=data1$basin)
+hist(data1$cut.mass.m,xlab="cutthroat biomass (g/m)",cex.lab=1.5)
 
-dotchart(data2$cut.capt.sum17,xlab="cutthroat capture probability sum 17"  ,xlim=c(0,1) ,cex.lab=1.5,pch=16,group=data2$basin)
-dotchart(data2$cut.capt.sum18,xlab="cutthroat capture probability sum 18" ,xlim=c(0,1)  ,cex.lab=1.5,pch=16,group=data2$basin)
+#################### Transformations of suggested RESPONSE variables
+# ER transformation
+data1$t.er=log2(-10*data1$er)
+data1omit$t.er=log2(-10*data1omit$er)
+hist(data1omit$t.er,xlab="transfromed ER",cex.lab=1.5)
+dotchart(data1omit$t.er,xlab="transfromed ER",cex.lab=1.5,pch=16)
+# GPP transformation
+data1$t.gpp=log2(1000*data1$gpp)
+data1omit$t.gpp=log2(1000*data1omit$gpp)
+hist(data1omit$t.gpp,xlab="transfromed gpp",cex.lab=1.5)
+dotchart(data1omit$t.gpp,xlab="transfromed gpp",cex.lab=1.5,pch=16)
+# CUT mass/m transformation
+data1$t.cut.mass.m=sqrt(1+data1$cut.mass.m)
+data1cut$t.cut.mass.m=sqrt(1+data1cut$cut.mass.m)
+hist(data1cut$t.cut.mass.m,xlab="transformed cutthroat biomass",cex.lab=1.5)
+dotchart(data1cut$t.cut.mass.m,xlab="transformed cutthroat biomass",cex.lab=1.5,pch=16)
+
+########### Pairplots of variables
+
+# pairplot of transformed RESPONSE variables
+Z=cbind(data1$t.gpp,data1$t.er,data1$t.cut.mass.m)
+colnames(Z)<-c("GPP","ER","cutt")
+pairs(Z[,1:3], lower.panel=panel.smooth2,upper.panel=panel.cor,diag.panel=panel.hist)
+
+# pairplot most
+Z=cbind(data1$basin,data1$elev,data1$from.north,data1$slope,data1$bf,data1$pebble,data1$width,data1$depth,data1$discharge,data1$carbon,data1$ammonia,data1$nitrate,data1$phosphate,data1$canopy,data1$par.integrative,data1$par.mean,data1$par.max,data1$temp.max,data1$temp.min,data1$temp.mean,data1$k600,data1$sculp.mass.m,data1$t.gpp,data1$t.er,data1$pr.ratio,data1$t.cut.mass.m)
+colnames(Z)<-c("basin",  "elev",        "deg N",    "slope",    "bf",   "pebble",   "width",      "depth",    "discharge",    "carbon",   "ammonia",    "nitrate",    "phosphate",    "canopy",     "PAR int",            "PAR mean",     "PAR max",    "temp max",   "temp min",   "temp mean",     "k600",    "sculp",            "GPP",      "ER",     "P/R",            "cutt")
+pairs(Z[,1:25], lower.panel=panel.smooth2,upper.panel=panel.cor,diag.panel=panel.hist)
+
+# pairplot trimmed down
+Z=cbind(data1$elev,data1$from.north,data1$width,data1$carbon,data1$ammonia,data1$nitrate,data1$phosphate,data1$canopy,data1$temp.min,data1$sculp.mass.m,data1$t.gpp,data1$t.er,data1$pr.ratio,data1$t.cut.mass.m)
+colnames(Z)<-c("elev",    "deg N",      "width",    "carbon",     "ammonia",    "nitrate",    "phosphate",    "canopy",     "temp min",   "sculp",            "GPP",      "ER",     "P/R",            "cutt")
+pairs(Z[,1:14], lower.panel=panel.smooth2,upper.panel=panel.cor,diag.panel=panel.hist)
+
+# pairplot GPP
+Z=cbind(data1$elev,data1$from.north,data1$slope,data1$bf,data1$pebble,data1$width,data1$depth,data1$discharge,data1$carbon,data1$canopy,data1$par.integrative,data1$par.mean,data1$par.max,data1$temp.max,data1$temp.min,data1$temp.mean,data1$t.gpp)
+colnames(Z)<-c("elev",        "deg N",    "slope",    "bf",   "pebble",   "width",      "depth",    "discharge",    "carbon",    "canopy",     "PAR int",        "PAR mean",     "PAR max",    "temp max",   "temp min",   "temp mean", "GPP")
+pairs(Z[,1:17], lower.panel=panel.smooth2,upper.panel=panel.cor,diag.panel=panel.hist)
+
+# pairplot ER
+Z=cbind(data1$basin,data1$from.north,data1$width,data1$depth,data1$discharge,data1$phosphate,data1$sculp.mass.m,data1$t.er)
+colnames(Z)<-c("basin","deg N",      "width",    "depth",    "discharge",    "phosphate",    "sculp",           "ER")
+pairs(Z[,1:8], lower.panel=panel.smooth2,upper.panel=panel.cor,diag.panel=panel.hist)
+
+# pairplot Cutthroat
+Z=cbind(data1$basin,data1$elev,data1$width,data1$depth,data1$discharge,data1$nitrate,data1$phosphate,data1$temp.min,data1$temp.mean,data1$sculp.mass.m,data1$t.cut.mass.m)
+colnames(Z)<-c("basin", "elev",     "width",  "depth",    "discharge",    "nitrate",    "phosphate",     "temp min",   "temp mean",     "sculp",            "cutt")
+pairs(Z[,1:11], lower.panel=panel.smooth2,upper.panel=panel.cor,diag.panel=panel.hist)
+
+
+##################### model selections
+# GPP model selection
+lmGPP=lm(t.gpp~basin,data=data1)
+lmGPP=lm(t.gpp~elev,data=data1)
+lmGPP=lm(t.gpp~from.north,data=data1)
+lmGPP=lm(t.gpp~slope,data=data1)
+lmGPP=lm(t.gpp~bf,data=data1)
+lmGPP=lm(t.gpp~pebble,data=data1)
+lmGPP=lm(t.gpp~width,data=data1)
+lmGPP=lm(t.gpp~depth,data=data1)
+lmGPP=lm(t.gpp~discharge,data=data1)
+lmGPP=lm(t.gpp~carbon,data=data1)
+lmGPP=lm(t.gpp~ammonia,data=data1)
+lmGPP=lm(t.gpp~nitrate,data=data1)
+lmGPP=lm(t.gpp~phosphate,data=data1)
+lmGPP=lm(t.gpp~canopy,data=data1)
+lmGPP=lm(t.gpp~par.integrative,data=data1)
+lmGPP=lm(t.gpp~par.mean,data=data1)
+lmGPP=lm(t.gpp~par.max,data=data1)
+lmGPP=lm(t.gpp~temp.max,data=data1)
+lmGPP=lm(t.gpp~temp.min,data=data1)
+lmGPP=lm(t.gpp~temp.mean,data=data1)
+lmGPP=lm(t.gpp~cut.capt,data=data1)
+lmGPP=lm(t.gpp~cut.pop,data=data1)
+lmGPP=lm(t.gpp~cut.mass,data=data1)
+lmGPP=lm(t.gpp~cut.mass.m,data=data1)
+lmGPP=lm(t.gpp~sculp.mass.m,data=data1)
+summary(lmGPP)
+
+
+lmGPP1=lm(t.gpp~pebble+from.north,data=data1)
+lmGPP2=lm(t.gpp~pebble+from.north,data=data1omit)
+summary(lmGPP2)
+lm(formula=lmGPP2)
+anova(lmGPP2)
+drop1(lmGPP2,test="F")
+step(lmGPP2)
+
+# ER model selsection
+lmER=lm(t.er~basin,data=data1)
+lmER=lm(t.er~elev,data=data1)
+lmER=lm(t.er~from.north,data=data1)
+lmER=lm(t.er~slope,data=data1)
+lmER=lm(t.er~bf,data=data1)
+lmER=lm(t.er~pebble,data=data1)
+lmER=lm(t.er~width,data=data1)
+lmER=lm(t.er~depth,data=data1)
+lmER=lm(t.er~discharge,data=data1)
+lmER=lm(t.er~carbon,data=data1)
+lmER=lm(t.er~ammonia,data=data1)
+lmER=lm(t.er~nitrate,data=data1)
+lmER=lm(t.er~phosphate,data=data1)
+lmER=lm(t.er~canopy,data=data1)
+lmER=lm(t.er~par.integrative,data=data1)
+lmER=lm(t.er~par.mean,data=data1)
+lmER=lm(t.er~par.max,data=data1)
+lmER=lm(t.er~temp.max,data=data1)
+lmER=lm(t.er~temp.min,data=data1)
+lmER=lm(t.er~temp.mean,data=data1)
+lmER=lm(t.er~cut.capt,data=data1)
+lmER=lm(t.er~cut.pop,data=data1)
+lmER=lm(t.er~cut.mass,data=data1)
+lmER=lm(t.er~cut.mass.m,data=data1)
+lmER=lm(t.er~sculp.mass.m,data=data1)
+summary(lmER)
+
+lmER1=lm(t.er~depth+from.north,data=data1) #these chosen based on linearity and biological likeliness of being a predictor rather than response
+lmER2=lm(t.er~depth+from.north,data=data1omit)
+summary(lmER2)
+lm(formula=lmER2)
+anova(lmER2)
+drop1(lmER2,test="F")
+step(lmER2)
+
+lmCUT=lm(t.cut.mass.m~basin,data=data1)
+lmCUT=lm(t.cut.mass.m~elev,data=data1)
+lmCUT=lm(t.cut.mass.m~from.north,data=data1)
+lmCUT=lm(t.cut.mass.m~slope,data=data1)
+lmCUT=lm(t.cut.mass.m~bf,data=data1)
+lmCUT=lm(t.cut.mass.m~pebble,data=data1)
+lmCUT=lm(t.cut.mass.m~width,data=data1)
+lmCUT=lm(t.cut.mass.m~depth,data=data1)
+lmCUT=lm(t.cut.mass.m~discharge,data=data1)
+lmCUT=lm(t.cut.mass.m~carbon,data=data1)
+lmCUT=lm(t.cut.mass.m~ammonia,data=data1)
+lmCUT=lm(t.cut.mass.m~nitrate,data=data1)
+lmCUT=lm(t.cut.mass.m~phosphate,data=data1)
+lmCUT=lm(t.cut.mass.m~canopy,data=data1)
+lmCUT=lm(t.cut.mass.m~par.integrative,data=data1)
+lmCUT=lm(t.cut.mass.m~par.mean,data=data1)
+lmCUT=lm(t.cut.mass.m~par.max,data=data1)
+lmCUT=lm(t.cut.mass.m~temp.max,data=data1)
+lmCUT=lm(t.cut.mass.m~temp.min,data=data1)
+lmCUT=lm(t.cut.mass.m~temp.mean,data=data1)
+lmCUT=lm(t.cut.mass.m~cut.capt,data=data1)
+lmCUT=lm(t.cut.mass.m~cut.pop,data=data1)
+lmCUT=lm(t.cut.mass.m~cut.mass,data=data1)
+lmCUT=lm(t.cut.mass.m~cut.mass.m,data=data1)
+lmCUT=lm(t.cut.mass.m~sculp.mass.m,data=data1)
+summary(lmCUT)
+
+lmCUT1=lm(t.cut.mass.m~width+temp.min,data=data1)
+lmCUT2=lm(t.cut.mass.m~width+temp.min,data=data1cut)
+summary(lmCUT2)
+lm(formula=lmCUT2)
+anova(lmCUT2)
+drop1(lmCUT2,test="F")
+step(lmCUT2)
+
+######################### model validation
+# GPP model validation
+op=par(mfrow = c(2, 2)) 
+plot(lmGPP2)
+op=par(mfrow = c(2, 2)) 
+GPP2resid=rstandard(lmGPP2) 
+hist(GPP2resid) 
+qqnorm(GPP2resid) 
+plot(GPP2resid ~ data1omit$pebble, xlab = "pebble", ylab = "Residuals",cex.lab=1.5,pch=16) 
+abline(0, 0)
+plot(GPP2resid ~ data1omit$from.north, xlab = "aspect from N", ylab = "Residuals",cex.lab=1.5,pch=16) 
+abline(0, 0)
+
+# ER model validation
+op=par(mfrow = c(2, 2)) 
+plot(lmER2)
+op=par(mfrow = c(2, 2)) 
+ER2resid=rstandard(lmER2) 
+hist(ER2resid) 
+qqnorm(ER2resid) 
+plot(ER2resid ~ data1omit$depth, xlab = "depth", ylab = "Residuals",cex.lab=1.5,pch=16) 
+abline(0, 0)
+plot(ER2resid ~ data1omit$from.north, xlab = "depth", ylab = "Residuals",cex.lab=1.5,pch=16) 
+abline(0, 0)
+
+# CUT model validation
+op=par(mfrow = c(2, 2)) 
+plot(lmCUT2)
+op=par(mfrow = c(2, 2)) 
+CUT2resid=rstandard(lmCUT2) 
+hist(CUT2resid) 
+qqnorm(CUT2resid) 
+plot(CUT2resid ~ data1cut$width, xlab = "width", ylab = "Residuals",cex.lab=1.5,pch=16) 
+abline(0, 0)
+plot(CUT2resid ~ data1cut$temp.min, xlab = "min temp", ylab = "Residuals",cex.lab=1.5,pch=16) 
+abline(0, 0)
+
+
+############################################## model interpretation
+#   plot(x,y) but lm(y~x) !!!!
+
+# GPP model interpretation
+plot(data1metab$pebble,data1metab$t.gpp,cex.lab=1.5,pch=16)
+abline(lm(data1metab$t.gpp~data1metab$pebble))
+plot(data1$from.north,data1$t.gpp,cex.lab=1.5,pch=16)
+abline(lm(data1metab$t.gpp~data1metab$from.north))
+# ER model interpretation
+plot(data1metab$depth,data1metab$t.er,cex.lab=1.5,pch=16)
+abline(lm(data1metab$t.er~data1metab$depth))
+plot(data1metab$from.north,data1metab$t.er,cex.lab=1.5,pch=16)
+abline(lm(data1metab$t.er~data1metab$from.north))
+# CUT model interpretation
+plot(data1cut$width,data1cut$t.cut.mass.m,cex.lab=1.5,pch=16)
+abline(lm(data1cut$t.cut.mass.m~data1cut$width))
+plot(data1cut$temp.min,data1cut$t.cut.mass.m,cex.lab=1.5,pch=16)
+abline(lm(data1cut$t.cut.mass.m~data1cut$temp.min))
+
+############################# possibly meaningful plots
+# GPP plots 
+plot(data1metab$carbon,data1metab$t.gpp,cex.lab=1.5,pch=16)
 
 
 
@@ -164,13 +417,6 @@ dotchart(data2$cut.capt.sum18,xlab="cutthroat capture probability sum 18" ,xlim=
 
 
 
-
-
-
-dotchart(data2$.sum17,xlab=" sum 17 ()"   ,cex.lab=1.5,pch=16,group=data2$basin)
-dotchart(data2$.fall17,xlab=" fall 17 ()" ,cex.lab=1.5,pch=16,group=data2$basin)
-dotchart(data2$.sum18,xlab=" sum 18 ()"   ,cex.lab=1.5,pch=16,group=data2$basin)
-,xlim=c()
 
 
 
