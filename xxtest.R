@@ -7,9 +7,9 @@ head(data1)
 data1
 
 data1metab=read.csv("trans_short_metab_r.csv",header=TRUE)
-
 data1omit=na.omit(data1metab)
-
+data1nitrate=read.csv("trans_short_metab_nitrate_outlier_r.csv",header=TRUE)
+data1nitrate_omit=na.omit(data1nitrate)
 data1cut=read.csv("trans_short_cut_r.csv",header=TRUE)
 
 data2=read.csv("all_trans_long_r.csv",header=TRUE) #load data in long format
@@ -388,15 +388,15 @@ abline(0, 0)
 #   plot(x,y) but lm(y~x) !!!!
 
 # GPP model interpretation
-plot(data1metab$pebble,data1metab$t.gpp,cex.lab=1.5,pch=16)
-abline(lm(data1metab$t.gpp~data1metab$pebble))
-plot(data1$from.north,data1$t.gpp,cex.lab=1.5,pch=16)
-abline(lm(data1metab$t.gpp~data1metab$from.north))
+plot(data1omit$pebble,data1omit$t.gpp,cex.lab=1.5,pch=16)
+abline(lm(data1omit$t.gpp~data1omit$pebble))
+plot(data1omit$from.north,data1omit$t.gpp,cex.lab=1.5,pch=16)
+abline(lm(data1omit$t.gpp~data1omit$from.north))
 # ER model interpretation
-plot(data1metab$depth,data1metab$t.er,cex.lab=1.5,pch=16)
-abline(lm(data1metab$t.er~data1metab$depth))
-plot(data1metab$from.north,data1metab$t.er,cex.lab=1.5,pch=16)
-abline(lm(data1metab$t.er~data1metab$from.north))
+plot(data1omit$depth,data1omit$t.er,cex.lab=1.5,pch=16)
+abline(lm(data1omit$t.er~data1omit$depth))
+plot(data1omit$from.north,data1omit$t.er,cex.lab=1.5,pch=16)
+abline(lm(data1omit$t.er~data1omit$from.north))
 # CUT model interpretation
 plot(data1cut$width,data1cut$t.cut.mass.m,cex.lab=1.5,pch=16)
 abline(lm(data1cut$t.cut.mass.m~data1cut$width))
@@ -405,14 +405,69 @@ abline(lm(data1cut$t.cut.mass.m~data1cut$temp.min))
 
 ############################# possibly meaningful plots
 # GPP plots 
-plot(data1metab$carbon,data1metab$t.gpp,cex.lab=1.5,pch=16)
+plot(data1omit$carbon,data1omit$t.gpp,cex.lab=1.5,pch=16)
+abline(lm(data1omit$t.gpp~data1omit$carbon))
+plot(data1omit$carbon,data1omit$gpp,cex.lab=1.5,pch=16)
+abline(lm(data1omit$gpp~data1omit$carbon))
 
+plot(data1omit$ammonia,data1omit$t.gpp,cex.lab=1.5,pch=16)
+abline(lm(data1omit$t.gpp~data1omit$ammonia))
+plot(data1omit$ammonia,data1omit$gpp,cex.lab=1.5,pch=16)
+abline(lm(data1omit$gpp~data1omit$ammonia))
 
+plot(data1omit$nitrate,data1omit$t.gpp,cex.lab=1.5,pch=16) #to plot t.gpp this data sheet needs the transformation
+abline(lm(data1omit$t.gpp~data1omit$nitrate))
+plot(data1omit$nitrate,data1omit$gpp,cex.lab=1.5,pch=16) #to plot t.gpp this data sheet needs the transformation
+abline(lm(data1omit$gpp~data1omit$nitrate))
+plot(data1nitrate_omit$nitrate,data1nitrate_omit$gpp,cex.lab=1.5,pch=16) #to plot t.gpp this data sheet needs the transformation
+abline(lm(data1nitrate_omit$gpp~data1nitrate_omit$nitrate))
 
+plot(data1omit$phosphate,data1omit$t.gpp,cex.lab=1.5,pch=16)
+abline(lm(data1omit$t.gpp~data1omit$phosphate))
+plot(data1omit$phosphate,data1omit$gpp,cex.lab=1.5,pch=16)
+abline(lm(data1omit$gpp~data1omit$phosphate))
+# ER plots
+plot(data1omit$carbon,data1omit$t.er,cex.lab=1.5,pch=16)
+abline(lm(data1omit$t.er~data1omit$carbon))
+plot(data1omit$carbon,data1omit$er,cex.lab=1.5,pch=16)
+abline(lm(data1omit$er~data1omit$carbon))
 
+plot(data1omit$ammonia,data1omit$t.er,cex.lab=1.5,pch=16)
+abline(lm(data1omit$t.er~data1omit$ammonia))
+plot(data1omit$ammonia,data1omit$er,cex.lab=1.5,pch=16)
+abline(lm(data1omit$er~data1omit$ammonia))
 
+plot(data1omit$nitrate,data1omit$t.er,cex.lab=1.5,pch=16) #to plot t.gpp this data sheet needs the transformation
+abline(lm(data1omit$t.er~data1omit$nitrate))
+plot(data1omit$nitrate,data1omit$er,cex.lab=1.5,pch=16)
+abline(lm(data1omit$er~data1omit$nitrate))
+plot(data1nitrate_omit$nitrate,data1nitrate_omit$er,cex.lab=1.5,pch=16)
+abline(lm(data1nitrate_omit$er~data1nitrate_omit$nitrate))
 
+plot(data1omit$phosphate,data1omit$t.er,cex.lab=1.5,pch=16)
+abline(lm(data1omit$t.er~data1omit$phosphate))
+plot(data1omit$phosphate,data1omit$er,cex.lab=1.5,pch=16)
+abline(lm(data1omit$er~data1omit$phosphate))
+# CUT plots
+plot(data1cut$carbon,data1cut$t.cut.mass.m,cex.lab=1.5,pch=16)
+abline(lm(data1cut$t.cut.mass.m~data1cut$carbon))
+plot(data1cut$carbon,data1cut$cut.mass.m,cex.lab=1.5,pch=16)
+abline(lm(data1cut$cut.mass.m~data1cut$carbon))
 
+plot(data1cut$ammonia,data1cut$t.cut.mass.m,cex.lab=1.5,pch=16)
+abline(lm(data1cut$t.cut.mass.m~data1cut$ammonia))
+plot(data1cut$ammonia,data1cut$cut.mass.m,cex.lab=1.5,pch=16)
+abline(lm(data1cut$cut.mass.m~data1cut$ammonia))
+
+plot(data1cut$nitrate,data1cut$t.cut.mass.m,cex.lab=1.5,pch=16)
+abline(lm(data1cut$t.cut.mass.m~data1cut$nitrate))
+plot(data1cut$nitrate,data1cut$cut.mass.m,cex.lab=1.5,pch=16)
+abline(lm(data1cut$cut.mass.m~data1cut$nitrate))
+
+plot(data1cut$phosphate,data1cut$t.cut.mass.m,cex.lab=1.5,pch=16)
+abline(lm(data1cut$t.cut.mass.m~data1cut$phosphate))
+plot(data1cut$phosphate,data1cut$cut.mass.m,cex.lab=1.5,pch=16)
+abline(lm(data1cut$cut.mass.m~data1cut$phosphate))
 
 
 
