@@ -1,22 +1,19 @@
 setwd("N:/Thesis")
 dir()
-
-data1=read.csv("all_trans_short_r.csv",header=TRUE) #load data in short format with NA's
 names(data1)
 head(data1)
 data1
 
+data1=read.csv("all_trans_short_r.csv",header=TRUE) #load data in short format with NA's
 data1metab=read.csv("trans_short_metab_r.csv",header=TRUE)
 data1omit=na.omit(data1metab)
+
 data1nitrate=read.csv("trans_short_metab_nitrate_outlier_r.csv",header=TRUE)
 data1nitrate_omit=na.omit(data1nitrate)
+
 data1cut=read.csv("trans_short_cut_r.csv",header=TRUE)
 
 data2=read.csv("all_trans_long_r.csv",header=TRUE) #load data in long format
-names(data2)
-head(data2)
-data2
-
 
 
 ######################################################################################################  
