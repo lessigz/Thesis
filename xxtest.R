@@ -186,6 +186,7 @@ hist(data1$cut.mass.m,xlab="cutthroat biomass (g/m)",cex.lab=1.5)
 
 #################### Transformations of suggested RESPONSE variables
 # ER transformation
+
 data1$t.er=log2(-10*data1$er)
 data1omit$t.er=log2(-10*data1omit$er)
 hist(data1omit$t.er,xlab="transfromed ER",cex.lab=1.5)
@@ -382,7 +383,7 @@ abline(0, 0)
 
 
 ############################################## model interpretation
-#   plot(x,y) but lm(y~x) !!!!
+#   plot(x,y) but abline(lm(y~x)) !!!!
 
 # GPP model interpretation
 plot(data1omit$pebble,data1omit$t.gpp,cex.lab=1.5,pch=16)
