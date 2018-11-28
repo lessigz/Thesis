@@ -1,50 +1,69 @@
-library(lattice)
 par(bg="white")
 
 #site specific non seasonal variables
-boxplot(data2$elev,      xlab="Elevation (m)",          cex.lab=1.5,pch=16,group=data2$basin.stream)
-boxplot(data2$from.north,xlab="Aspect (Deg. South Facing)",cex.lab=1.5,pch=16,group=data2$basin.stream)
-boxplot(data2$slope,     xlab="Slope (%)",         cex.lab=1.5,pch=16,group=data2$basin.stream)
-boxplot(data2$bf,        xlab="Bank full (m)",     cex.lab=1.5,pch=16,group=data2$basin.stream)
-boxplot(data2$pebble,    xlab="Pebble Median (mm)", cex.lab=1.5,pch=16,group=data2$basin.stream)
+boxplot(data2$elev,      xlab="All Sites",ylab="Elevation (m)",cex.lab=1.5,pch=16,group=data2$basin.stream)
+boxplot(data2$from.north,xlab="All Sites",ylab="Aspect (Deg. South Facing)",cex.lab=1.5,pch=16,group=data2$basin.stream)
+boxplot(data2$slope,     xlab="All Sites",ylab="Slope (%)",cex.lab=1.5,pch=16,group=data2$basin.stream)
+boxplot(data2$bf,        xlab="All Sites",ylab="Bank full (m)",cex.lab=1.5,pch=16,group=data2$basin.stream)
+boxplot(data2$pebble,    xlab="All Sites",ylab="Pebble Median (mm)",cex.lab=1.5,pch=16,group=data2$basin.stream)
 
+library(lattice)
+library(agricolae)
 # Variables that change over time
-interaction.plot(data1$season.yr,data1$stream,data1$width,xlab="Season", ylab="Wetted Width (m)"
-,cex.lab=1.5,col="black",lwd=2.5,legend=F)
-interaction.plot(data1$season.yr,data1$stream,data1$depth,xlab="Season", ylab="Depth (m)"
-,cex.lab=1.5,col="black",lwd=2.5,legend=F)
-interaction.plot(data1$season.yr,data1$stream,data1$discharge,xlab="Season", ylab="Discharge (L/s)"
-,cex.lab=1.5,col="black",lwd=2.5,legend=F)
+interaction.plot(data1$season.yr,data1$stream,data1$width,xlab="Season", ylab="Wetted Width (m)",cex.lab=1.5,col="black",lwd=2.5,legend=F)
+plot(HSD.test(aov(data1$width~data1$stream+data1$season.yr), 'data1$season.yr'))
 
-interaction.plot(data1$season.yr,data1$stream,data1$carbon,xlab="Season", ylab="Carbon (DOC mg C/L)"
-,ylim=c(0,14),cex.lab=1.5,col="black",lwd=2.5,legend=F)
-interaction.plot(data1$season.yr,data1$stream,data1$phosphate,xlab="Season", ylab="Phosphate (SRP mg P/L)"
-,ylim=c(0,.06),cex.lab=1.5,col="black",lwd=2.5,legend=F)
-interaction.plot(data1nitrate_omit$season.yr,data1nitrate_omit$stream,data1nitrate_omit$din,xlab="Season", ylab="Nitrogen (DIN mg N/L)*"
-,ylim=c(0,.017),cex.lab=1.5,col="black",lwd=2.5,legend=F) # added.016478 to ammonia and .0012613 to nitrate, dropped outliers
+interaction.plot(data1$season.yr,data1$stream,data1$depth,xlab="Season", ylab="Depth (m)",cex.lab=1.5,col="black",lwd=2.5,legend=F)
+plot(HSD.test(aov(data1$depth~data1$stream+data1$season.yr), 'data1$season.yr'))
 
-interaction.plot(data1$season.yr,data1$stream,data1$canopy,xlab="Season", ylab="Canopy (% open)"
-,ylim=c(0,80),cex.lab=1.5,col="black",lwd=2.5,legend=F)
-interaction.plot(data1$season.yr,data1$stream,data1$par.integrative,xlab="Season", ylab="PAR (integrative mol/m2/d)"
-,ylim=c(0,3.5),cex.lab=1.5,col="black",lwd=2.5,legend=F) #integrative seemed more informative than mean or max PAR
-interaction.plot(data1$season.yr,data1$stream,data1$temp.min,xlab="Season", ylab="Minimum Temp (deg C)"
-,ylim=c(0,11),cex.lab=1.5,col="black",lwd=2.5,legend=F) # stream daily minimum temp seemed a better predictor than mean or max temp
+interaction.plot(data1$season.yr,data1$stream,data1$discharge,xlab="Season", ylab="Discharge (L/s)",cex.lab=1.5,col="black",lwd=2.5,legend=F)
+plot(HSD.test(aov(data1$discharge~data1$stream+data1$season.yr), 'data1$season.yr'))
 
-interaction.plot(data1$season.yr,data1$stream,data1$gpp,xlab="Season", ylab="GPP (g O2/m2/d)"
-,ylim=c(0,.15),cex.lab=1.5,col="black",lwd=2.5,legend=F) # total autotrophic production
-interaction.plot(data1$season.yr,data1$stream,abs(data1$er),xlab="Season", ylab="ER (ABS g O2/m2/d)*"
-,ylim=c(0,5),cex.lab=1.5,col="black",lwd=2.5,legend=F) # total auto+heterotrophic respiration as negative flux (here as absolute value)
-interaction.plot(data1$season.yr,data1$stream,data1$pr.ratio,xlab="Season", ylab="P/R ratio"
-,ylim=c(0,.035) ,cex.lab=1.5,col="black",lwd=2.5,legend=F)
+plot(data1$depth~data1$width,xlab = "Wetted Width (m)", ylab = "Depth (m)",cex.lab=1.5,pch=16)
+abline(lm(data1$depth~data1$width))
+summary(lm(data1$depth~data1$width))
+legend("topright", legend=c("R2= 0.69", "P= 9.1e-9"),bty="n")
 
-interaction.plot(data1cut$season.yr,data1cut$stream,data1cut$sculp.mass.m,xlab="Season", ylab="Sculpin Biomass (g/m)*"
-,ylim=c(0,8),cex.lab=1.5,col="black",lwd=2.5,legend=F) # sculpin biomass was additive and no proper estimate was done
-interaction.plot(data1cut$season.yr,data1cut$stream,data1cut$cut.mass.m,xlab="Season", ylab="Trout Biomass (g/m)*"
-,ylim=c(0,14),cex.lab=1.5,col="black",lwd=2.5,legend=F) # almost entirely CUTT with EBT in Jack summer '18 mixed in
+plot(data1$discharge~data1$width,xlab = "Wetted Width (m)", ylab = "Discharge (L/s)",cex.lab=1.5,pch=16)
+abline(lm(data1$discharge~data1$width))
+summary(lm(data1$discharge~data1$width))
+legend("topright", legend=c("R2= 0.47", "P= 2.0e-5"),bty="n")
 
-boxplot(data1cut$season.yr,data1cut$cut.mass.m,xlab="Season", ylab="Trout Biomass (g/m)*",ylim=c(0,14),cex.lab=1.5,pch=16) # almost entirely CUTT with EBT in Jack summer '18 mixed in
-legend("topleft", legend=c("Paired t-test", "P= 0.30"),bty="n")
-t.test(data2$cut.mass.m.sum17,data2$cut.mass.m.sum18,paired=TRUE)
+interaction.plot(data1$season.yr,data1$stream,data1$carbon,xlab="Season", ylab="Carbon (DOC mg C/L)",ylim=c(0,14),cex.lab=1.5,col="black",lwd=2.5,legend=F)
+plot(HSD.test(aov(data1$carbon~data1$stream+data1$season.yr), 'data1$season.yr'))
+
+interaction.plot(data1$season.yr,data1$stream,data1$phosphate,xlab="Season", ylab="Phosphate (SRP mg P/L)",ylim=c(0,.06),cex.lab=1.5,col="black",lwd=2.5,legend=F)
+plot(HSD.test(aov(data1$phosphate~data1$stream+data1$season.yr), 'data1$season.yr'))
+
+interaction.plot(data1nitrate_omit$season.yr,data1nitrate_omit$stream,data1nitrate_omit$din,xlab="Season", ylab="Nitrogen (DIN mg N/L)*",ylim=c(0,.017),cex.lab=1.5,col="black",lwd=2.5,legend=F) # added.016478 to ammonia and .0012613 to nitrate, dropped outliers
+plot(HSD.test(aov(data1nitrate_omit$phosphate~data1nitrate_omit$stream+data1nitrate_omit$season.yr), 'data1nitrate_omit$season.yr'))
+
+interaction.plot(data1nitrate_omit$season.yr,data1nitrate_omit$stream,data1nitrate_omit$cn.ratio,xlab="Season", ylab="C:N Ratio",ylim=c(0,4000),cex.lab=1.5,col="black",lwd=2.5,legend=F) # added.016478 to ammonia and .0012613 to nitrate, dropped outliers
+plot(HSD.test(aov(data1nitrate_omit$cn.ratio~data1nitrate_omit$stream+data1nitrate_omit$season.yr), 'data1nitrate_omit$season.yr'))
+
+interaction.plot(data1$season.yr,data1$stream,data1$canopy,xlab="Season", ylab="Canopy (% open)",ylim=c(0,80),cex.lab=1.5,col="black",lwd=2.5,legend=F)
+plot(HSD.test(aov(data1$canopy~data1$stream+data1$season.yr), 'data1$season.yr'))
+
+interaction.plot(data1$season.yr,data1$stream,data1$par.integrative,xlab="Season", ylab="PAR (integrative mol/m2/d)",ylim=c(0,3.5),cex.lab=1.5,col="black",lwd=2.5,legend=F) #integrative seemed more informative than mean or max PAR
+plot(HSD.test(aov(data1$par.integrative~data1$stream+data1$season.yr), 'data1$season.yr'))
+
+interaction.plot(data1$season.yr,data1$stream,data1$temp.min,xlab="Season", ylab="Minimum Temp (deg C)",ylim=c(0,11),cex.lab=1.5,col="black",lwd=2.5,legend=F) # stream daily minimum temp seemed a better predictor than mean or max temp
+plot(HSD.test(aov(data1$temp.min~data1$stream+data1$season.yr), 'data1$season.yr'))
+
+interaction.plot(data1$season.yr,data1$stream,data1$gpp,xlab="Season", ylab="GPP (g O2/m2/d)",ylim=c(0,.15),cex.lab=1.5,col="black",lwd=2.5,legend=F) # total autotrophic production
+plot(HSD.test(aov(data1$gpp~data1$stream+data1$season.yr), 'data1$season.yr'))
+
+interaction.plot(data1$season.yr,data1$stream,abs(data1$er),xlab="Season", ylab="ER (ABS g O2/m2/d)*",ylim=c(0,5),cex.lab=1.5,col="black",lwd=2.5,legend=F) # total auto+heterotrophic respiration as negative flux (here as absolute value)
+plot(HSD.test(aov(data1$er~data1$stream+data1$season.yr), 'data1$season.yr'))
+
+interaction.plot(data1$season.yr,data1$stream,data1$pr.ratio,xlab="Season", ylab="P/R ratio",ylim=c(0,.035) ,cex.lab=1.5,col="black",lwd=2.5,legend=F)
+plot(HSD.test(aov(data1$pr.ratio~data1$stream+data1$season.yr), 'data1$season.yr'))
+
+interaction.plot(data1cut$season.yr,data1cut$stream,data1cut$sculp.mass.m,xlab="Season", ylab="Sculpin Biomass (g/m)*",ylim=c(0,8),cex.lab=1.5,col="black",lwd=2.5,legend=F) # sculpin biomass was additive and no proper estimate was done
+plot(HSD.test(aov(data1cut$sculp.mass.m~data1cut$stream+data1cut$season.yr), 'data1cut$season.yr'))
+
+interaction.plot(data1cut$season.yr,data1cut$stream,data1cut$cut.mass.m,xlab="Season", ylab="Trout Biomass (g/m)*",ylim=c(0,14),cex.lab=1.5,col="black",lwd=2.5,legend=F) # almost entirely CUTT with EBT in Jack summer '18 mixed in
+plot(HSD.test(aov(data1cut$cut.mass.m~data1cut$stream+data1cut$season.yr), 'data1cut$season.yr'))
 
 # modeling
 # GPP modeling
@@ -122,19 +141,19 @@ abline(lm(data1$cut.mass.m~data1$gpp))
 summary(lm(data1$cut.mass.m~data1$gpp))
 legend("topright", legend=c("R2= -0.045", "P= 0.64"),bty="n")
 
-plot(data1$carbon~data1$gpp,xlab = "GPP (g O2/m2/d)", ylab = "Carbon (DOC mg C/L)",cex.lab=1.5,pch=16)
-abline(lm(data1$carbon~data1$gpp))
-summary(lm(data1$carbon~data1$gpp))
+plot(data1$gpp~data1$carbon,xlab = "Carbon (DOC mg C/L)", ylab = "GPP (g O2/m2/d)",cex.lab=1.5,pch=16)
+abline(lm(data1$gpp~data1$carbon))
+summary(lm(data1$gpp~data1$carbon))
 legend("topright", legend=c("R2= -0.035", "P= 0.70"),bty="n")
 
-plot(data1nitrate_omit$din~data1nitrate_omit$gpp,xlab = "GPP (g O2/m2/d)", ylab = "Nitrogen (DIN mg N/L)*",cex.lab=1.5,pch=16)
-abline(lm(data1nitrate_omit$din~data1nitrate_omit$gpp))
-summary(lm(data1nitrate_omit$din~data1nitrate_omit$gpp))
+plot(data1nitrate_omit$gpp~data1nitrate_omit$din,xlab = "Nitrogen (DIN mg N/L)*", ylab ="GPP (g O2/m2/d)" ,cex.lab=1.5,pch=16)
+abline(lm(data1nitrate_omit$gpp~data1nitrate_omit$din))
+summary(lm(data1nitrate_omit$gpp~data1nitrate_omit$din))
 legend("topright", legend=c("R2= 0.11", "P= 0.066"),bty="n")
 
-plot(data1$phosphate~data1$gpp,xlab = "GPP (g O2/m2/d)", ylab = "Phosphate (mg P/L)",cex.lab=1.5,pch=16)
-abline(lm(data1$phosphate~data1$gpp))
-summary(lm(data1$phosphate~data1$gpp))
+plot(data1$gpp~data1$phosphate,xlab = "Phosphate (mg P/L)", ylab ="GPP (g O2/m2/d)" ,cex.lab=1.5,pch=16)
+abline(lm(data1$gpp~data1$phosphate))
+summary(lm(data1$gpp~data1$phosphate))
 legend("topright", legend=c("R2= 0.12", "P= 0.047"),bty="n")
 # ER additionals
 
@@ -143,43 +162,38 @@ abline(lm(abs(data1$er)~data1$cut.mass.m))
 summary((lm(abs(data1$er)~data1$cut.mass.m)))
 legend("topright", legend=c("R2= -0.0027", "P= 0.34"),bty="n")
 
-plot(data1$carbon~abs(data1$er),xlab = "ER (ABS g O2/m2/d)", ylab = "Carbon (DOC mg C/L)",cex.lab=1.5,pch=16)
-abline(lm(data1$carbon~abs(data1$er)))
-summary(lm(data1$carbon~abs(data1$er)))
+plot(abs(data1$er)~data1$carbon,xlab = "Carbon (DOC mg C/L)", ylab ="ER (ABS g O2/m2/d)" ,cex.lab=1.5,pch=16)
+abline(lm(abs(data1$er)~data1$carbon))
+summary(lm(abs(data1$er)~data1$carbon))
 legend("topright", legend=c("R2= 0.047", "P= 0.15"),bty="n")
 
-plot(data1nitrate_omit$din~abs(data1nitrate_omit$er),xlab = "ER (ABS g O2/m2/d)", ylab = "Nitrogen (DIN mg N/L)*",cex.lab=1.5,pch=16)
-abline(lm(data1nitrate_omit$din~abs(data1nitrate_omit$er)))
-summary(lm(data1nitrate_omit$din~abs(data1nitrate_omit$er)))
+plot(abs(data1nitrate_omit$er)~data1nitrate_omit$din,xlab = "Nitrogen (DIN mg N/L)*", ylab ="ER (ABS g O2/m2/d)" ,cex.lab=1.5,pch=16)
+abline(lm(abs(data1nitrate_omit$er)~data1nitrate_omit$din))
+summary(lm(abs(data1nitrate_omit$er)~data1nitrate_omit$din))
 legend("topright", legend=c("R2= -0.035", "P= 0.64"),bty="n")
 
-plot(data1$phosphate~abs(data1$er),xlab = "ER (ABS g O2/m2/d)", ylab = "Phosphate (mg P/L)",cex.lab=1.5,pch=16)
-abline(lm(data1$phosphate~abs(data1$er)))
-summary(lm(data1$phosphate~abs(data1$er)))
+
+plot(abs(data1$er)~data1$phosphate,xlab = "Phosphate (mg P/L)", ylab ="ER (ABS g O2/m2/d)" ,cex.lab=1.5,pch=16)
+abline(lm(abs(data1$er)~data1$phosphate))
+summary(lm(abs(data1$er)~data1$phosphate))
 legend("topright", legend=c("R2= 0.11", "P= 0.051"),bty="n")
 
 #CUT additionals
 
-plot(data1$carbon~data1$cut.mass.m,xlab = "Cutthroat Biomass (g/m)", ylab ="Carbon (DOC mg C/L)",cex.lab=1.5,pch=16)
-abline(lm(data1$carbon~data1$cut.mass.m))
-summary(lm(data1$carbon~data1$cut.mass.m))
+plot(data1$cut.mass.m~data1$carbon,xlab ="Carbon (DOC mg C/L)" , ylab ="Cutthroat Biomass (g/m)",cex.lab=1.5,pch=16)
+abline(lm(data1$cut.mass.m~data1$carbon))
+summary(lm(data1$cut.mass.m~data1$carbon))
 legend("topright", legend=c("R2= -0.052", "P= 0.82"),bty="n")
 
-plot(data1cut$din~data1cut$cut.mass.m,xlab ="Cutthroat Biomass (g/m)" , ylab ="Nitrogen (DIN mg N/L)*" ,cex.lab=1.5,pch=16)
-abline(lm(data1cut$din~data1cut$cut.mass.m))
-summary(lm(data1cut$din~data1cut$cut.mass.m))
+plot(data1cut$cut.mass.m~data1cut$din,xlab ="Nitrogen (DIN mg N/L)*" , ylab ="Cutthroat Biomass (g/m)" ,cex.lab=1.5,pch=16)
+abline(lm(data1cut$cut.mass.m~data1cut$din))
+summary(lm(data1cut$cut.mass.m~data1cut$din))
 legend("topright", legend=c("R2= -0.015", "P= 0.41"),bty="n")
 
-plot(data1$phosphate~data1$cut.mass.m,xlab = "Cutthroat Biomass (g/m)", ylab = "Phosphate (mg P/L)",cex.lab=1.5,pch=16)
-abline(lm(data1$phosphate~data1$cut.mass.m))
-summary(lm(data1$phosphate~data1$cut.mass.m))
+plot(data1$cut.mass.m~data1$phosphate,xlab = "Phosphate (mg P/L)", ylab ="Cutthroat Biomass (g/m)" ,cex.lab=1.5,pch=16)
+abline(lm(data1$cut.mass.m~data1$phosphate))
+summary(lm(data1$cut.mass.m~data1$phosphate))
 legend("topright", legend=c("R2= -0.015", "P= 0.41"),bty="n")
-
-
-
-
-
-
 
 
 
