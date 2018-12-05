@@ -54,7 +54,7 @@ interaction.plot(data1$season.yr,data1$stream,data1$gpp,xlab="Season", ylab="GPP
 plot(HSD.test(aov(data1$gpp~data1$stream+data1$season.yr), 'data1$season.yr'))
 
 interaction.plot(data1$season.yr,data1$stream,abs(data1$er),xlab="Season", ylab="ER (ABS g O2/m2/d)*",ylim=c(0,5),cex.lab=1.5,col="black",lwd=2.5,legend=F) # total auto+heterotrophic respiration as negative flux (here as absolute value)
-plot(HSD.test(aov(data1$er~data1$stream+data1$season.yr), 'data1$season.yr'))
+plot(HSD.test(aov(data1omit$er~data1omit$stream+data1omit$season.yr), 'data1omit$season.yr'))
 
 interaction.plot(data1$season.yr,data1$stream,data1$pr.ratio,xlab="Season", ylab="P/R ratio",ylim=c(0,.035) ,cex.lab=1.5,col="black",lwd=2.5,legend=F)
 plot(HSD.test(aov(data1$pr.ratio~data1$stream+data1$season.yr), 'data1$season.yr'))
@@ -195,9 +195,10 @@ abline(lm(data1$cut.mass.m~data1$phosphate))
 summary(lm(data1$cut.mass.m~data1$phosphate))
 legend("topright", legend=c("R2= -0.015", "P= 0.41"),bty="n")
 
+###
 
-
-
-
-
+plot(data1$phosphate~data1$carbon,xlab ="Carbon (DOC mg C/L)" , ylab ="Phosphate (mg P/L)",cex.lab=1.5,pch=16)
+abline(lm(data1$phosphate~data1$carbon))
+summary(lm(data1$phosphate~data1$carbon))
+legend("topright", legend=c("R2= 0.19", "P= 0.010"),bty="n")
 
