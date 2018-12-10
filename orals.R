@@ -48,16 +48,35 @@ plot(HSD.test(aov(data1$par.integrative~data1$stream+data1$season.yr), 'data1$se
 
 interaction.plot(data1$season.yr,data1$stream,data1$temp.min,xlab="Season", ylab="Minimum Temp (deg C)",ylim=c(0,11),cex.lab=1.5,col="black",lwd=2.5,legend=F) # stream daily minimum temp seemed a better predictor than mean or max temp
 plot(HSD.test(aov(data1$temp.min~data1$stream+data1$season.yr), 'data1$season.yr'))
+# metab.my
+interaction.plot(data1$season.yr,data1$stream,data1$gpp.my,xlab="Season", ylab="GPP.my (g O2/m2/d)",ylim=c(0,.15),cex.lab=1.5,col="black",lwd=2.5,legend=F) # total autotrophic production
+plot(HSD.test(aov(data1$gpp.my~data1$stream+data1$season.yr), 'data1$season.yr'))
 
-interaction.plot(data1$season.yr,data1$stream,data1$gpp,xlab="Season", ylab="GPP (g O2/m2/d)",ylim=c(0,.15),cex.lab=1.5,col="black",lwd=2.5,legend=F) # total autotrophic production
-plot(HSD.test(aov(data1$gpp~data1$stream+data1$season.yr), 'data1$season.yr'))
+interaction.plot(data1$season.yr,data1$stream,abs(data1$er.my),xlab="Season", ylab="ER.my (ABS g O2/m2/d)*",ylim=c(0,5),cex.lab=1.5,col="black",lwd=2.5,legend=F) # total auto+heterotrophic respiration as negative flux (here as absolute value)
+plot(HSD.test(aov(data1$er.my~data1$stream+data1$season.yr), 'data1$season.yr'))
 
-interaction.plot(data1$season.yr,data1$stream,abs(data1$er),xlab="Season", ylab="ER (ABS g O2/m2/d)*",ylim=c(0,5),cex.lab=1.5,col="black",lwd=2.5,legend=F) # total auto+heterotrophic respiration as negative flux (here as absolute value)
-plot(HSD.test(aov(data1omit$er~data1omit$stream+data1omit$season.yr), 'data1omit$season.yr'))
+interaction.plot(data1$season.yr,data1$stream,data1$pr.my,xlab="Season", ylab="P/R.my",ylim=c(0,.035) ,cex.lab=1.5,col="black",lwd=2.5,legend=F)
+plot(HSD.test(aov(data1$pr.my~data1$stream+data1$season.yr), 'data1$season.yr'))
+# metab.lit
+interaction.plot(data1$season.yr,data1$stream,data1$gpp.lit,xlab="Season", ylab="GPP.lit (g O2/m2/d)",ylim=c(0,.6),cex.lab=1.5,col="black",lwd=2.5,legend=F) # total autotrophic production
+plot(HSD.test(aov(data1$gpp.lit~data1$stream+data1$season.yr), 'data1$season.yr'))
 
-interaction.plot(data1$season.yr,data1$stream,data1$pr.ratio,xlab="Season", ylab="P/R ratio",ylim=c(0,.035) ,cex.lab=1.5,col="black",lwd=2.5,legend=F)
-plot(HSD.test(aov(data1$pr.ratio~data1$stream+data1$season.yr), 'data1$season.yr'))
+interaction.plot(data1$season.yr,data1$stream,abs(data1$er.lit),xlab="Season", ylab="ER.lit (ABS g O2/m2/d)*",ylim=c(0,20),cex.lab=1.5,col="black",lwd=2.5,legend=F) # total auto+heterotrophic respiration as negative flux (here as absolute value)
+plot(HSD.test(aov(abs(data1$er.lit)~data1$stream+data1$season.yr), 'data1$season.yr'))
 
+interaction.plot(data1$season.yr,data1$stream,data1$pr.lit,xlab="Season", ylab="P/R.lit",ylim=c(0,.06) ,cex.lab=1.5,col="black",lwd=2.5,legend=F)
+plot(HSD.test(aov(data1$pr.lit~data1$stream+data1$season.yr), 'data1$season.yr'))
+# metab.model
+interaction.plot(data1$season.yr,data1$stream,data1$gpp.model,cex.lab=1.5,col="black",lwd=2.5,legend=F)
+interaction.plot(data1$season.yr,data1$stream,abs(data1$er.model),cex.lab=1.5,col="black",lwd=2.5,legend=F)
+interaction.plot(data1$season.yr,data1$stream,data1$pr.model,cex.lab=1.5,col="black",lwd=2.5,legend=F)
+# metab comparisons
+plot(data1$k600.my~data1$k600.lit,cex.lab=1.5,pch=16)
+plot(data1$gpp.my~data1$gpp.lit,cex.lab=1.5,pch=16)
+plot(abs(data1$er.my)~abs(data1$er.lit),cex.lab=1.5,pch=16)
+plot(data1$r2.my~data1$r2.lit,cex.lab=1.5,pch=16)
+
+# fish
 interaction.plot(data1cut$season.yr,data1cut$stream,data1cut$sculp.mass.m,xlab="Season", ylab="Sculpin Biomass (g/m)*",ylim=c(0,8),cex.lab=1.5,col="black",lwd=2.5,legend=F) # sculpin biomass was additive and no proper estimate was done
 plot(HSD.test(aov(data1cut$sculp.mass.m~data1cut$stream+data1cut$season.yr), 'data1cut$season.yr'))
 

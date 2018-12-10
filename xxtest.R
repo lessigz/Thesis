@@ -185,8 +185,18 @@ dotchart(data1$cut.mass.m,xlab="cutthroat biomass (g/m)",xlim=c(0,14),cex.lab=1.
 hist(data1$cut.mass.m,xlab="cutthroat biomass (g/m)",cex.lab=1.5)
 
 #################### Transformations of suggested RESPONSE variables
-# ER transformation
+# normality tests
+library(nortest)
+ad.test(data1$cut.mass.m)
+ad.test(data1$gpp.model)
+ad.test(data1$gpp.my)
+ad.test(data1$gpp.lit)
+ad.test(data1$phosphate)
+ad.test(data1$din)
+ad.test(data1$carbon)
 
+
+# ER transformation
 data1$t.er=log2(-10*data1$er)
 data1omit$t.er=log2(-10*data1omit$er)
 hist(data1omit$t.er,xlab="transfromed ER",cex.lab=1.5)
