@@ -15,6 +15,17 @@ data1cut=read.csv("trans_short_cut_r.csv",header=TRUE)
 
 data2=read.csv("all_trans_long_r.csv",header=TRUE) #load data in long format
 
+#install packages
+install.packages("nlme")
+install.packages("lme4")
+install.packages("dplyr")
+install.packages("nortest")
+
+
+library(nlme)
+library(lme4)
+library(dplyr)
+library(nortest)
 
 ######################################################################################################  
 #variables and units
@@ -273,6 +284,94 @@ lmGPP=lm(t.gpp~cut.mass,data=data1)
 lmGPP=lm(t.gpp~cut.mass.m,data=data1)
 lmGPP=lm(t.gpp~sculp.mass.m,data=data1)
 summary(lmGPP)
+
+
+###############################################################################
+#using glm to analyze variables
+M.1=gls(gpp.lit~pebble+from.north, na.action=na.omit, 
+        data=data1, method="ML") #base model
+
+M.2=lme(gpp.lit~pebble+from.north, na.action=na.omit, 
+        random = ~1|stream, data=data1, method="ML") #adds random effect
+
+M.3=lme(gpp.lit~pebble+from.north, na.action=na.omit, 
+        random = ~1|basin.stream, data=data1, method="ML") #adds nesting
+
+anova(M.1, M.2, M.3)
+#good to use the base model
+
+#Analyze base model residuals
+
+E.1<-residuals(M.1)
+
+qqnorm(residuals(M.1))
+qqline(residuals(M.1))
+ad.test(residuals(M.1))
+
+plot(M.1) 
+
+x<-data1$gpp.lit[!is.na(data1$gpp.lit)]#removes na values from column
+E.1<-residuals(M.1,type="normalized")
+plot(x, E.1)
+#residuals are somewhat linear, try alternate variance structures
+
+#####################################################
+#Analyze models with alternate variance structures
+#####################################################
+
+#base model from above
+M.1=gls(gpp.lit~pebble+from.north, na.action=na.omit, 
+        data=data1) #run with method="REML" default for comparison
+
+#alternate variance structures
+vf1=varIdent(form = ~1|stream)
+vf2=varPower(form = ~fitted(.))
+vf3=varExp(form = ~fitted(.))
+vf4=varConstPower(form = ~fitted(.))
+#vf5=varPower(form = ~fitted (.)|site)
+#vf6=varExp(form = ~fitted(.)|site)
+#vf7=varConstPower(form = ~fitted(.)|site)
+#vf8=varIdent(form = ~1|f.sample.event)
+
+#alternate models
+M1.1<-gls(gpp.lit~pebble+from.north, na.action=na.omit, 
+          data=data1, weights=vf1)
+
+M1.2<-gls(gpp.lit~pebble+from.north, na.action=na.omit, 
+          data=data1, weights=vf2)
+
+M1.3<-gls(gpp.lit~pebble+from.north, na.action=na.omit, 
+          data=data1, weights=vf3)
+
+M1.4<-gls(gpp.lit~pebble+from.north, na.action=na.omit, 
+          data=data1, weights=vf4)
+
+M1.5<-gls(gpp.lit~pebble+from.north, na.action=na.omit, 
+          data=data1,  weights=varComb(vf1,vf2))
+
+anova(M.1,M1.1,M1.2,M1.3,M1.4,M1.5)
+anova(M.1,M1.3)
+#M1.3, expoential variance of fit
+
+#Analyze alternate variance structure model residuals
+
+E1.3<-residuals(M1.3)
+
+qqnorm(residuals(M1.3))
+qqline(residuals(M1.3))
+ad.test(residuals(M1.3))
+
+plot(M1.3) 
+
+x<-data1$gpp.lit[!is.na(data1$gpp.lit)]#removes na values from column
+E1.3<-residuals(M1.3,type="normalized")
+plot(x, E1.3)
+##################################################################################
+
+
+
+
+
 
 
 lmGPP1=lm(t.gpp~pebble+from.north,data=data1)
