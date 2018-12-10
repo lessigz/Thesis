@@ -1,4 +1,3 @@
-par(bg="white")
 
 #site specific non seasonal variables
 boxplot(data2$elev,      xlab="All Sites",ylab="Elevation (m)",cex.lab=1.5,pch=16,group=data2$basin.stream)
@@ -202,3 +201,6 @@ abline(lm(data1$phosphate~data1$carbon))
 summary(lm(data1$phosphate~data1$carbon))
 legend("topright", legend=c("R2= 0.19", "P= 0.010"),bty="n")
 
+hist(data1$r2)
+xx=subset(data1,season.yr=="3rd Summer '18")
+plot(xx$k600~xx$depth)
