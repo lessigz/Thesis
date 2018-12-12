@@ -26,6 +26,7 @@ library(nlme)
 library(lme4)
 library(dplyr)
 library(nortest)
+source("AEDgraphingfunctions.R") #we used this alot in advanced biostats
 
 ######################################################################################################  
 #variables and units
@@ -72,7 +73,6 @@ library(nortest)
 #sculp.mass.m	(sculpin mass per meter of stream in g/m)
 ####################################################################################################
 
-source("AEDgraphingfunctions.R") #we used this alot in advanced biostats
 
 ############ data exploration starting with likely PREDICTOR variables
 
@@ -201,27 +201,12 @@ library(nortest)
 ad.test(data1$cut.mass.m)
 ad.test(data1$gpp.model)
 ad.test(data1$gpp.my)
-ad.test(data1$gpp.lit)
+ad.test(data1$er.lit)
 ad.test(data1$phosphate)
 ad.test(data1$din)
 ad.test(data1$carbon)
 
 
-# ER transformation
-data1$t.er=log2(-10*data1$er)
-data1omit$t.er=log2(-10*data1omit$er)
-hist(data1omit$t.er,xlab="transfromed ER",cex.lab=1.5)
-dotchart(data1omit$t.er,xlab="transfromed ER",cex.lab=1.5,pch=16)
-# GPP transformation
-data1$t.gpp=log2(1000*data1$gpp)
-data1omit$t.gpp=log2(1000*data1omit$gpp)
-hist(data1omit$t.gpp,xlab="transfromed gpp",cex.lab=1.5)
-dotchart(data1omit$t.gpp,xlab="transfromed gpp",cex.lab=1.5,pch=16)
-# CUT mass/m transformation
-data1$t.cut.mass.m=sqrt(1+data1$cut.mass.m)
-data1cut$t.cut.mass.m=sqrt(1+data1cut$cut.mass.m)
-hist(data1cut$t.cut.mass.m,xlab="transformed cutthroat biomass",cex.lab=1.5)
-dotchart(data1cut$t.cut.mass.m,xlab="transformed cutthroat biomass",cex.lab=1.5,pch=16)
 
 ########### Pairplots of variables
 
@@ -257,70 +242,115 @@ pairs(Z[,1:11], lower.panel=panel.smooth2,upper.panel=panel.cor,diag.panel=panel
 
 
 ##################### model selections
-# GPP model selection
-lmGPP=lm(t.gpp~basin,data=data1)
-lmGPP=lm(t.gpp~elev,data=data1)
-lmGPP=lm(t.gpp~from.north,data=data1)
-lmGPP=lm(t.gpp~slope,data=data1)
-lmGPP=lm(t.gpp~bf,data=data1)
-lmGPP=lm(t.gpp~pebble,data=data1)
-lmGPP=lm(t.gpp~width,data=data1)
-lmGPP=lm(t.gpp~depth,data=data1)
-lmGPP=lm(t.gpp~discharge,data=data1)
-lmGPP=lm(t.gpp~carbon,data=data1)
-lmGPP=lm(t.gpp~ammonia,data=data1)
-lmGPP=lm(t.gpp~nitrate,data=data1)
-lmGPP=lm(t.gpp~phosphate,data=data1)
-lmGPP=lm(t.gpp~canopy,data=data1)
-lmGPP=lm(t.gpp~par.integrative,data=data1)
-lmGPP=lm(t.gpp~par.mean,data=data1)
-lmGPP=lm(t.gpp~par.max,data=data1)
-lmGPP=lm(t.gpp~temp.max,data=data1)
-lmGPP=lm(t.gpp~temp.min,data=data1)
-lmGPP=lm(t.gpp~temp.mean,data=data1)
-lmGPP=lm(t.gpp~cut.capt,data=data1)
-lmGPP=lm(t.gpp~cut.pop,data=data1)
-lmGPP=lm(t.gpp~cut.mass,data=data1)
-lmGPP=lm(t.gpp~cut.mass.m,data=data1)
-lmGPP=lm(t.gpp~sculp.mass.m,data=data1)
+
+# GPP transformation
+dotchart(data1$gpp.lit)
+ad.test(data1$gpp.lit)
+data1$t.gpp.lit=log10(1+data1$gpp.lit)
+ad.test(data1$t.gpp.lit)
+hist(data1$t.gpp.lit,xlab="transfromed gpp",cex.lab=1.5)
+dotchart(data1$t.gpp.lit,xlab="transfromed gpp",cex.lab=1.5,pch=16)
+# GPP LM models
+lmGPP=lm(t.gpp.lit~basin,na.action=na.omit,data=data1)          #p .08   r2 .13 ######## 
+lmGPP=lm(t.gpp.lit~stream,na.action=na.omit,data=data1)         #p .04   r2 .4  #########  ####
+lmGPP=lm(t.gpp.lit~yr,na.action=na.omit,data=data1)             #p .3    r2 .002
+lmGPP=lm(t.gpp.lit~elev,na.action=na.omit,data=data1)           #p .08   r2 .08  #####
+lmGPP=lm(t.gpp.lit~from.north,na.action=na.omit,data=data1)     #p .8    r2 -.04
+lmGPP=lm(t.gpp.lit~slope,na.action=na.omit,data=data1)          #p .07   r2 .10 #######
+lmGPP=lm(t.gpp.lit~bf,na.action=na.omit,data=data1)             #p .9    r2 -.04
+lmGPP=lm(t.gpp.lit~pebble,na.action=na.omit,data=data1)         #p .0001 r2 .45  ######## #####
+lmGPP=lm(t.gpp.lit~width,na.action=na.omit,data=data1)          #p .17   r2 .04
+lmGPP=lm(t.gpp.lit~depth,na.action=na.omit,data=data1)          #p .04   r2 .13  ##########
+lmGPP=lm(t.gpp.lit~velocity.mean,na.action=na.omit,data=data1)  #p .2    r2 .04
+lmGPP=lm(t.gpp.lit~discharge,na.action=na.omit,data=data1)      #p .9    r2 -.04
+lmGPP=lm(t.gpp.lit~carbon,na.action=na.omit,data=data1)         #p .8    r2 -.04
+lmGPP=lm(t.gpp.lit~ammonia,na.action=na.omit,data=data1)        #p .1    r2 -.07
+lmGPP=lm(t.gpp.lit~nitrate,na.action=na.omit,data=data1)        #p .4    r2 -.01
+lmGPP=lm(t.gpp.lit~din,na.action=na.omit,data=data1)            #p .4    r2 -.005
+lmGPP=lm(t.gpp.lit~phosphate,na.action=na.omit,data=data1)      #p .17   r2  .04
+lmGPP=lm(t.gpp.lit~cn.ratio,na.action=na.omit,data=data1)       #p .4    r2  -.01
+lmGPP=lm(t.gpp.lit~canopy,na.action=na.omit,data=data1)         #p .1    r2  .07
+lmGPP=lm(t.gpp.lit~par.integrative,na.action=na.omit,data=data1)#p .3    r2  .01
+lmGPP=lm(t.gpp.lit~par.mean,na.action=na.omit,data=data1)       #p .3    r2  .01
+lmGPP=lm(t.gpp.lit~par.max,na.action=na.omit,data=data1)        #p .8    r2  -.03
+lmGPP=lm(t.gpp.lit~temp.max,na.action=na.omit,data=data1)       #p .07   r2  .1  ########
+lmGPP=lm(t.gpp.lit~temp.min,na.action=na.omit,data=data1)       #p .08   r2  .09 #####
+lmGPP=lm(t.gpp.lit~temp.mean,na.action=na.omit,data=data1)      #p .08   r2  .08 #####
+lmGPP=lm(t.gpp.lit~er.lit,na.action=na.omit,data=data1)         #p .0003 r2  .4
+lmGPP=lm(t.gpp.lit~pr.lit,na.action=na.omit,data=data1)         #p 1e-5  r2  .5
+lmGPP=lm(t.gpp.lit~cut.capt,na.action=na.omit,data=data1)       #p .7    r2 -.04
+lmGPP=lm(t.gpp.lit~cut.pop,na.action=na.omit,data=data1)        #p .6    r2 -.04
+lmGPP=lm(t.gpp.lit~cut.mass,na.action=na.omit,data=data1)       #p .2    r2 .04
+lmGPP=lm(t.gpp.lit~cut.mass.m,na.action=na.omit,data=data1)     #p .6    r2 -.04
+lmGPP=lm(t.gpp.lit~sculp.mass.m,na.action=na.omit,data=data1)   #p .2    r2 .02
 summary(lmGPP)
+#pairplot
+Z=cbind(data1$basin,data1$stream,data1$elev,data1$slope,data1$pebble,data1$depth,data1$temp.max,data1$t.gpp.lit)
+colnames(Z)<-c("basin", "stream",    "elev",    "slope",    "pebble",   "depth",   "temp.max",    "t.gpp.lit")
+pairs(Z[,1:8], lower.panel=panel.smooth2,upper.panel=panel.cor,diag.panel=panel.hist)
 
+ad.test(residuals(lmGPP))
+hist(rstandard(lmGPP)) 
+qqnorm(rstandard(lmGPP)) 
 
+lmGPP1=lm(t.gpp.lit~pebble+temp.max,data=data1)
+lmGPP2=lm(t.gpp.lit~basin+stream+elev+slope+pebble+depth+temp.max,data=data1)
+summary(lmGPP1)
+lm(formula=lmGPP1)
+anova(lmGPP1)
+drop1(lmGPP1,test="F")
+step(lmGPP1)
+plot(lmGPP1)
+
+plot(rstandard(lmGPP1)~(data1$t.gpp.lit[!is.na(data1$t.gpp.lit)]))
+abline(0,0)
 ###############################################################################
 #using glm to analyze variables
-M.1=gls(gpp.lit~pebble+from.north, na.action=na.omit, 
+M.1=gls(t.gpp.lit~pebble+temp.max,na.action=na.omit, 
         data=data1, method="ML") #base model
-
-M.2=lme(gpp.lit~pebble+from.north, na.action=na.omit, 
+summary(M.1)
+M.2=lme(t.gpp.lit~pebble+temp.max, na.action=na.omit, 
         random = ~1|stream, data=data1, method="ML") #adds random effect
 
-M.3=lme(gpp.lit~pebble+from.north, na.action=na.omit, 
+M.3=lme(t.gpp.lit~pebble+temp.max, na.action=na.omit, 
         random = ~1|basin.stream, data=data1, method="ML") #adds nesting
 
 anova(M.1, M.2, M.3)
-#good to use the base model
 
-#Analyze base model residuals
-
-E.1<-residuals(M.1)
-
-qqnorm(residuals(M.1))
-qqline(residuals(M.1))
-ad.test(residuals(M.1))
-
+#Analyze residuals
+x.gpp<-data1$t.gpp.lit[!is.na(data1$t.gpp.lit)]#removes na values from column
+# M.1 residuals
+E.1.gpp<-residuals(M.1,type="normalized")
+qqnorm(E.1.gpp)
+qqline(E.1.gpp)
+ad.test(E.1.gpp)
 plot(M.1) 
+plot(x.gpp, E.1.gpp)
+# M.2 residuals
+E.2.gpp<-residuals(M.2,type="normalized")
+qqnorm(E.2.gpp)
+qqline(E.2.gpp)
+ad.test(E.2.gpp)
+plot(M.2) 
+plot(x.gpp, E.2.gpp)
+# M.3 residuals
+E.3.gpp<-residuals(M.3,type="normalized")
+qqnorm(E.3.gpp)
+qqline(E.3.gpp)
+ad.test(E.3.gpp)
+plot(M.3) 
+plot(x.gpp, E.3.gpp)
 
-x<-data1$gpp.lit[!is.na(data1$gpp.lit)]#removes na values from column
-E.1<-residuals(M.1,type="normalized")
-plot(x, E.1)
-#residuals are somewhat linear, try alternate variance structures
+
+
+#residuals somewhat linear? try alternate variance structures?
 
 #####################################################
 #Analyze models with alternate variance structures
 #####################################################
 
 #base model from above
-M.1=gls(gpp.lit~pebble+from.north, na.action=na.omit, 
+M.1=gls(t.gpp.lit~pebble+temp.max, na.action=na.omit, 
         data=data1) #run with method="REML" default for comparison
 
 #alternate variance structures
@@ -334,131 +364,42 @@ vf4=varConstPower(form = ~fitted(.))
 #vf8=varIdent(form = ~1|f.sample.event)
 
 #alternate models
-M1.1<-gls(gpp.lit~pebble+from.north, na.action=na.omit, 
+M1.1<-gls(t.gpp.lit~pebble+temp.max, na.action=na.omit, 
           data=data1, weights=vf1)
 
-M1.2<-gls(gpp.lit~pebble+from.north, na.action=na.omit, 
+M1.2<-gls(t.gpp.lit~pebble+temp.max, na.action=na.omit, 
           data=data1, weights=vf2)
 
-M1.3<-gls(gpp.lit~pebble+from.north, na.action=na.omit, 
+M1.3<-gls(t.gpp.lit~pebble+temp.max, na.action=na.omit, 
           data=data1, weights=vf3)
 
-M1.4<-gls(gpp.lit~pebble+from.north, na.action=na.omit, 
+M1.4<-gls(t.gpp.lit~pebble+temp.max, na.action=na.omit, 
           data=data1, weights=vf4)
 
-M1.5<-gls(gpp.lit~pebble+from.north, na.action=na.omit, 
+M1.5<-gls(t.gpp.lit~pebble+temp.max, na.action=na.omit, 
           data=data1,  weights=varComb(vf1,vf2))
 
 anova(M.1,M1.1,M1.2,M1.3,M1.4,M1.5)
-anova(M.1,M1.3)
+anova(M.1,M1.1)
 #M1.3, expoential variance of fit
 
 #Analyze alternate variance structure model residuals
 
-E1.3<-residuals(M1.3)
-
-qqnorm(residuals(M1.3))
-qqline(residuals(M1.3))
-ad.test(residuals(M1.3))
-
-plot(M1.3) 
-
-x<-data1$gpp.lit[!is.na(data1$gpp.lit)]#removes na values from column
-E1.3<-residuals(M1.3,type="normalized")
-plot(x, E1.3)
+E1.1.gpp<-residuals(M1.1,type="normalized")
+qqnorm(E1.1.gpp)
+qqline(E1.1.gpp)
+ad.test(E1.1.gpp)
+plot(M1.1) 
+plot(x.gpp, E1.1.gpp)
+abline(0,0)
+ 
 ##################################################################################
-
-
-
-
-
-
-
-lmGPP1=lm(t.gpp~pebble+from.north,data=data1)
-lmGPP2=lm(t.gpp~pebble+from.north,data=data1omit)
-summary(lmGPP2)
-lm(formula=lmGPP2)
-anova(lmGPP2)
-drop1(lmGPP2,test="F")
-step(lmGPP2)
-
-# ER model selsection
-lmER=lm(t.er~basin,data=data1)
-lmER=lm(t.er~elev,data=data1)
-lmER=lm(t.er~from.north,data=data1)
-lmER=lm(t.er~slope,data=data1)
-lmER=lm(t.er~bf,data=data1)
-lmER=lm(t.er~pebble,data=data1)
-lmER=lm(t.er~width,data=data1)
-lmER=lm(t.er~depth,data=data1)
-lmER=lm(t.er~discharge,data=data1)
-lmER=lm(t.er~carbon,data=data1)
-lmER=lm(t.er~ammonia,data=data1)
-lmER=lm(t.er~nitrate,data=data1)
-lmER=lm(t.er~phosphate,data=data1)
-lmER=lm(t.er~canopy,data=data1)
-lmER=lm(t.er~par.integrative,data=data1)
-lmER=lm(t.er~par.mean,data=data1)
-lmER=lm(t.er~par.max,data=data1)
-lmER=lm(t.er~temp.max,data=data1)
-lmER=lm(t.er~temp.min,data=data1)
-lmER=lm(t.er~temp.mean,data=data1)
-lmER=lm(t.er~cut.capt,data=data1)
-lmER=lm(t.er~cut.pop,data=data1)
-lmER=lm(t.er~cut.mass,data=data1)
-lmER=lm(t.er~cut.mass.m,data=data1)
-lmER=lm(t.er~sculp.mass.m,data=data1)
-summary(lmER)
-
-lmER1=lm(t.er~depth+from.north,data=data1) #these chosen based on linearity and biological likeliness of being a predictor rather than response
-lmER2=lm(t.er~depth+from.north,data=data1omit)
-summary(lmER2)
-lm(formula=lmER2)
-anova(lmER2)
-drop1(lmER2,test="F")
-step(lmER2)
-
-lmCUT=lm(t.cut.mass.m~basin,data=data1)
-lmCUT=lm(t.cut.mass.m~elev,data=data1)
-lmCUT=lm(t.cut.mass.m~from.north,data=data1)
-lmCUT=lm(t.cut.mass.m~slope,data=data1)
-lmCUT=lm(t.cut.mass.m~bf,data=data1)
-lmCUT=lm(t.cut.mass.m~pebble,data=data1)
-lmCUT=lm(t.cut.mass.m~width,data=data1)
-lmCUT=lm(t.cut.mass.m~depth,data=data1)
-lmCUT=lm(t.cut.mass.m~discharge,data=data1)
-lmCUT=lm(t.cut.mass.m~carbon,data=data1)
-lmCUT=lm(t.cut.mass.m~ammonia,data=data1)
-lmCUT=lm(t.cut.mass.m~nitrate,data=data1)
-lmCUT=lm(t.cut.mass.m~phosphate,data=data1)
-lmCUT=lm(t.cut.mass.m~canopy,data=data1)
-lmCUT=lm(t.cut.mass.m~par.integrative,data=data1)
-lmCUT=lm(t.cut.mass.m~par.mean,data=data1)
-lmCUT=lm(t.cut.mass.m~par.max,data=data1)
-lmCUT=lm(t.cut.mass.m~temp.max,data=data1)
-lmCUT=lm(t.cut.mass.m~temp.min,data=data1)
-lmCUT=lm(t.cut.mass.m~temp.mean,data=data1)
-lmCUT=lm(t.cut.mass.m~cut.capt,data=data1)
-lmCUT=lm(t.cut.mass.m~cut.pop,data=data1)
-lmCUT=lm(t.cut.mass.m~cut.mass,data=data1)
-lmCUT=lm(t.cut.mass.m~cut.mass.m,data=data1)
-lmCUT=lm(t.cut.mass.m~sculp.mass.m,data=data1)
-summary(lmCUT)
-
-lmCUT1=lm(t.cut.mass.m~width+temp.min,data=data1)
-lmCUT2=lm(t.cut.mass.m~width+temp.min,data=data1cut)
-summary(lmCUT2)
-lm(formula=lmCUT2)
-anova(lmCUT2)
-drop1(lmCUT2,test="F")
-step(lmCUT2)
-
-######################### model validation
 # GPP model validation
 op=par(mfrow = c(2, 2)) 
-plot(lmGPP2)
+plot(lmGPP1)
 op=par(mfrow = c(2, 2)) 
-GPP2resid=rstandard(lmGPP2) 
+GPP1resid=rstandard(lmGPP1) 
+
 hist(GPP2resid) 
 qqnorm(GPP2resid) 
 plot(GPP2resid ~ data1omit$pebble, xlab = "pebble", ylab = "Residuals",cex.lab=1.5,pch=16) 
@@ -466,9 +407,162 @@ abline(0, 0)
 plot(GPP2resid ~ data1omit$from.north, xlab = "aspect from N", ylab = "Residuals",cex.lab=1.5,pch=16) 
 abline(0, 0)
 
-# ER model validation
+#   plot(x,y) but abline(lm(y~x)) !!!!
+# GPP model interpretation
+plot(data1$pebble,data1$t.gpp.lit,cex.lab=1.5,pch=16)
+abline(lm(data1$t.gpp~data1$pebble))
+summary(lm(data1$t.gpp~data1$pebble))
+legend("topright", legend=c("R2= 0.45", "P= 1e-4"),bty="n")
+
+plot(data1$temp.max,data1$t.gpp.lit,cex.lab=1.5,pch=16)
+abline(lm(data1$t.gpp.lit~data1$temp.max))
+summary(lm(data1$t.gpp.lit~data1$temp.max))
+legend("topright", legend=c("R2= 0.10", "P=0.07"),bty="n")
+
+
+
+# ER transformation
+dotchart(data1$er.lit,xlab="ER",cex.lab=1.5,pch=16)
+hist(data1$er.lit,xlab="ER",cex.lab=1.5,pch=16)
+ad.test(data1$er.lit)
+data1$t.er.lit=log10(1+abs(data1$er.lit))
+ad.test(data1$t.er.lit)
+hist(data1$t.er.lit,xlab="transfromed ER",cex.lab=1.5)
+dotchart(data1$t.er.lit,xlab="transfromed ER",cex.lab=1.5,pch=16)
+
+# ER model selsection
+lmER=lm(er.lit~basin,na.action=na.omit,data=data1)          #p .02   r2 .2
+lmER=lm(er.lit~stream,na.action=na.omit,data=data1)         #p .3e-6 r2 .8
+lmER=lm(er.lit~yr,na.action=na.omit,data=data1)             #p .6    r2 -.03
+lmER=lm(er.lit~elev,na.action=na.omit,data=data1)           #p .24   r2 .01
+lmER=lm(er.lit~from.north,na.action=na.omit,data=data1)     #p .9    r2 -.04
+lmER=lm(er.lit~slope,na.action=na.omit,data=data1)          #p 2e-6  r2 .6 
+lmER=lm(er.lit~bf,na.action=na.omit,data=data1)             #p .05   r2 .1
+lmER=lm(er.lit~pebble,na.action=na.omit,data=data1)         #p .05   r2 .1  
+lmER=lm(er.lit~width,na.action=na.omit,data=data1)          #p .09   r2 .07
+lmER=lm(er.lit~depth,na.action=na.omit,data=data1)          #p .001  r2 .3  
+lmER=lm(er.lit~velocity.mean,na.action=na.omit,data=data1)  #p .9    r2 -.04
+lmER=lm(er.lit~discharge,na.action=na.omit,data=data1)      #p .04   r2 .1
+lmER=lm(er.lit~carbon,na.action=na.omit,data=data1)         #p .8    r2 -.04
+lmER=lm(er.lit~ammonia,na.action=na.omit,data=data1)        #p .6    r2 -.03
+lmER=lm(er.lit~nitrate,na.action=na.omit,data=data1)        #p .6    r2 -.03
+lmER=lm(er.lit~din,na.action=na.omit,data=data1)            #p .6    r2 -.03
+lmER=lm(er.lit~phosphate,na.action=na.omit,data=data1)      #p .5    r2 -.03
+lmER=lm(er.lit~cn.ratio,na.action=na.omit,data=data1)       #p .7    r2 -.04
+lmER=lm(er.lit~canopy,na.action=na.omit,data=data1)         #p .6    r2 -.03
+lmER=lm(er.lit~par.integrative,na.action=na.omit,data=data1)#p .4    r2 -.01
+lmER=lm(er.lit~par.mean,na.action=na.omit,data=data1)       #p .4    r2 -.01
+lmER=lm(er.lit~par.max,na.action=na.omit,data=data1)        #p .8    r2 -.04
+lmER=lm(er.lit~temp.max,na.action=na.omit,data=data1)       #p .2    r2 .02
+lmER=lm(er.lit~temp.min,na.action=na.omit,data=data1)       #p .3    r2 .004 
+lmER=lm(er.lit~temp.mean,na.action=na.omit,data=data1)      #p .3    r2 .008 
+lmER=lm(er.lit~gpp.lit,na.action=na.omit,data=data1)        #p 3e-4  r2 .4
+lmER=lm(er.lit~pr.lit,na.action=na.omit,data=data1)         #p .8   r2 -.04
+lmER=lm(er.lit~cut.capt,na.action=na.omit,data=data1)       #p .9    r2 -.05
+lmER=lm(er.lit~cut.pop,na.action=na.omit,data=data1)        #p .6    r2 -.04
+lmER=lm(er.lit~cut.mass,na.action=na.omit,data=data1)       #p .7    r2 -.04
+lmER=lm(er.lit~cut.mass.m,na.action=na.omit,data=data1)     #p .9    r2 -.05
+lmER=lm(er.lit~sculp.mass.m,na.action=na.omit,data=data1)   #p .004  r2 .4
+summary(lmER)
+#pairplot
+Z=cbind(data1$basin,data1$stream,data1$bf,data1$pebble,data1$depth,data1$discharge,data1$t.er.lit)
+colnames(Z)<-c("basin", "stream",    "bf",  "pebble",      "depth",    "discharge",   "er.lit")
+pairs(Z[,1:7], lower.panel=panel.smooth2,upper.panel=panel.cor,diag.panel=panel.hist)
+
+lmER1=lm(t.er.lit~basin+stream+bf+pebble+depth+discharge,data=data1)
+lmER2=lm(t.er.lit~depth+bf,data=data1)
+
+summary(lmER1)
+lm(formula=lmER1)
+anova(lmER1)
+drop1(lmER1,test="F")
+step(lmER1)
+###############################################################################
+#using glm to analyze variables
+Mer.1=gls(t.er.lit~depth+bf,na.action=na.omit, 
+        data=data1, method="ML") #base model
+Mer.2=lme(t.er.lit~depth+bf, na.action=na.omit, 
+        random = ~1|stream, data=data1, method="ML") #adds random effect
+Mer.3=lme(t.er.lit~depth+bf, na.action=na.omit, 
+        random = ~1|basin.stream, data=data1, method="ML") #adds nesting
+
+anova(Mer.1, Mer.2, Mer.3)
+
+## # # Analyze residuals
+x.er<-data1$t.er.lit[!is.na(data1$t.er.lit)]#removes na values from column
+# # Mer.1 residuals
+E.1.er<-residuals(Mer.1,type="normalized")
+qqnorm(E.1.er)
+qqline(E.1.er)
+ad.test(E.1.er)
+plot(Mer.1) 
+plot(x.er, E.1.er)
+# # # # M.2 residuals
+E.2.er<-residuals(Mer.2,type="normalized")
+qqnorm(E.2.er)
+qqline(E.2.er)
+ad.test(E.2.er)
+plot(Mer.2) 
+plot(x.er, E.2.er)
+# # # M.3 residuals
+E.3.er<-residuals(Mer.3,type="normalized")
+qqnorm(E.3.er)
+qqline(E.3.er)
+ad.test(E.3.er)
+plot(Mer.3) 
+plot(x.er, E.3.er)
+#residuals somewhat linear? try alternate variance structures?
+#####################################################
+#Analyze models with alternate variance structures
+#####################################################
+#base model from above
+Mer.1=gls(t.er.lit~depth+bf, na.action=na.omit, 
+         data=data1)#base model #run without "ML", method="REML" instead, default for comparison
+
+#####alternate variance structures
+vf1=varIdent(form = ~1|stream)
+vf2=varPower(form = ~fitted(.))
+vf3=varExp(form = ~fitted(.))
+vf4=varConstPower(form = ~fitted(.))
+####vf5=varPower(form = ~fitted (.)|site)
+####vf6=varExp(form = ~fitted(.)|site)
+####vf7=varConstPower(form = ~fitted(.)|site)
+####vf8=varIdent(form = ~1|f.sample.event)
+######alternate models
+Mer1.1<-gls(t.er.lit~depth+bf, na.action=na.omit, 
+           data=data1, weights=vf1)
+
+Mer1.2<-gls(t.er.lit~depth+bf, na.action=na.omit, 
+           data=data1, weights=vf2)
+
+Mer1.3<-gls(t.er.lit~depth+bf, na.action=na.omit, 
+           data=data1, weights=vf3)
+
+Mer1.4<-gls(er.lit~depth+bf, na.action=na.omit, 
+           data=data1, weights=vf4)
+
+Mer1.5<-gls(t.er.lit~depth+bf, na.action=na.omit, 
+           data=data1,  weights=varComb(vf1,vf2))
+
+anova(Mer.1,Mer1.1,Mer1.2,Mer1.3,Mer1.5)
+anova(Mer.1,Mer1.4)
+anova(Mer.1,Mer1.1)
+
+#M1.1
+#Analyze alternate variance structure model residuals
+E1.1.er<-residuals(Mer1.1,type="normalized")
+qqnorm(E1.1.er)
+qqline(E1.1.er)
+ad.test(E1.1.er)
+plot(Mer1.1) 
+plot(x.er,E1.1.er)
+plot(data1$depth,E1.1.er) #have to use na.exclude on model for this to work
+plot(data1$bf~E1.1.er)#have to use na.exclude on model for this to work
+
+
+############### ER model validation
 op=par(mfrow = c(2, 2)) 
-plot(lmER2)
+plot(lmER1)
 op=par(mfrow = c(2, 2)) 
 ER2resid=rstandard(lmER2) 
 hist(ER2resid) 
@@ -477,6 +571,153 @@ plot(ER2resid ~ data1omit$depth, xlab = "depth", ylab = "Residuals",cex.lab=1.5,
 abline(0, 0)
 plot(ER2resid ~ data1omit$from.north, xlab = "depth", ylab = "Residuals",cex.lab=1.5,pch=16) 
 abline(0, 0)
+
+# ER model interpretation
+plot(data1omit$depth,data1omit$t.er,cex.lab=1.5,pch=16)
+abline(lm(data1omit$t.er~data1omit$depth))
+plot(data1omit$from.north,data1omit$t.er,cex.lab=1.5,pch=16)
+abline(lm(data1omit$t.er~data1omit$from.north))
+
+# CUT mass/m transformation
+
+dotchart(data1$cut.mass.m)
+hist(data1$cut.mass.m)
+ad.test(data1$cut.mass.m)
+data1$t.cut.mass.m=sqrt(1+data1$cut.mass.m)
+ad.test(data1$t.cut.mass.m)
+dotchart(data1$t.cut.mass.m)
+hist(data1$t.cut.mass.m)
+
+lmCUT=lm(cut.mass.m~basin,na.action=na.omit,data=data1)          #p .02   r2 .3  ###
+lmCUT=lm(cut.mass.m~stream,na.action=na.omit,data=data1)         #p .2    r2 .2
+lmCUT=lm(cut.mass.m~yr,na.action=na.omit,data=data1)             #p .4    r2 -.004
+lmCUT=lm(cut.mass.m~elev,na.action=na.omit,data=data1)           #p .04   r2 .16 ###
+lmCUT=lm(cut.mass.m~from.north,na.action=na.omit,data=data1)     #p .8    r2 -.05
+lmCUT=lm(cut.mass.m~slope,na.action=na.omit,data=data1)          #p .2    r2 .04
+lmCUT=lm(cut.mass.m~bf,na.action=na.omit,data=data1)             #p .2    r2 .05
+lmCUT=lm(cut.mass.m~pebble,na.action=na.omit,data=data1)         #p .7    r2 -.05
+lmCUT=lm(cut.mass.m~width,na.action=na.omit,data=data1)          #p .02   r2 .2  ###
+lmCUT=lm(cut.mass.m~depth,na.action=na.omit,data=data1)          #p .18   r2 .05
+lmCUT=lm(cut.mass.m~velocity.mean,na.action=na.omit,data=data1)  #p .6    r2 -.03
+lmCUT=lm(cut.mass.m~discharge,na.action=na.omit,data=data1)      #p .3    r2 .02
+lmCUT=lm(cut.mass.m~carbon,na.action=na.omit,data=data1)         #p .8    r2 -.05
+lmCUT=lm(cut.mass.m~ammonia,na.action=na.omit,data=data1)        #p .3    r2 -.004
+lmCUT=lm(cut.mass.m~nitrate,na.action=na.omit,data=data1)        #p .2    r2 .04
+lmCUT=lm(cut.mass.m~din,na.action=na.omit,data=data1)            #p .2    r2 .04
+lmCUT=lm(cut.mass.m~phosphate,na.action=na.omit,data=data1)      #p .4    r2 -.01
+lmCUT=lm(cut.mass.m~cn.ratio,na.action=na.omit,data=data1)       #p .4    r2 -.01
+lmCUT=lm(cut.mass.m~canopy,na.action=na.omit,data=data1)         #p .3    r2 .001
+lmCUT=lm(cut.mass.m~par.integrative,na.action=na.omit,data=data1)#p .9    r2 -.05
+lmCUT=lm(cut.mass.m~par.mean,na.action=na.omit,data=data1)       #p .9    r2 -.05
+lmCUT=lm(cut.mass.m~par.max,na.action=na.omit,data=data1)        #p .16   r2 .06
+lmCUT=lm(cut.mass.m~temp.max,na.action=na.omit,data=data1)       #p .2    r2 .02
+lmCUT=lm(cut.mass.m~temp.min,na.action=na.omit,data=data1)       #p .04   r2 .16 ###
+lmCUT=lm(cut.mass.m~temp.mean,na.action=na.omit,data=data1)      #p .07   r2 .13 ###
+lmCUT=lm(cut.mass.m~gpp.lit,na.action=na.omit,data=data1)        #p .5    r2 -.03
+lmCUT=lm(cut.mass.m~pr.lit,na.action=na.omit,data=data1)         #p .5    r2 -.03
+lmCUT=lm(cut.mass.m~cut.capt,na.action=na.omit,data=data1)       #p .5    r2 -.03
+lmCUT=lm(cut.mass.m~cut.pop,na.action=na.omit,data=data1)        #p .004  r2 .3  ###
+lmCUT=lm(cut.mass.m~cut.mass,na.action=na.omit,data=data1)       #p .17   r2 .05
+lmCUT=lm(cut.mass.m~sculp.mass.m,na.action=na.omit,data=data1)   #p .08   r2 .11
+summary(lmCUT)
+ad.test(residuals(lmGPP))
+
+Z=cbind(data1$basin,data1$elev,data1$width,data1$temp.min,data1$temp.mean,data1$cut.pop,data1$cut.mass.m)
+colnames(Z)<-c("basin", "elev",    "width",  "temp.min",      "temp.mean",    "cut pop", "cut biomass")
+pairs(Z[,1:7], lower.panel=panel.smooth2,upper.panel=panel.cor,diag.panel=panel.hist)
+
+lmCUT1=lm(cut.mass.m~basin+elev+width+temp.min,data=data1)
+summary(lmCUT1)
+lm(formula=lmCUT1)
+anova(lmCUT1)
+drop1(lmCUT1,test="F")
+step(lmCUT1)
+###############################################################################
+#using glm to analyze variables
+Mcut.1=gls(t.cut.mass.m~width+temp.min,na.action=na.omit, 
+          data=data1, method="ML") #base model
+Mcut.2=lme(t.cut.mass.m~width+temp.min, na.action=na.omit, 
+          random = ~1|stream, data=data1, method="ML") #adds random effect
+Mcut.3=lme(t.cut.mass.m~width+temp.min, na.action=na.omit, 
+          random = ~1|basin.stream, data=data1, method="ML") #adds nesting
+
+anova(Mcut.1, Mcut.2, Mcut.3)
+
+## # # Analyze residuals
+x.cut<-data1$t.cut.mass.m[!is.na(data1$t.cut.mass.m)]#removes na values from column
+# # Mcut.1 residuals
+E.1.cut<-residuals(Mcut.1,type="normalized")
+qqnorm(E.1.cut)
+qqline(E.1.cut)
+ad.test(E.1.cut)
+plot(Mcut.1) 
+plot(x.cut, E.1.cut)
+# # # # M.2 residuals
+E.2.cut<-residuals(Mcut.2,type="normalized")
+qqnorm(E.2.cut)
+qqline(E.2.cut)
+ad.test(E.2.cut)
+plot(Mcut.2) 
+plot(x.cut, E.2.cut)
+# # # M.3 residuals
+E.3.cut<-residuals(Mcut.3,type="normalized")
+qqnorm(E.3.cut)
+qqline(E.3.cut)
+ad.test(E.3.cut)
+plot(Mcut.3) 
+plot(x.cut, E.3.cut)
+#residuals somewhat linear? try alternate variance structures?
+#####################################################
+#Analyze models with alternate variance structures
+#####################################################
+#base model from above
+Mcut.1=gls(t.cut.mass.m~width+temp.min, na.action=na.omit, 
+          data=data1)#base model #run without "ML", method="REML" instead, default for comparison
+
+#####alternate variance structures
+vf1=varIdent(form = ~1|stream)
+vf2=varPower(form = ~fitted(.))
+vf3=varExp(form = ~fitted(.))
+vf4=varConstPower(form = ~fitted(.))
+####vf5=varPower(form = ~fitted (.)|site)
+####vf6=varExp(form = ~fitted(.)|site)
+####vf7=varConstPower(form = ~fitted(.)|site)
+####vf8=varIdent(form = ~1|f.sample.event)
+######alternate models
+Mcut1.1<-gls(t.cut.mass.m~width+temp.min, na.action=na.omit, 
+            data=data1, weights=vf1)
+
+Mcut1.2<-gls(t.cut.mass.m~width+temp.min, na.action=na.omit, 
+            data=data1, weights=vf2)
+
+Mcut1.3<-gls(t.cut.mass.m~width+temp.min, na.action=na.omit, 
+            data=data1, weights=vf3)
+
+Mcut1.4<-gls(t.cut.mass.m~width+temp.min, na.action=na.omit, 
+            data=data1, weights=vf4)
+
+Mcut1.5<-gls(t.cut.mass.m~width+temp.min, na.action=na.omit, 
+            data=data1,  weights=varComb(vf1,vf2))
+
+anova(Mcut.1,Mcut1.1,Mcut1.2,Mcut1.3,Mcut1.4,Mcut1.5)
+anova(Mcut.1,Mcut1.1)
+#Mcut1.1
+#Analyze alternate variance structure model residuals
+E1.1.cut<-residuals(Mcut1.1,type="normalized")
+qqnorm(E1.1.cut)
+qqline(E1.1.cut)
+ad.test(E1.1.cut)
+plot(Mcut1.1) 
+plot(x.cut, E1.1.cut)
+plot(E1.1.cut,data1cut$width)
+plot(E1.1.cut,data1cut$temp.min)
+
+
+
+
+
+
+
 
 # CUT model validation
 op=par(mfrow = c(2, 2)) 
@@ -492,18 +733,6 @@ abline(0, 0)
 
 
 ############################################## model interpretation
-#   plot(x,y) but abline(lm(y~x)) !!!!
-
-# GPP model interpretation
-plot(data1omit$pebble,data1omit$t.gpp,cex.lab=1.5,pch=16)
-abline(lm(data1omit$t.gpp~data1omit$pebble))
-plot(data1omit$from.north,data1omit$t.gpp,cex.lab=1.5,pch=16)
-abline(lm(data1omit$t.gpp~data1omit$from.north))
-# ER model interpretation
-plot(data1omit$depth,data1omit$t.er,cex.lab=1.5,pch=16)
-abline(lm(data1omit$t.er~data1omit$depth))
-plot(data1omit$from.north,data1omit$t.er,cex.lab=1.5,pch=16)
-abline(lm(data1omit$t.er~data1omit$from.north))
 # CUT model interpretation
 plot(data1cut$width,data1cut$t.cut.mass.m,cex.lab=1.5,pch=16)
 abline(lm(data1cut$t.cut.mass.m~data1cut$width))
