@@ -251,41 +251,39 @@ ad.test(data1$t.gpp.lit)
 hist(data1$t.gpp.lit,xlab="transfromed gpp",cex.lab=1.5)
 dotchart(data1$t.gpp.lit,xlab="transfromed gpp",cex.lab=1.5,pch=16)
 # GPP LM models
-lmGPP=lm(t.gpp.lit~basin,na.action=na.omit,data=data1)          #p .08   r2 .13 ######## 
-lmGPP=lm(t.gpp.lit~stream,na.action=na.omit,data=data1)         #p .04   r2 .4  #########  ####
-lmGPP=lm(t.gpp.lit~yr,na.action=na.omit,data=data1)             #p .3    r2 .002
-lmGPP=lm(t.gpp.lit~elev,na.action=na.omit,data=data1)           #p .08   r2 .08  #####
-lmGPP=lm(t.gpp.lit~from.north,na.action=na.omit,data=data1)     #p .8    r2 -.04
-lmGPP=lm(t.gpp.lit~slope,na.action=na.omit,data=data1)          #p .07   r2 .10 #######
-lmGPP=lm(t.gpp.lit~bf,na.action=na.omit,data=data1)             #p .9    r2 -.04
-lmGPP=lm(t.gpp.lit~pebble,na.action=na.omit,data=data1)         #p .0001 r2 .45  ######## #####
-lmGPP=lm(t.gpp.lit~width,na.action=na.omit,data=data1)          #p .17   r2 .04
-lmGPP=lm(t.gpp.lit~depth,na.action=na.omit,data=data1)          #p .04   r2 .13  ##########
-lmGPP=lm(t.gpp.lit~velocity.mean,na.action=na.omit,data=data1)  #p .2    r2 .04
-lmGPP=lm(t.gpp.lit~discharge,na.action=na.omit,data=data1)      #p .9    r2 -.04
-lmGPP=lm(t.gpp.lit~carbon,na.action=na.omit,data=data1)         #p .8    r2 -.04
-lmGPP=lm(t.gpp.lit~ammonia,na.action=na.omit,data=data1)        #p .1    r2 -.07
-lmGPP=lm(t.gpp.lit~nitrate,na.action=na.omit,data=data1)        #p .4    r2 -.01
-lmGPP=lm(t.gpp.lit~din,na.action=na.omit,data=data1)            #p .4    r2 -.005
-lmGPP=lm(t.gpp.lit~phosphate,na.action=na.omit,data=data1)      #p .17   r2  .04
-lmGPP=lm(t.gpp.lit~cn.ratio,na.action=na.omit,data=data1)       #p .4    r2  -.01
-lmGPP=lm(t.gpp.lit~canopy,na.action=na.omit,data=data1)         #p .1    r2  .07
-lmGPP=lm(t.gpp.lit~par.integrative,na.action=na.omit,data=data1)#p .3    r2  .01
-lmGPP=lm(t.gpp.lit~par.mean,na.action=na.omit,data=data1)       #p .3    r2  .01
-lmGPP=lm(t.gpp.lit~par.max,na.action=na.omit,data=data1)        #p .8    r2  -.03
-lmGPP=lm(t.gpp.lit~temp.max,na.action=na.omit,data=data1)       #p .07   r2  .1  ########
-lmGPP=lm(t.gpp.lit~temp.min,na.action=na.omit,data=data1)       #p .08   r2  .09 #####
-lmGPP=lm(t.gpp.lit~temp.mean,na.action=na.omit,data=data1)      #p .08   r2  .08 #####
-lmGPP=lm(t.gpp.lit~er.lit,na.action=na.omit,data=data1)         #p .0003 r2  .4
-lmGPP=lm(t.gpp.lit~pr.lit,na.action=na.omit,data=data1)         #p 1e-5  r2  .5
-lmGPP=lm(t.gpp.lit~cut.capt,na.action=na.omit,data=data1)       #p .7    r2 -.04
-lmGPP=lm(t.gpp.lit~cut.pop,na.action=na.omit,data=data1)        #p .6    r2 -.04
-lmGPP=lm(t.gpp.lit~cut.mass,na.action=na.omit,data=data1)       #p .2    r2 .04
-lmGPP=lm(t.gpp.lit~cut.mass.m,na.action=na.omit,data=data1)     #p .6    r2 -.04
-lmGPP=lm(t.gpp.lit~sculp.mass.m,na.action=na.omit,data=data1)   #p .2    r2 .02
+lmGPP=lm(gpp.lit~basin,na.action=na.omit,data=data1)          #p .08   r2 .13 
+lmGPP=lm(gpp.lit~stream,na.action=na.omit,data=data1)         #p .05   r2 .4  
+lmGPP=lm(gpp.lit~yr,na.action=na.omit,data=data1)             #p .3    r2 .004
+lmGPP=lm(gpp.lit~elev,na.action=na.omit,data=data1)           #p .09   r2 .08  
+lmGPP=lm(gpp.lit~from.north,na.action=na.omit,data=data1)     #p .8    r2 -.04
+lmGPP=lm(gpp.lit~slope,na.action=na.omit,data=data1)          #p .08   r2 .09 
+lmGPP=lm(gpp.lit~bf,na.action=na.omit,data=data1)             #p .9    r2 -.04
+lmGPP=lm(gpp.lit~pebble,na.action=na.omit,data=data1)         #p .0001 r2 .45
+lmGPP=lm(gpp.lit~width,na.action=na.omit,data=data1)          #p .15   r2 .05
+lmGPP=lm(gpp.lit~depth,na.action=na.omit,data=data1)          #p .04   r2 .1
+lmGPP=lm(gpp.lit~velocity.mean,na.action=na.omit,data=data1)  #p .2    r2 .03
+lmGPP=lm(gpp.lit~discharge,na.action=na.omit,data=data1)      #p .9    r2 -.04
+lmGPP=lm(gpp.lit~carbon,na.action=na.omit,data=data1)         #p .9    r2 -.04
+lmGPP=lm(gpp.lit~ammonia,na.action=na.omit,data=data1)        #p .1    r2 .06
+lmGPP=lm(gpp.lit~nitrate,na.action=na.omit,data=data1)        #p .4    r2 -.01
+lmGPP=lm(gpp.lit~din,na.action=na.omit,data=data1)            #p .4    r2 -.005
+lmGPP=lm(gpp.lit~phosphate,na.action=na.omit,data=data1)      #p .16   r2  .04
+lmGPP=lm(gpp.lit~cn.ratio,na.action=na.omit,data=data1)       #p .5    r2  -.02
+lmGPP=lm(gpp.lit~canopy,na.action=na.omit,data=data1)         #p .1    r2  .07
+lmGPP=lm(gpp.lit~par.integrative,na.action=na.omit,data=data1)#p .26   r2  .01
+lmGPP=lm(gpp.lit~par.mean,na.action=na.omit,data=data1)       #p .26   r2  .01
+lmGPP=lm(gpp.lit~par.max,na.action=na.omit,data=data1)        #p .8    r2  -.04
+lmGPP=lm(gpp.lit~temp.max,na.action=na.omit,data=data1)       #p .07   r2  .1  
+lmGPP=lm(gpp.lit~temp.min,na.action=na.omit,data=data1)       #p .07   r2  .09 
+lmGPP=lm(gpp.lit~temp.mean,na.action=na.omit,data=data1)      #p .08   r2  .08 
+lmGPP=lm(gpp.lit~cut.capt,na.action=na.omit,data=data1)       #p .7    r2 -.05
+lmGPP=lm(gpp.lit~cut.pop,na.action=na.omit,data=data1)        #p .5    r2 -.03
+lmGPP=lm(gpp.lit~cut.mass,na.action=na.omit,data=data1)       #p .2    r2 .04
+lmGPP=lm(gpp.lit~cut.mass.m,na.action=na.omit,data=data1)     #p .6    r2 -.03
+lmGPP=lm(gpp.lit~sculp.mass.m,na.action=na.omit,data=data1)   #p .02   r2 .2
 summary(lmGPP)
 #pairplot
-Z=cbind(data1$basin,data1$stream,data1$elev,data1$slope,data1$pebble,data1$depth,data1$temp.max,data1$t.gpp.lit)
+Z=cbind(data1$basin,data1$stream,data1$elev,data1$slope,data1$pebble,data1$depth,data1$temp.max,data1$gpp.lit)
 colnames(Z)<-c("basin", "stream",    "elev",    "slope",    "pebble",   "depth",   "temp.max",    "t.gpp.lit")
 pairs(Z[,1:8], lower.panel=panel.smooth2,upper.panel=panel.cor,diag.panel=panel.hist)
 
@@ -293,8 +291,8 @@ ad.test(residuals(lmGPP))
 hist(rstandard(lmGPP)) 
 qqnorm(rstandard(lmGPP)) 
 
-lmGPP1=lm(t.gpp.lit~pebble+temp.max,data=data1)
-lmGPP2=lm(t.gpp.lit~basin+stream+elev+slope+pebble+depth+temp.max,data=data1)
+lmGPP1=lm(gpp.lit~pebble+depth+temp.max,data=data1)
+lmGPP2=lm(gpp.lit~basin+stream+elev+slope+pebble+depth+temp.max,data=data1)
 summary(lmGPP1)
 lm(formula=lmGPP1)
 anova(lmGPP1)
@@ -302,8 +300,21 @@ drop1(lmGPP1,test="F")
 step(lmGPP1)
 plot(lmGPP1)
 
-plot(rstandard(lmGPP1)~(data1$t.gpp.lit[!is.na(data1$t.gpp.lit)]))
+plot(rstandard(lmGPP1)~(data1$gpp.lit[!is.na(data1$gpp.lit)]))
 abline(0,0)
+#transform explanatory
+dotchart(data1$pebble)
+data1$t.pebble=log10(1+data1$pebble)
+dotchart(data1$t.pebble)
+
+dotchart(data1$depth)
+data1$t.depth=log10(1+data1$depth)
+dotchart(data1$t.depth)
+
+dotchart(data1$temp.max)
+data1$t.temp.max=(1+data1$temp.max)^2
+dotchart(data1$t.temp.max)
+ad.test(data1$t.temp.max)
 ###############################################################################
 #using glm to analyze variables
 M.1=gls(t.gpp.lit~pebble+temp.max,na.action=na.omit, 
@@ -456,8 +467,7 @@ lmER=lm(er.lit~par.max,na.action=na.omit,data=data1)        #p .8    r2 -.04
 lmER=lm(er.lit~temp.max,na.action=na.omit,data=data1)       #p .2    r2 .02
 lmER=lm(er.lit~temp.min,na.action=na.omit,data=data1)       #p .3    r2 .004 
 lmER=lm(er.lit~temp.mean,na.action=na.omit,data=data1)      #p .3    r2 .008 
-lmER=lm(er.lit~gpp.lit,na.action=na.omit,data=data1)        #p 3e-4  r2 .4
-lmER=lm(er.lit~pr.lit,na.action=na.omit,data=data1)         #p .8   r2 -.04
+lmER=lm(er.lit~pr.lit,na.action=na.omit,data=data1)         #p .8    r2 -.04
 lmER=lm(er.lit~cut.capt,na.action=na.omit,data=data1)       #p .9    r2 -.05
 lmER=lm(er.lit~cut.pop,na.action=na.omit,data=data1)        #p .6    r2 -.04
 lmER=lm(er.lit~cut.mass,na.action=na.omit,data=data1)       #p .7    r2 -.04
@@ -465,18 +475,33 @@ lmER=lm(er.lit~cut.mass.m,na.action=na.omit,data=data1)     #p .9    r2 -.05
 lmER=lm(er.lit~sculp.mass.m,na.action=na.omit,data=data1)   #p .004  r2 .4
 summary(lmER)
 #pairplot
-Z=cbind(data1$basin,data1$stream,data1$bf,data1$pebble,data1$depth,data1$discharge,data1$t.er.lit)
-colnames(Z)<-c("basin", "stream",    "bf",  "pebble",      "depth",    "discharge",   "er.lit")
-pairs(Z[,1:7], lower.panel=panel.smooth2,upper.panel=panel.cor,diag.panel=panel.hist)
+Z=cbind(data1$basin,data1$stream,data1$bf,data1$pebble,data1$depth,data1$discharge,data1$slope,data1$er.lit)
+colnames(Z)<-c("basin", "stream",    "bf",   "pebble",    "depth",    "discharge",     "slope" , "er.lit")
+pairs(Z[,1:8], lower.panel=panel.smooth2,upper.panel=panel.cor,diag.panel=panel.hist)
 
-lmER1=lm(t.er.lit~basin+stream+bf+pebble+depth+discharge,data=data1)
-lmER2=lm(t.er.lit~depth+bf,data=data1)
+lmER1=lm(er.lit~basin+stream+slope+depth+pebble+discharge+bf,data=data1)
+lmER2=lm(er.lit~slope+depth+pebble+discharge+bf,data=data1)
 
 summary(lmER1)
 lm(formula=lmER1)
-anova(lmER1)
-drop1(lmER1,test="F")
-step(lmER1)
+anova(lmER2)
+drop1(lmER2,test="F")
+step(lmER2)
+
+# predictor transformations
+dotchart(data1$slope)
+data1$t.slope=log10(1+data1$slope)
+dotchart(data1$t.slope)
+
+dotchart(data1$depth)
+data1$t.depth=log10(1+data1$depth)
+dotchart(data1$t.depth)
+
+dotchart(data1$bf)
+data1$t.bf=log10(1+data1$bf)
+dotchart(data1$t.bf)
+
+
 ###############################################################################
 #using glm to analyze variables
 Mer.1=gls(t.er.lit~depth+bf,na.action=na.omit, 
@@ -627,11 +652,24 @@ colnames(Z)<-c("basin", "elev",    "width",  "temp.min",      "temp.mean",    "c
 pairs(Z[,1:7], lower.panel=panel.smooth2,upper.panel=panel.cor,diag.panel=panel.hist)
 
 lmCUT1=lm(cut.mass.m~basin+elev+width+temp.min,data=data1)
+lmCUT1=lm(cut.mass.m~temp.min+elev+width,data=data1)
+
 summary(lmCUT1)
 lm(formula=lmCUT1)
 anova(lmCUT1)
 drop1(lmCUT1,test="F")
 step(lmCUT1)
+
+#predictor transformations
+dotchart(data1$temp.min)
+data1$t.temp.min=(1+data1$temp.min)^2
+dotchart(data1$t.temp.min)
+
+dotchart(data1$elev)
+data1$t.elev=log10(1+data1$elev)
+dotchart(data1$t.elev)
+
+
 ###############################################################################
 #using glm to analyze variables
 Mcut.1=gls(t.cut.mass.m~width+temp.min,na.action=na.omit, 
