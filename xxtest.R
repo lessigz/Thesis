@@ -309,6 +309,12 @@ abline(lm(data1cut$t.cut.mass.m~data1cut$phosphate))
 plot(data1cut$phosphate,data1cut$cut.mass.m,cex.lab=1.5,pch=16)
 abline(lm(data1cut$cut.mass.m~data1cut$phosphate))
 
+plot(data1$gpp.my,data1$velocity.mean,cex.lab=1.5,pch=16)
+plot(data1$er.my,data1$velocity.mean,cex.lab=1.5,pch=16)
+plot(data1$k600.my,data1$velocity.mean,cex.lab=1.5,pch=16)
+
+plot(data1$k600.lit,data1$er.lit,cex.lab=1.5,pch=16)
+plot(data1$k600.lit,data1$slope,cex.lab=1.5,pch=16)
 
 
 

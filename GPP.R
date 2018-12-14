@@ -94,7 +94,7 @@ ad.test(data1$t.temp.max)
 M.1=gls(t.gpp.lit~t.pebble,na.action=na.omit, 
         data=data1, method="ML") #base model
 M.2=lme(t.gpp.lit~t.depth+t.temp.max, na.action=na.omit, 
-        random = ~1|stream, data=data1, method="ML") #adds random effect
+        random = ~1|strem, data=data1, method="ML") #adds random effect
 
 M.3=lme(t.gpp.lit~t.depth+t.temp.max, na.action=na.omit, 
         random = ~1|basin.stream, data=data1, method="ML") #adds nesting
