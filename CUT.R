@@ -96,7 +96,7 @@ Mcut.3=lme(t.cut.mass.m~elev+width+temp.min, na.action=na.omit,
 anova(Mcut.1, Mcut.2, Mcut.3)
 
 ## # # Analyze residuals
-x.cut<-data1$t.cut.mass.m[!is.na(data1$cut.mass.m)]#removes na values from column
+x.cut<-data1$t.cut.mass.m[!is.na(data1$t.cut.mass.m)]#removes na values from column
 # # Mcut.1 residuals
 E.1.cut<-residuals(Mcut.1,type="normalized")
 qqnorm(E.1.cut)
@@ -151,7 +151,7 @@ Mcut1.4<-gls(t.cut.mass.m~elev+width+temp.min, na.action=na.omit,
 Mcut1.5<-gls(t.cut.mass.m~elev+width+temp.min, na.action=na.omit, 
              data=data1,  weights=varComb(vf1,vf2))
 
-anova(Mcut.1,Mcut1.1,Mcut1.2,Mcut1.3,Mcut1.4,Mcut1.5)
+anova(Mcut.1,Mcut1.1,Mcut1.2,Mcut1.3,Mcut1.4)
 anova(Mcut.1,Mcut1.1)
 #Mcut1.1
 #Analyze alternate variance structure model residuals
@@ -192,7 +192,8 @@ ad.test(E1.5.cut)
 plot(Mcut1.5) 
 plot(x.cut, E1.5.cut)
 
-
+acf(E1.1.cut, na.action=na.pass,
+    main="Auto-correlation plot for residuals")#check for autocorrelation in residuals
 
 
 # CUT model validation

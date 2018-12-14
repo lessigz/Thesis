@@ -18,10 +18,10 @@ source("AEDgraphingfunctions.R") #we used this alot in advanced biostats
 # GPP transformation
 dotchart(data1$gpp.lit)
 ad.test(data1$gpp.lit)
-data1$t.gpp.lit=log10(1+data1$gpp.lit)
+data1$t.gpp.lit=log10(1+data1$gpp.lit)^(1/2)
 ad.test(data1$t.gpp.lit)
 hist(data1$t.gpp.lit,xlab="transfromed gpp",cex.lab=1.5)
-dotchart(data1$t.gpp.lit,xlab="transfromed gpp",cex.lab=1.5,pch=16)
+dotchart(data1$t.gpp.lit,xlab="transformed gpp",cex.lab=1.5,pch=16)
 # GPP LM models
 lmGPP=lm(gpp.lit~season,na.action=na.omit,data=data1)         #p .3    r2 .01 
 lmGPP=lm(gpp.lit~season.yr,na.action=na.omit,data=data1)      #p .12   r2 .09 
@@ -91,18 +91,18 @@ dotchart(data1$t.temp.max)
 ad.test(data1$t.temp.max)
 ###############################################################################
 #using glm to analyze variables
-M.1=gls(t.gpp.lit~t.pebble,na.action=na.omit, 
+M.1=gls(t.gpp.lit~depth+temp.max,na.action=na.omit, 
         data=data1, method="ML") #base model
-M.2=lme(t.gpp.lit~t.depth+t.temp.max, na.action=na.omit, 
-        random = ~1|strem, data=data1, method="ML") #adds random effect
+M.2=lme(t.gpp.lit~depth+temp.max, na.action=na.omit, 
+        random = ~1|stream, data=data1, method="ML") #adds random effect
 
-M.3=lme(t.gpp.lit~t.depth+t.temp.max, na.action=na.omit, 
+M.3=lme(t.gpp.lit~depth+temp.max, na.action=na.omit, 
         random = ~1|basin.stream, data=data1, method="ML") #adds nesting
 
 anova(M.1, M.2, M.3)
 
 #Analyze residuals
-x.gpp<-data1$gpp.lit[!is.na(data1$gpp.lit)]#removes na values from column
+x.gpp<-data1$t.gpp.lit[!is.na(data1$t.gpp.lit)]#removes na values from column
 x.pebble=data1$t.pebble[!is.na(data1$gpp.lit)]
 x.depth=data1$t.depth[!is.na(data1$gpp.lit)]
 x.temp.max=data1$t.temp.max[!is.na(data1$gpp.lit)]
@@ -121,6 +121,10 @@ qqline(E.2.gpp)
 ad.test(E.2.gpp)
 plot(M.2) 
 plot(x.gpp, E.2.gpp)
+
+acf(E.2.gpp, na.action=na.pass,
+    main="Auto-correlation plot for residuals")#check for autocorrelation in residuals
+
 # M.3 residuals
 E.3.gpp<-residuals(M.3,type="normalized")
 qqnorm(E.3.gpp)
@@ -138,8 +142,8 @@ plot(x.gpp, E.3.gpp)
 #####################################################
 
 #base model from above
-M.1=gls(t.gpp.lit~t.pebble+t.depth+t.temp.max, na.action=na.omit, 
-        data=data1) #run with method="REML" default for comparison
+M.2=lme(t.gpp.lit~depth+temp.max, na.action=na.omit, 
+        random = ~1|stream, data=data1) #run with method="REML" default for comparison
 
 #alternate variance structures
 vf1=varIdent(form = ~1|stream)
@@ -152,22 +156,22 @@ vf4=varConstPower(form = ~fitted(.))
 #vf8=varIdent(form = ~1|f.sample.event)
 
 #alternate models
-M1.1<-gls(t.gpp.lit~t.pebble, na.action=na.omit, 
-          data=data1, weights=vf1)
+M1.1<-lme(t.gpp.lit~depth+temp.max, na.action=na.omit, 
+          random = ~1|stream, data=data1, weights=vf1)
 
-M1.2<-gls(t.gpp.lit~t.pebble, na.action=na.omit, 
-          data=data1, weights=vf2)
+M1.2<-lme(t.gpp.lit~depth+temp.max, na.action=na.omit, 
+          random = ~1|stream, data=data1, weights=vf2)
 
-M1.3<-gls(t.gpp.lit~t.pebble, na.action=na.omit, 
-          data=data1, weights=vf3)
+M1.3<-lme(t.gpp.lit~depth+temp.max, na.action=na.omit, 
+          random = ~1|stream, data=data1, weights=vf3)
 
-M1.4<-gls(t.gpp.lit~t.pebble, na.action=na.omit, 
-          data=data1, weights=vf4)
+M1.4<-lme(t.gpp.lit~depth+temp.max, na.action=na.omit, 
+          random = ~1|stream, data=data1, weights=vf4)
 
-M1.5<-gls(t.gpp.lit~t.pebble, na.action=na.omit, 
-          data=data1,  weights=varComb(vf1,vf2))
+M1.5<-lme(t.gpp.lit~depth+temp.max, na.action=na.omit, 
+          random = ~1|stream, data=data1,  weights=varComb(vf1,vf2))
 
-anova(M.1,M1.1,M1.2,M1.3,M1.4,M1.5)
+anova(M.2,M1.1,M1.2,M1.3,M1.4,M1.5)
 anova(M.1,M1.1)
 #M1.3, expoential variance of fit
 

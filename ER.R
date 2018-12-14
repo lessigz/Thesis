@@ -20,7 +20,7 @@ ad.test(data1$er.lit)
 data1$t.er.lit=log10(1+abs(data1$er.lit))
 ad.test(data1$t.er.lit)
 hist(data1$t.er.lit,xlab="transfromed ER",cex.lab=1.5)
-dotchart(data1$t.er.lit,xlab="transfromed ER",cex.lab=1.5,pch=16)
+dotchart(data1$t.er.lit,xlab="transformed ER",cex.lab=1.5,pch=16)
 
 # ER model selsection
 lmER=lm(er.lit~basin,na.action=na.omit,data=data1)          #p .02   r2 .2
@@ -92,11 +92,11 @@ dotchart(data1$t.slope)
 
 ###############################################################################
 #using glm to analyze variables
-Mer.1=gls(t.er.lit~t.depth+t.slope,na.action=na.omit, 
+Mer.1=gls(t.er.lit~depth+slope,na.action=na.omit, 
           data=data1, method="ML") #base model
-Mer.2=lme(t.er.lit~t.depth+t.slope, na.action=na.omit, 
+Mer.2=lme(t.er.lit~depth+slope, na.action=na.omit, 
           random = ~1|stream, data=data1, method="ML") #adds random effect
-Mer.3=lme(t.er.lit~t.depth+t.slope, na.action=na.omit, 
+Mer.3=lme(t.er.lit~depth+slope, na.action=na.omit, 
           random = ~1|basin.stream, data=data1, method="ML") #adds nesting
 
 anova(Mer.1, Mer.2, Mer.3)
