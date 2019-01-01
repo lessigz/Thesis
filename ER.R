@@ -17,57 +17,94 @@ source("AEDgraphingfunctions.R") #we used this alot in advanced biostats
 dotchart(data1$er.lit,xlab="ER",cex.lab=1.5,pch=16)
 hist(data1$er.lit,xlab="ER",cex.lab=1.5,pch=16)
 ad.test(data1$er.lit)
-data1$t.er.lit=log10(1+abs(data1$er.lit))
+data1$t.er.lit=log(1+abs(data1$er.lit))
 ad.test(data1$t.er.lit)
 hist(data1$t.er.lit,xlab="transfromed ER",cex.lab=1.5)
 dotchart(data1$t.er.lit,xlab="transformed ER",cex.lab=1.5,pch=16)
 
 # ER model selsection
-lmER=lm(er.lit~basin,na.action=na.omit,data=data1)          #p .02   r2 .2
-lmER=lm(er.lit~stream,na.action=na.omit,data=data1)         #p .3e-6 r2 .8
-lmER=lm(er.lit~yr,na.action=na.omit,data=data1)             #p .6    r2 -.03
-lmER=lm(er.lit~elev,na.action=na.omit,data=data1)           #p .24   r2 .01
-lmER=lm(er.lit~from.north,na.action=na.omit,data=data1)     #p .9    r2 -.04
-lmER=lm(er.lit~slope,na.action=na.omit,data=data1)          #p 2e-6  r2 .6 
-lmER=lm(er.lit~bf,na.action=na.omit,data=data1)             #p .05   r2 .1
-lmER=lm(er.lit~pebble,na.action=na.omit,data=data1)         #p .05   r2 .1  
-lmER=lm(er.lit~width,na.action=na.omit,data=data1)          #p .09   r2 .07
-lmER=lm(er.lit~depth,na.action=na.omit,data=data1)          #p .001  r2 .3  
-lmER=lm(er.lit~velocity.mean,na.action=na.omit,data=data1)  #p .9    r2 -.04
-lmER=lm(er.lit~discharge,na.action=na.omit,data=data1)      #p .04   r2 .1
-lmER=lm(er.lit~carbon,na.action=na.omit,data=data1)         #p .8    r2 -.04
-lmER=lm(er.lit~ammonia,na.action=na.omit,data=data1)        #p .6    r2 -.03
-lmER=lm(er.lit~nitrate,na.action=na.omit,data=data1)        #p .6    r2 -.03
-lmER=lm(er.lit~din,na.action=na.omit,data=data1)            #p .6    r2 -.03
-lmER=lm(er.lit~phosphate,na.action=na.omit,data=data1)      #p .5    r2 -.03
-lmER=lm(er.lit~cn.ratio,na.action=na.omit,data=data1)       #p .7    r2 -.04
-lmER=lm(er.lit~canopy,na.action=na.omit,data=data1)         #p .6    r2 -.03
-lmER=lm(er.lit~par.integrative,na.action=na.omit,data=data1)#p .4    r2 -.01
-lmER=lm(er.lit~par.mean,na.action=na.omit,data=data1)       #p .4    r2 -.01
-lmER=lm(er.lit~par.max,na.action=na.omit,data=data1)        #p .8    r2 -.04
-lmER=lm(er.lit~temp.max,na.action=na.omit,data=data1)       #p .2    r2 .02
-lmER=lm(er.lit~temp.min,na.action=na.omit,data=data1)       #p .3    r2 .004 
-lmER=lm(er.lit~temp.mean,na.action=na.omit,data=data1)      #p .3    r2 .008 
-lmER=lm(er.lit~pr.lit,na.action=na.omit,data=data1)         #p .8    r2 -.04
-lmER=lm(er.lit~cut.capt,na.action=na.omit,data=data1)       #p .9    r2 -.05
-lmER=lm(er.lit~cut.pop,na.action=na.omit,data=data1)        #p .6    r2 -.04
-lmER=lm(er.lit~cut.mass,na.action=na.omit,data=data1)       #p .7    r2 -.04
-lmER=lm(er.lit~cut.mass.m,na.action=na.omit,data=data1)     #p .9    r2 -.05
-lmER=lm(er.lit~sculp.mass.m,na.action=na.omit,data=data1)   #p .004  r2 .4
-summary(lmER)
+summary(lm(t.er.lit~basin,na.action=na.omit,data=data1))          #p .01   r2 .2
+summary(lm(t.er.lit~stream,na.action=na.omit,data=data1))         #p .9e-6 r2 .8
+summary(lm(t.er.lit~season.yr,na.action=na.omit,data=data1))      #p .6   r2 -.04 
+summary(lm(t.er.lit~yr,na.action=na.omit,data=data1))             #p .6    r2 -.03
+summary(lm(t.er.lit~elev,na.action=na.omit,data=data1))           #p .4   r2 -.01
+summary(lm(t.er.lit~from.north,na.action=na.omit,data=data1))     #p .9    r2 -.04
+summary(lm(t.er.lit~slope,na.action=na.omit,data=data1))          #p .5e-6  r2 .6 
+summary(lm(t.er.lit~bf,na.action=na.omit,data=data1))             #p .04   r2 .1
+summary(lm(t.er.lit~pebble,na.action=na.omit,data=data1))         #p .001   r2 .3  
+summary(lm(t.er.lit~width,na.action=na.omit,data=data1))          #p .07   r2 .09
+summary(lm(t.er.lit~depth,na.action=na.omit,data=data1))          #p .7e-4  r2 .4  
+summary(lm(t.er.lit~velocity.mean,na.action=na.omit,data=data1))  #p .99    r2 -.04
+summary(lm(t.er.lit~discharge,na.action=na.omit,data=data1))      #p .04   r2 .1
+summary(lm(t.er.lit~carbon,na.action=na.omit,data=data1))         #p .99    r2 -.04
+summary(lm(t.er.lit~ammonia,na.action=na.omit,data=data1))        #p .6    r2 -.03
+summary(lm(t.er.lit~nitrate,na.action=na.omit,data=data1))        #p .4    r2 -.02
+summary(lm(t.er.lit~din,na.action=na.omit,data=data1))            #p .5    r2 -.02
+summary(lm(t.er.lit~phosphate,na.action=na.omit,data=data1))      #p .5    r2 -.03
+summary(lm(t.er.lit~cn.ratio,na.action=na.omit,data=data1))       #p .5    r2 -.02
+summary(lm(t.er.lit~canopy,na.action=na.omit,data=data1))         #p .5    r2 -.03
+summary(lm(t.er.lit~par.integrative,na.action=na.omit,data=data1))#p .6    r2 -.03
+summary(lm(t.er.lit~par.mean,na.action=na.omit,data=data1))       #p .6    r2 -.03
+summary(lm(t.er.lit~par.max,na.action=na.omit,data=data1))        #p .9    r2 -.04
+summary(lm(t.er.lit~temp.max,na.action=na.omit,data=data1))       #p .3    r2 -.0003
+summary(lm(t.er.lit~temp.min,na.action=na.omit,data=data1))       #p .4    r2 -.01 
+summary(lm(t.er.lit~temp.mean,na.action=na.omit,data=data1))      #p .4    r2 -.01 
+summary(lm(t.er.lit~pr.lit,na.action=na.omit,data=data1))         #p .8    r2 -.04
+summary(lm(t.er.lit~cut.capt,na.action=na.omit,data=data1))       #p .5    r2 -.03
+summary(lm(t.er.lit~cut.pop,na.action=na.omit,data=data1))        #p .7    r2 -.05
+summary(lm(t.er.lit~cut.mass,na.action=na.omit,data=data1))       #p .8    r2 -.05
+summary(lm(t.er.lit~cut.mass.m,na.action=na.omit,data=data1))     #p .9    r2 -.06
+summary(lm(t.er.lit~sculp.mass.m,na.action=na.omit,data=data1))   #p .008  r2 .3
 #pairplot
-Z=cbind(data1$basin,data1$stream,data1$bf,data1$pebble,data1$depth,data1$discharge,data1$slope,data1$er.lit)
-colnames(Z)<-c("basin", "stream",    "bf",   "pebble",    "depth",    "discharge",     "slope" , "er.lit")
-pairs(Z[,1:8], lower.panel=panel.smooth2,upper.panel=panel.cor,diag.panel=panel.hist)
+Z=cbind(data1$slope,data1$stream,data1$depth,data1$pebble,data1$basin,data1$bf,data1$discharge,data1$width,data1$t.er.lit)
+colnames(Z)<-c("slope", "stream",    "depth",   "pebble",     "basin",    "bf",     "discharge" ,"width", "t.er.lit")
+pairs(Z[,1:9], lower.panel=panel.smooth2,upper.panel=panel.cor,diag.panel=panel.hist)
 
-lmER1=lm(er.lit~basin+stream+slope+depth+pebble+discharge+bf,data=data1)
-lmER2=lm(er.lit~slope+depth+pebble+discharge+bf,data=data1)
+lmER1=lm(er.lit~stream+depth+slope+bf,data=data1)
+lmER2=lm(er.lit~slope+stream+depth+pebble+basin+bf+discharge+width,data=data1)
 
 summary(lmER1)
 lm(formula=lmER1)
-anova(lmER2)
-drop1(lmER2,test="F")
-step(lmER2)
+anova(lmER1)
+drop1(lmER1,test="F")
+step(lmER1)
+
+summary(lm(er.lit~basin,na.action=na.omit,data=data1))          #p .02   r2 .2
+summary(lm(er.lit~stream,na.action=na.omit,data=data1))         #p .3e-6 r2 .8
+summary(lm(er.lit~yr,na.action=na.omit,data=data1))             #p .6    r2 -.03
+summary(lm(er.lit~elev,na.action=na.omit,data=data1))           #p .24   r2 .01
+summary(lm(er.lit~from.north,na.action=na.omit,data=data1))     #p .9    r2 -.04
+summary(lm(er.lit~slope,na.action=na.omit,data=data1))          #p 2e-6  r2 .6 
+summary(lm(er.lit~bf,na.action=na.omit,data=data1))             #p .05   r2 .1
+summary(lm(er.lit~pebble,na.action=na.omit,data=data1))         #p .05   r2 .1  
+summary(lm(er.lit~width,na.action=na.omit,data=data1))          #p .09   r2 .07
+summary(lm(er.lit~depth,na.action=na.omit,data=data1))          #p .001  r2 .3  
+summary(lm(er.lit~velocity.mean,na.action=na.omit,data=data1))  #p .9    r2 -.04
+summary(lm(er.lit~discharge,na.action=na.omit,data=data1))      #p .04   r2 .1
+summary(lm(er.lit~carbon,na.action=na.omit,data=data1))         #p .8    r2 -.04
+summary(lm(er.lit~ammonia,na.action=na.omit,data=data1))        #p .6    r2 -.03
+summary(lm(er.lit~nitrate,na.action=na.omit,data=data1))        #p .6    r2 -.03
+summary(lm(er.lit~din,na.action=na.omit,data=data1))            #p .6    r2 -.03
+summary(lm(er.lit~phosphate,na.action=na.omit,data=data1))      #p .5    r2 -.03
+summary(lm(er.lit~cn.ratio,na.action=na.omit,data=data1))       #p .7    r2 -.04
+summary(lm(er.lit~canopy,na.action=na.omit,data=data1))         #p .6    r2 -.03
+summary(lm(er.lit~par.integrative,na.action=na.omit,data=data1))#p .4    r2 -.01
+summary(lm(er.lit~par.mean,na.action=na.omit,data=data1))       #p .4    r2 -.01
+summary(lm(er.lit~par.max,na.action=na.omit,data=data1))        #p .8    r2 -.04
+summary(lm(er.lit~temp.max,na.action=na.omit,data=data1))       #p .2    r2 .02
+summary(lm(er.lit~temp.min,na.action=na.omit,data=data1))       #p .3    r2 .004 
+summary(lm(er.lit~temp.mean,na.action=na.omit,data=data1))      #p .3    r2 .008 
+summary(lm(er.lit~pr.lit,na.action=na.omit,data=data1))         #p .8    r2 -.04
+summary(lm(er.lit~cut.capt,na.action=na.omit,data=data1))       #p .9    r2 -.05
+summary(lm(er.lit~cut.pop,na.action=na.omit,data=data1))        #p .6    r2 -.04
+summary(lm(er.lit~cut.mass,na.action=na.omit,data=data1))       #p .7    r2 -.04
+summary(lm(er.lit~cut.mass.m,na.action=na.omit,data=data1))     #p .9    r2 -.05
+summary(lm(er.lit~sculp.mass.m,na.action=na.omit,data=data1))   #p .004  r2 .4
+#pairplot
+Z=cbind(data1$stream,data1$slope,data1$depth,data1$basin,data1$bf,data1$pebble,data1$discharge,data1$width,data1$er.lit)
+colnames(Z)<-c("stream", "slope",    "depth",   "basin",    "bf",    "pebble",     "discharge" ,"width", "er.lit")
+pairs(Z[,1:9], lower.panel=panel.smooth2,upper.panel=panel.cor,diag.panel=panel.hist)
+
 
 # predictor transformations
 dotchart(data1$slope)
@@ -117,6 +154,8 @@ qqline(E.2.er)
 ad.test(E.2.er)
 plot(Mer.2) 
 plot(x.er, E.2.er)
+abline(0,0)
+summary(Mer.2)
 # # # M.3 residuals
 E.3.er<-residuals(Mer.3,type="normalized")
 qqnorm(E.3.er)
@@ -142,19 +181,19 @@ vf4=varConstPower(form = ~fitted(.))
 ####vf7=varConstPower(form = ~fitted(.)|site)
 ####vf8=varIdent(form = ~1|f.sample.event)
 ######alternate models
-Mer1.1<-gls(t.er.lit~t.depth+t.slope, na.action=na.omit, 
+Mer1.1<-gls(t.er.lit~depth+slope, na.action=na.omit, 
             data=data1, weights=vf1)
 
-Mer1.2<-gls(t.er.lit~t.depth+t.slope, na.action=na.omit, 
+Mer1.2<-gls(t.er.lit~depth+slope, na.action=na.omit, 
             data=data1, weights=vf2)
 
-Mer1.3<-gls(t.er.lit~t.depth+t.slope, na.action=na.omit, 
+Mer1.3<-gls(t.er.lit~depth+slope, na.action=na.omit, 
             data=data1, weights=vf3)
 
-Mer1.4<-gls(t.er.lit~t.depth+t.slope, na.action=na.omit, 
+Mer1.4<-gls(t.er.lit~depth+slope, na.action=na.omit, 
             data=data1, weights=vf4)
 
-Mer1.5<-gls(t.er.lit~t.depth+t.slope, na.action=na.omit, 
+Mer1.5<-gls(t.er.lit~depth+slope, na.action=na.omit, 
             data=data1,  weights=varComb(vf1,vf2))
 
 anova(Mer.1,Mer1.1,Mer1.2,Mer1.3,Mer1.5)

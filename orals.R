@@ -1,10 +1,19 @@
 
 #site specific non seasonal variables
 boxplot(data2$elev,      xlab="All Sites",ylab="Elevation (m)",cex.lab=1.5,pch=16,group=data2$basin.stream)
+dotchart(data2$elev,      xlab="Elevation (m)",ylab="",cex.lab=1.5,pch=16,group=data2$basin.stream)
+
 boxplot(data2$from.north,xlab="All Sites",ylab="Aspect (Deg. South Facing)",cex.lab=1.5,pch=16,group=data2$basin.stream)
+dotchart(data2$from.north,xlab="Aspect (Deg. South Facing)",ylab="",cex.lab=1.5,pch=16,group=data2$basin.stream)
+
 boxplot(data2$slope,     xlab="All Sites",ylab="Slope (%)",cex.lab=1.5,pch=16,group=data2$basin.stream)
+dotchart(data2$slope,     xlab="Slope (%)",ylab="",cex.lab=1.5,pch=16,group=data2$basin.stream)
+
 boxplot(data2$bf,        xlab="All Sites",ylab="Bank full (m)",cex.lab=1.5,pch=16,group=data2$basin.stream)
+dotchart(data2$bf,        xlab="Bank full (m)",ylab="",cex.lab=1.5,pch=16,group=data2$basin.stream)
+
 boxplot(data2$pebble,    xlab="All Sites",ylab="Pebble Median (mm)",cex.lab=1.5,pch=16,group=data2$basin.stream)
+dotchart(data2$pebble,    xlab="Pebble Median (mm)",ylab="",cex.lab=1.5,pch=16,group=data2$basin.stream)
 
 library(lattice)
 library(agricolae)

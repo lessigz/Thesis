@@ -107,7 +107,7 @@ nightreg<-function(o2file, bp, ts){
 # NOTE: this approach works better for some sites/dates than others; always check that your model fit is good and that your K600 estimate makes sense!
 #Call as:  The first argument in the function defines when to pull data.  In this case on 10/27/204 (for spring creek) between 18:05 and 23:00
 
-nightreg(StreamData[StreamData$dtime>=as.numeric(chron(dates="07/19/17", times="18:10:00")) & StreamData$dtime<=as.numeric(chron(dates="07/21/17", times="10:00:00")), ], bp=660, ts=10)
+nightreg(StreamData[StreamData$dtime>=as.numeric(chron(dates="07/01/18", times="18:00:00")) & StreamData$dtime<=as.numeric(chron(dates="07/01/18", times="22:00:00")), ], bp=710, ts=5)
 # END nighttime regression calculation of K #
 # check that light makes sense
 plot(StreamData$dtime, StreamData$light,cex.lab=1.5,xlab="Time",ylab="PAR (umol photons/m2/s)")
@@ -250,16 +250,24 @@ onestationplot<-function(GPP, ER, oxy, z, temp, K, light, bp, ts) {
   # this is the metabolism equation as in Van de Bogert et al (2007) L&OMethods
   for (i in 2:length(oxy)) { oxy.mod[i]<-oxy.mod[i-1]+((GPP/z)*(light[i]/sum(light)))+ ER*ts/z+(Kcor(temp[i],K))*ts*(osat(temp[i],bp)-oxy.mod[i-1]) }
   
-  plot(seq(1:length(oxy)),oxy.mod, type="l",ylim=c(9,9.8),xlab="Time (Midnight to Midnight)", ylab="Dissolved O2 (mg/L)", cex.lab=1.5,xaxt="n", lwd=2)
+  plot(seq(1:length(oxy)),oxy.mod, type="l",ylim=c(9,9.8),xlab="Time (Midnight to Midnight)", ylab="O2 (mg/L)", cex.lab=1.5,xaxt="n", lwd=2)
   points(seq(1:length(oxy)),oxy)
+  
+  legend("topright", legend=c("R2= 0.995", "P= 2e-16"),bty="n")
+  
+  
+  print(summary(lm(oxy~oxy.mod)))
   
 }
 # end of function
 ####### END loading rivermetab function ####### 
 
-plot(StreamData$dtime, StreamData$light,cex.lab=1.5,xaxt="n",ylim=c(0,50000),xlab="Time (Midnight to Midnight)",ylab="Light (umol phot/m2/s)")
-plot(StreamData$dtime, StreamData$temp,cex.lab=1.5,xaxt="n",ylim=c(7,11),xlab="Time (Midnight to Midnight)",ylab="Water Temp (Deg. C)")
-plot(StreamData$dtime, StreamData$oxy,cex.lab=1.5,xaxt="n",ylim=c(9,9.8),xlab="Time (Midnight to Midnight)",ylab="Dissolved O2 (mg/L)")
+plot(StreamData$dtime, StreamData$light,cex.lab=1.5,xaxt="n",ylim=c(0,50000),xlab="Time (Midnight to Midnight)",ylab="PAR (phot/m2/s)")
+plot(StreamData$dtime, StreamData$temp,cex.lab=1.5,xaxt="n",ylim=c(7,11),xlab="Time (Midnight to Midnight)",ylab="Temp (Deg. C)")
+plot(StreamData$dtime, StreamData$oxy,cex.lab=1.5,xaxt="n",ylim=c(9,9.8),xlab="Time (Midnight to Midnight)",ylab="O2 (mg/L)")
+StreamData2=read.csv("SW30jun18_example.csv",header=TRUE)
+StreamData2$dtime<-chron(StreamData2$time/86400)-(7/24)
+plot(StreamData2$dtime, StreamData2$sat,cex.lab=1.5,xaxt="n",ylim=c(91.75,94),xlab="Time (Midnight to Midnight)",ylab="O2 (% saturation)")
 
 
 rivermetabK(o2file=StreamData[ StreamData $dtime>=as.numeric(chron(
@@ -268,3 +276,4 @@ rivermetabK(o2file=StreamData[ StreamData $dtime>=as.numeric(chron(
   z=0.050, 
   bp=710, 
   ts=0.003472)
+
