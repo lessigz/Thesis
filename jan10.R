@@ -37,7 +37,7 @@ plot(HSD.test(aov(data1$discharge~data1$stream+data1$season.yr), 'data1$season.y
 plot(data1$depth~data1$width,xlab = "Wetted Width (m)", ylab = "Depth (m)",cex.lab=1.5,pch=16)
 abline(lm(data1$depth~data1$width))
 summary(lm(data1$depth~data1$width))
-legend("topright", legend=c("R2= 0.69", "P= 9.1e-9"),bty="n")
+legend("topleft", legend=c("R2= 0.69", "P= 9.1e-9"),bty="n")
 
 plot(data1$discharge~data1$width,xlab = "Wetted Width (m)", ylab = "Discharge (L/s)",cex.lab=1.5,pch=16)
 abline(lm(data1$discharge~data1$width))
@@ -67,7 +67,7 @@ plot(HSD.test(aov(data1cut$cut.mass.m~data1cut$stream+data1cut$season.yr), 'data
 
 #metabolism modeling
 # insert "example" graphs, may need to load things from "example" tab
-plot(StreamData$dtime, StreamData$light,cex.lab=1.5,xaxt="n",ylim=c(0,50000),xlab="Time (Midnight to Midnight)",ylab="PAR (phot/m2/s)")
+plot(StreamData$dtime, StreamData$light,cex.lab=1.5,xaxt="n",ylim=c(0,50000),xlab="Time (Midnight to Midnight)",ylab="PAR (mol/m2/s)")
 plot(StreamData2$dtime, StreamData2$sat,cex.lab=1.5,xaxt="n",ylim=c(91.75,94),xlab="Time (Midnight to Midnight)",ylab="O2 (% saturation)")
 plot(StreamData$dtime, StreamData$temp,cex.lab=1.5,xaxt="n",ylim=c(7,11),xlab="Time (Midnight to Midnight)",ylab="Temp (Deg. C)")
 plot(StreamData$dtime, StreamData$oxy,cex.lab=1.5,xaxt="n",ylim=c(9,9.8),xlab="Time (Midnight to Midnight)",ylab="O2 (mg/L)")
@@ -110,10 +110,9 @@ colnames(Z)<-c("Aspect",      "Slope",   "BF",  "Pebble",          "Velocity",  
 pairs(Z[,1:15], lower.panel=panel.smooth2,upper.panel=panel.cor,diag.panel=panel.hist)
 
 # pairplot for models  
-
 Z=cbind(data1$basin,data1$stream,data1$season.yr,data1$slope,data1$width,data1$depth,data1$canopy,data1$temp.min,data1$t.gpp.lit,data1$t.er.lit,data1$t.cut.mass.m)
 colnames(Z)<-c("Basin",  "Stream",   "seas.yr",      "Slope",     "Width",    "Depth",   "Canopy",      "Min Temp",       "t.GPP"  ,"t.ER",         "t.Fish")
-pairs(Z[,1:9], lower.panel=panel.smooth2,upper.panel=panel.cor,diag.panel=panel.hist)
+pairs(Z[,1:11], lower.panel=panel.smooth2,upper.panel=panel.cor,diag.panel=panel.hist)
 
 
 
@@ -126,9 +125,9 @@ M1.1<-lme(t.gpp.lit~season.yr+depth, na.action=na.omit, random = ~1|stream, data
 x.gpp<-data1$t.gpp.lit[!is.na(data1$t.gpp.lit)]#removes na values from column
 E1.1.gpp<-residuals(M1.1,type="normalized")
 
-qqnorm(E1.1.gpp,main="",ylab="GPP",cex.lab=1.5,pch=16)
+qqnorm(E1.1.gpp,main="",ylab="GPP Quantiles",cex.lab=1.5,pch=16)
 qqline(E1.1.gpp)
-legend("topleft", legend=c("Anderson-Darling normality test", "P= 0.14"),bty="n")
+legend("topleft", legend=c("AD normality test", "P= 0.14"),bty="n")
 ad.test(E1.1.gpp)
 
 plot(M1.1,cex.lab=1.5,pch=16,col=25,xlab="GPP model fitted values",ylab="Standardized Residuals") 
@@ -139,7 +138,7 @@ abline(0,0)
 legend("topleft", legend=c("R2= 0.20", "P= 0.013"),bty="n")
 summary(lm(x.gpp~E1.1.gpp))
 
-plot(t.gpp.lit~season.yr,xlab="Season & Year",ylab="GPP Transformed",cex.lab=1.5,pch=16,data=data1)
+plot(t.gpp.lit~season.yr,xlab="Season",ylab="GPP Transformed",cex.lab=1.5,pch=16,data=data1)
 legend("topright", legend=c("R2= 0.10", "P= 0.12"),bty="n")
 summary(lm(t.gpp.lit~season.yr,data=data1))
 
@@ -174,16 +173,16 @@ Mer.2=lme(t.er.lit~depth+slope, na.action=na.omit, random = ~1|stream, data=data
 x.er<-data1$t.er.lit[!is.na(data1$t.er.lit)]#removes na values from column
 E.2.er<-residuals(Mer.2,type="normalized")
 
-qqnorm(E.2.er,main="",cex.lab=1.5,pch=16)
+qqnorm(E.2.er,main="",ylab="ER Quantiles",cex.lab=1.5,pch=16)
 qqline(E.2.er)
-legend("topleft", legend=c("Anderson-Darling normality test", "P= 0.16"),bty="n")
+legend("topleft", legend=c("AD normality test", "P= 0.16"),bty="n")
 ad.test(E.2.er)
 
 plot(Mer.2,cex.lab=1.5,pch=16,col=25,xlab="ER model fitted values",ylab="Standardized Residuals") 
 summary(Mer.2)
 
 plot(x.er, E.2.er,xlab="ER transformed",ylab="Normalized Residuals",cex.lab=1.5,pch=16)
-legend("topright", legend=c("R2= 8.0e-4", "P= 0.32"),bty="n")
+legend("topleft", legend=c("R2= 8.0e-4", "P= 0.32"),bty="n")
 abline(0,0)
 summary(lm(x.er~E.2.er))
 
@@ -205,15 +204,15 @@ summary(lm(t.er.lit~carbon,data=data1))
 
 plot(t.er.lit~din.out,xlab="N (DIN mg/L)*",ylab="ER Transformed",cex.lab=1.5,pch=16,data=data1)
 abline(lm(t.er.lit~din.out,data=data1))
-legend("top", legend=c("R2= 0.030", "P= 0.21"),bty="n")
+legend("topleft", legend=c("R2= 0.030", "P= 0.21"),bty="n")
 summary(lm(t.er.lit~din.out,data=data1))
 
-plot(t.er.lit~phosphate,xlab="P (SRP mg/L)",ylab="ER transformed",cex.lab=1.5,pch=16,data=data1)
+plot(t.er.lit~phosphate,xlab="P (SRP mg/L)",ylab="ER Transformed",cex.lab=1.5,pch=16,data=data1)
 abline(lm(t.er.lit~phosphate,data=data1))
 legend("topright", legend=c("R2= -0.025", "P= 0.53"),bty="n")
 summary(lm(t.er.lit~phosphate,data=data1))
 
-plot(t.er.lit~par.integrative,xlab="Light (PAR mol/m2/d)",ylab="ER transformed",cex.lab=1.5,pch=16,data=data1)
+plot(t.er.lit~par.integrative,xlab="PAR (mol/m2/d)",ylab="ER Transformed",cex.lab=1.5,pch=16,data=data1)
 abline(lm(t.er.lit~par.integrative,data=data1))
 legend("topright", legend=c("R2= -0.030", "P= 0.61"),bty="n")
 summary(lm(t.er.lit~par.integrative,data=data1))
@@ -226,8 +225,8 @@ vf3=varExp(form = ~fitted(.))
 Mcut1.3<-gls(t.cut.mass.m~temp.min*canopy+width+basin, na.action=na.omit, data=data1, weights=vf3)
 E1.3.cut<-residuals(Mcut1.3,type="normalized")
 
-qqnorm(E1.3.cut,main="",cex.lab=1.5,pch=16)
-legend("topleft", legend=c("Anderson-Darling normality test", "P= 0.22"),bty="n")
+qqnorm(E1.3.cut,main="",ylab="Trout Quantiles",cex.lab=1.5,pch=16)
+legend("topleft", legend=c("AD normality test", "P= 0.22"),bty="n")
 qqline(E1.3.cut)
 ad.test(E1.3.cut)
 
@@ -241,7 +240,7 @@ summary(lm(x.cut~E1.3.cut))
 
 
 plot(t.cut.mass.m~basin,xlab="Basin",ylab="Trout Transformed",cex.lab=1.5,pch=16,data=data1)
-legend("bottomright", legend=c("R2= 0.54", "P= 5.1e-4"),bty="n")
+legend("top", legend=c("R2= 0.54", "P= 5.1e-4"),bty="n")
 summary(lm(t.cut.mass.m~basin,data=data1))
 
 plot(t.cut.mass.m~temp.min,xlab="Temp. min (deg C)",ylab="Trout Transformed",xlim=c(6.5,11),ylim=c(0,3),cex.lab=1.5,pch=16,data=data1)
@@ -273,7 +272,7 @@ summary(lm(t.cut.mass.m~din.out,data=data1))
 
 plot(t.cut.mass.m~phosphate,xlab="P (SRP mg/L)",ylab="Trout Transformed",cex.lab=1.5,pch=16,data=data1)
 abline(lm(t.cut.mass.m~phosphate,data=data1))
-legend("bottomleft", legend=c("R2= 0.15", "P= 0.054"),bty="n")
+legend("topright", legend=c("R2= 0.15", "P= 0.054"),bty="n")
 summary(lm(t.cut.mass.m~phosphate,data=data1))
 
 plot(t.cut.mass.m~par.integrative,xlab="Light (PAR mol/m2/d)",ylab="Trout Transformed",cex.lab=1.5,pch=16,data=data1)
@@ -281,9 +280,24 @@ abline(lm(t.cut.mass.m~par.integrative,data=data1))
 legend("topright", legend=c("R2= 0.15", "P= 0.054"),bty="n")
 summary(lm(t.cut.mass.m~par.integrative,data=data1))
 
-###
+### Others
+plot(data1$t.er.lit~data1$t.gpp.lit,xlab ="GPP Transformed" , ylab ="ER Transformed",cex.lab=1.5,pch=16)
+abline(lm(data1$t.er.lit~data1$t.gpp.lit))
+legend("topleft", legend=c("R2= 0.36", "P= 6.8e-4"),bty="n")
+summary(lm(data1$t.er.lit~data1$t.gpp.lit))
 
-plot(data1$phosphate~data1$carbon,xlab ="Carbon (DOC mg C/L)" , ylab ="Phosphate (mg P/L)",cex.lab=1.5,pch=16)
+plot(data1$t.cut.mass.m~data1$t.gpp.lit,xlab ="GPP Transformed" , ylab ="Trout Transformed",cex.lab=1.5,pch=16)
+abline(lm(data1$t.cut.mass.m~data1$t.gpp.lit))
+legend("topright", legend=c("R2= -0.054", "P= 0.89"),bty="n")
+summary(lm(data1$t.cut.mass.m~data1$t.gpp.lit))
+
+plot(data1$t.cut.mass.m~data1$t.er.lit,xlab ="ER Transformed" , ylab ="Trout Transformed",cex.lab=1.5,pch=16)
+abline(lm(data1$t.cut.mass.m~data1$t.er.lit))
+summary(lm(data1$t.cut.mass.m~data1$t.er.lit))
+legend("bottomright", legend=c("R2= 0.84", "P= -0.053"),bty="n")
+
+
+plot(data1$phosphate~data1$carbon,xlab ="C(DOC mg C/L)" , ylab ="P (mg P/L)",cex.lab=1.5,pch=16)
 abline(lm(data1$phosphate~data1$carbon))
 summary(lm(data1$phosphate~data1$carbon))
 legend("topright", legend=c("R2= 0.19", "P= 0.010"),bty="n")
