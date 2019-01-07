@@ -280,7 +280,7 @@ abline(lm(t.cut.mass.m~par.integrative,data=data1))
 legend("topright", legend=c("R2= 0.15", "P= 0.054"),bty="n")
 summary(lm(t.cut.mass.m~par.integrative,data=data1))
 
-### Others
+### Other considerations
 plot(data1$t.er.lit~data1$t.gpp.lit,xlab ="GPP Transformed" , ylab ="ER Transformed",cex.lab=1.5,pch=16)
 abline(lm(data1$t.er.lit~data1$t.gpp.lit))
 legend("topleft", legend=c("R2= 0.36", "P= 6.8e-4"),bty="n")
@@ -295,7 +295,6 @@ plot(data1$t.cut.mass.m~data1$t.er.lit,xlab ="ER Transformed" , ylab ="Trout Tra
 abline(lm(data1$t.cut.mass.m~data1$t.er.lit))
 summary(lm(data1$t.cut.mass.m~data1$t.er.lit))
 legend("bottomright", legend=c("R2= 0.84", "P= -0.053"),bty="n")
-
 
 plot(data1$phosphate~data1$carbon,xlab ="C(DOC mg C/L)" , ylab ="P (mg P/L)",cex.lab=1.5,pch=16)
 abline(lm(data1$phosphate~data1$carbon))
