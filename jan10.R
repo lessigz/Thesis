@@ -277,7 +277,7 @@ summary(lm(t.cut.mass.m~phosphate,data=data1))
 
 plot(t.cut.mass.m~par.integrative,xlab="Light (PAR mol/m2/d)",ylab="Trout Transformed",cex.lab=1.5,pch=16,data=data1)
 abline(lm(t.cut.mass.m~par.integrative,data=data1))
-legend("topright", legend=c("R2= 0.15", "P= 0.054"),bty="n")
+legend("topright", legend=c("R2= -0.053", "P= 0.85"),bty="n")
 summary(lm(t.cut.mass.m~par.integrative,data=data1))
 
 ### Other considerations
