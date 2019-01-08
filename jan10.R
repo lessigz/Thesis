@@ -1,5 +1,7 @@
 setwd("N:/Thesis")
 data1=read.csv("all_trans_short_r.csv",header=TRUE) #load data with NA's
+data1cut=read.csv("trans_short_cut_r.csv",header=TRUE)
+
 #install packages
 install.packages("nlme")
 install.packages("lme4")
@@ -25,13 +27,13 @@ boxplot(data2$slope,     xlab="All Sites",ylab="Slope (%)",cex.lab=1.5,pch=16,gr
 boxplot(data2$bf,        xlab="All Sites",ylab="Bank Full (m)",cex.lab=1.5,pch=16,group=data2$basin.stream)
 boxplot(data2$pebble,    xlab="All Sites",ylab="Pebble Median (mm)",cex.lab=1.5,pch=16,group=data2$basin.stream)
 # Variables that change over time
-interaction.plot(data1$season.yr,data1$stream,data1$width,xlab="Season", ylab="Wetted Width (m)",cex.lab=1.5,col="black",lwd=2.5,legend=F)
+interaction.plot(data1$season.yr,data1$stream,data1$width,xlab="Sampling Period", ylab="Wetted Width (m)",cex.lab=1.5,col="black",lwd=2.5,legend=F)
 plot(HSD.test(aov(data1$width~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="Width")
 
-interaction.plot(data1$season.yr,data1$stream,data1$depth,xlab="Season", ylab="Depth (m)",cex.lab=1.5,col="black",lwd=2.5,legend=F)
+interaction.plot(data1$season.yr,data1$stream,data1$depth,xlab="Sampling Period", ylab="Depth (m)",cex.lab=1.5,col="black",lwd=2.5,legend=F)
 plot(HSD.test(aov(data1$depth~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="Depth")
 
-interaction.plot(data1$season.yr,data1$stream,data1$discharge,xlab="Season", ylab="Discharge (L/s)",cex.lab=1.5,col="black",lwd=2.5,legend=F)
+interaction.plot(data1$season.yr,data1$stream,data1$discharge,xlab="Sampling Period", ylab="Discharge (L/s)",cex.lab=1.5,col="black",lwd=2.5,legend=F)
 plot(HSD.test(aov(data1$discharge~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="Discharge")
 
 plot(data1$depth~data1$width,xlab = "Wetted Width (m)", ylab = "Depth (m)",cex.lab=1.5,pch=16)
@@ -44,25 +46,25 @@ abline(lm(data1$discharge~data1$width))
 summary(lm(data1$discharge~data1$width))
 legend("topleft", legend=c("R2= 0.47", "P= 2.0e-5"),bty="n")
 
-interaction.plot(data1$season.yr,data1$stream,data1$carbon,xlab="Season", ylab="Carbon (DOC mg C/L)",ylim=c(0,14),cex.lab=1.5,col="black",lwd=2.5,legend=F)
+interaction.plot(data1$season.yr,data1$stream,data1$carbon,xlab="Sampling Period", ylab="Carbon (DOC mg C/L)",ylim=c(0,14),cex.lab=1.5,col="black",lwd=2.5,legend=F)
 plot(HSD.test(aov(data1$carbon~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="Carbon")
 
-interaction.plot(data1$season.yr,data1$stream,data1$phosphate,xlab="Season", ylab="Phosphate (SRP mg P/L)",ylim=c(0,.06),cex.lab=1.5,col="black",lwd=2.5,legend=F)
+interaction.plot(data1$season.yr,data1$stream,data1$phosphate,xlab="Sampling Period", ylab="Phosphate (SRP mg P/L)",ylim=c(0,.06),cex.lab=1.5,col="black",lwd=2.5,legend=F)
 plot(HSD.test(aov(data1$phosphate~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="Phosphate")
 
-interaction.plot(data1$season.yr,data1$stream,data1$din.out,xlab="Season", ylab="Nitrogen (DIN mg N/L)*",ylim=c(0,.017),cex.lab=1.5,col="black",lwd=2.5,legend=F) # added.016478 to ammonia and .0012613 to nitrate, dropped outliers
+interaction.plot(data1$season.yr,data1$stream,data1$din.out,xlab="Sampling Period", ylab="Nitrogen (DIN mg N/L)*",ylim=c(0,.017),cex.lab=1.5,col="black",lwd=2.5,legend=F) # added.016478 to ammonia and .0012613 to nitrate, dropped outliers
 plot(HSD.test(aov(data1$din.out~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="DIN")
 
-interaction.plot(data1$season.yr,data1$stream,data1$canopy,xlab="Season", ylab="Canopy (% open)",ylim=c(0,80),cex.lab=1.5,col="black",lwd=2.5,legend=F)
+interaction.plot(data1$season.yr,data1$stream,data1$canopy,xlab="Sampling Period", ylab="Canopy (% open)",ylim=c(0,80),cex.lab=1.5,col="black",lwd=2.5,legend=F)
 plot(HSD.test(aov(data1$canopy~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="Canopy")
 
-interaction.plot(data1$season.yr,data1$stream,data1$par.integrative,xlab="Season", ylab="PAR (integrative mol/m2/d)",ylim=c(0,3.5),cex.lab=1.5,col="black",lwd=2.5,legend=F) #integrative seemed more informative than mean or max PAR
+interaction.plot(data1$season.yr,data1$stream,data1$par.integrative,xlab="Sampling Period", ylab="PAR (integrative mol/m2/d)",ylim=c(0,3.5),cex.lab=1.5,col="black",lwd=2.5,legend=F) #integrative seemed more informative than mean or max PAR
 plot(HSD.test(aov(data1$par.integrative~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="PAR")
 
-interaction.plot(data1$season.yr,data1$stream,data1$temp.min,xlab="Season", ylab="Minimum Temp (deg C)",ylim=c(0,11),cex.lab=1.5,col="black",lwd=2.5,legend=F) # stream daily minimum temp seemed a better predictor than mean or max temp
+interaction.plot(data1$season.yr,data1$stream,data1$temp.min,xlab="Sampling Period", ylab="Minimum Temp (deg C)",ylim=c(0,11),cex.lab=1.5,col="black",lwd=2.5,legend=F) # stream daily minimum temp seemed a better predictor than mean or max temp
 plot(HSD.test(aov(data1$temp.min~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="Min Temp")
 
-interaction.plot(data1cut$season.yr,data1cut$stream,data1cut$cut.mass.m,xlab="Season", ylab="Trout Biomass (g/m)*",ylim=c(0,14),cex.lab=1.5,col="black",lwd=2.5,legend=F) # almost entirely CUTT with EBT in Jack summer '18 mixed in
+interaction.plot(data1cut$season.yr,data1cut$stream,data1cut$cut.mass.m,xlab="Sampling Period", ylab="Trout Biomass (g/m)",ylim=c(0,14),cex.lab=1.5,col="black",lwd=2.5,legend=F) # almost entirely CUTT with EBT in Jack summer '18 mixed in
 plot(HSD.test(aov(data1cut$cut.mass.m~data1cut$stream+data1cut$season.yr), 'data1cut$season.yr'),ylab="Trout Biomass")
 
 #metabolism modeling
@@ -78,12 +80,12 @@ abline(lm(k600.my~k600.lit,data=data1))
 legend("topright", legend=c("R2= 0.058", "P= 0.11"),bty="n")
 summary(lm(k600.my~k600.lit,data=data1))
 
-plot(gpp.my~gpp.lit,xlab = "GPP Literature (g02/m2/d)", ylab = "GPP My Data",cex.lab=1.5,pch=16,data=data1)
+plot(gpp.my~gpp.lit,xlab = "GPP Literature (g O2/m2/d)", ylab = "GPP My Data",cex.lab=1.5,pch=16,data=data1)
 abline(lm(gpp.my~gpp.lit,data=data1))
 legend("topleft", legend=c("R2= 0.54", "P= 9.1e-05"),bty="n")
 summary(lm(gpp.my~gpp.lit,data=data1))
 
-plot(er.my~er.lit,xlab = "ER Literature (g02/m2/d)", ylab = "ER My Data",cex.lab=1.5,pch=16,data=data1)
+plot(er.my~er.lit,xlab = "ER Literature (g O2/m2/d)", ylab = "ER My Data",cex.lab=1.5,pch=16,data=data1)
 abline(lm(er.my~er.lit,data=data1))
 legend("topleft", legend=c("R2= 0.46", "P= 4e-4"),bty="n")
 summary(lm(er.my~er.lit,data=data1))
@@ -95,13 +97,13 @@ summary(lm(pr.my~pr.lit,data=data1))
 
 plot(r2.my~r2.lit,xlab = "R2 of models Literature", ylab = "R2 of models My Data",cex.lab=1.5,pch=16,data=data1)
 # metab.lit
-interaction.plot(data1$season.yr,data1$stream,data1$gpp.lit,xlab="Season", ylab="GPP (g O2/m2/d)",ylim=c(0,.8),cex.lab=1.5,col="black",lwd=2.5,legend=F) # total autotrophic production
+boxplot(data1$gpp.lit~data1$season.yr,xlab="Sampling Period", ylab="GPP (g O2/m2/d)",cex.lab=1.5,pch=16)
 plot(HSD.test(aov(data1$gpp.lit~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="GPP.lit")
 
-interaction.plot(data1$season.yr,data1$stream,abs(data1$er.lit),xlab="Season", ylab="ER (g O2/m2/d)*",ylim=c(0,20),cex.lab=1.5,col="black",lwd=2.5,legend=F) # total auto+heterotrophic respiration as negative flux (here as absolute value)
+boxplot(abs(data1$er.lit)~data1$season.yr,xlab="Sampling Period", ylab="ER (g O2/m2/d)*",cex.lab=1.5,pch=16)
 plot(HSD.test(aov(abs(data1$er.lit)~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="ER.lit")
 
-interaction.plot(data1$season.yr,data1$stream,data1$pr.lit,xlab="Season", ylab="PR Ratio",ylim=c(0,.06) ,cex.lab=1.5,col="black",lwd=2.5,legend=F)
+boxplot(data1$pr.lit~data1$season.yr,xlab="Sampling Period", ylab="PR Ratio",cex.lab=1.5,pch=16)
 plot(HSD.test(aov(data1$pr.lit~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="PR.lit")
 
 # pairplot most   
@@ -138,7 +140,7 @@ abline(0,0)
 legend("topleft", legend=c("R2= 0.20", "P= 0.013"),bty="n")
 summary(lm(x.gpp~E1.1.gpp))
 
-plot(t.gpp.lit~season.yr,xlab="Season",ylab="GPP Transformed",cex.lab=1.5,pch=16,data=data1)
+plot(t.gpp.lit~season.yr,xlab="Sampling Period",ylab="GPP Transformed",cex.lab=1.5,pch=16,data=data1)
 legend("topright", legend=c("R2= 0.10", "P= 0.12"),bty="n")
 summary(lm(t.gpp.lit~season.yr,data=data1))
 
@@ -253,6 +255,8 @@ abline(lm(t.cut.mass.m~canopy,data=data1))
 legend("topleft", legend=c("R2= -0.033", "P= 0.54"),bty="n")
 summary(lm(t.cut.mass.m~canopy,data=data1))
 
+data1cut$t.cut.mass.m=log(1+data1cut$cut.mass.m)
+interaction.plot(data1cut$canopy.cat,data1cut$temp.min.cat,data1cut$t.cut.mass.m,xlab="Canopy Openness",ylab="Trout Transformed",cex.lab=1.5,col="black",lwd=2.5,legend=F ) #
 
 plot(t.cut.mass.m~width,xlab="Width (m)",ylab="Trout Transformed",cex.lab=1.5,pch=16,data=data1)
 abline(lm(t.cut.mass.m~width,data=data1))
@@ -286,6 +290,18 @@ abline(lm(data1$t.er.lit~data1$t.gpp.lit))
 legend("topleft", legend=c("R2= 0.36", "P= 6.8e-4"),bty="n")
 summary(lm(data1$t.er.lit~data1$t.gpp.lit))
 
+plot(data1$er.lit~data1$gpp.lit,xlab ="GPP (g O2/m2/d)" , ylab ="ER (g O2/m2/d)",cex.lab=1.5,pch=16)
+abline(lm(data1$er.lit~data1$gpp.lit))
+legend("topright", legend=c("R2= 0.41", "P= 2.6e-4"),bty="n")
+summary(lm(data1$er.lit~data1$gpp.lit))
+
+
+
+
+
+
+
+
 plot(data1$t.cut.mass.m~data1$t.gpp.lit,xlab ="GPP Transformed" , ylab ="Trout Transformed",cex.lab=1.5,pch=16)
 abline(lm(data1$t.cut.mass.m~data1$t.gpp.lit))
 legend("topright", legend=c("R2= -0.054", "P= 0.89"),bty="n")
@@ -296,9 +312,14 @@ abline(lm(data1$t.cut.mass.m~data1$t.er.lit))
 summary(lm(data1$t.cut.mass.m~data1$t.er.lit))
 legend("bottomright", legend=c("R2= 0.84", "P= -0.053"),bty="n")
 
-plot(data1$phosphate~data1$carbon,xlab ="C(DOC mg C/L)" , ylab ="P (mg P/L)",cex.lab=1.5,pch=16)
-abline(lm(data1$phosphate~data1$carbon))
-summary(lm(data1$phosphate~data1$carbon))
+plot(data1$carbon~data1$phosphate,xlab ="P (mg P/L)" , ylab ="C (DOC mg C/L)",cex.lab=1.5,pch=16)
+abline(lm(data1$carbon~data1$phosphate))
+summary(lm(data1$carbon~data1$phosphate))
 legend("topright", legend=c("R2= 0.19", "P= 0.010"),bty="n")
 
+x.carb=data1$carbon[!is.na(data1$carbon)]#removes na values from column
+Mcarb=lm(data1$phosphate~data1$carbon)
+Ecarb=residuals(Mcarb)
 
+plot(data1$carbon,Ecarb,xlab="C (DOC mg C/L)",ylab="Residuals",cex.lab=1.5,pch=16)
+abline(0,0)
