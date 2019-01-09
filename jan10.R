@@ -29,6 +29,8 @@ boxplot(data2$pebble,    xlab="All Sites",ylab="Pebble Median (mm)",cex.lab=1.5,
 # Variables that change over time
 interaction.plot(data1$season.yr,data1$stream,data1$width,xlab="Sampling Period", ylab="Wetted Width (m)",cex.lab=1.5,col="black",lwd=2.5,legend=F)
 plot(HSD.test(aov(data1$width~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="Width")
+TukeyHSD(aov(data1$width~data1$stream+data1$season.yr))
+
 
 interaction.plot(data1$season.yr,data1$stream,data1$depth,xlab="Sampling Period", ylab="Depth (m)",cex.lab=1.5,col="black",lwd=2.5,legend=F)
 plot(HSD.test(aov(data1$depth~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="Depth")
@@ -92,7 +94,7 @@ summary(lm(er.my~er.lit,data=data1))
 
 plot(pr.my~pr.lit,xlab = "PR ratio Literature", ylab = "PR Ratio My Data",cex.lab=1.5,pch=16,data=data1)
 abline(lm(pr.my~pr.lit,data=data1))
-legend("topleft", legend=c("R2= 0.78", "P= 3.2e-8"),bty="n")
+legend("topleft", legend=c("R2= 0.80", "P= 3.2e-8"),bty="n")
 summary(lm(pr.my~pr.lit,data=data1))
 
 plot(r2.my~r2.lit,xlab = "R2 of models Literature", ylab = "R2 of models My Data",cex.lab=1.5,pch=16,data=data1)
@@ -126,6 +128,7 @@ vf1=varIdent(form = ~1|stream) # alternate variance structure
 M1.1<-lme(t.gpp.lit~season.yr+depth, na.action=na.omit, random = ~1|stream, data=data1, weights=vf1)
 x.gpp<-data1$t.gpp.lit[!is.na(data1$t.gpp.lit)]#removes na values from column
 E1.1.gpp<-residuals(M1.1,type="normalized")
+summary(M1.1)
 
 qqnorm(E1.1.gpp,main="",ylab="GPP Quantiles",cex.lab=1.5,pch=16)
 qqline(E1.1.gpp)
@@ -133,7 +136,6 @@ legend("topleft", legend=c("AD normality test", "P= 0.14"),bty="n")
 ad.test(E1.1.gpp)
 
 plot(M1.1,cex.lab=1.5,pch=16,col=25,xlab="GPP model fitted values",ylab="Standardized Residuals") 
-print(M1.1)
 
 plot(x.gpp, E1.1.gpp,xlab="GPP transformed",ylab="Normalized Residuals",cex.lab=1.5,pch=16)
 abline(0,0)
@@ -154,7 +156,7 @@ abline(lm(t.gpp.lit~carbon,data=data1))
 legend("topright", legend=c("R2= -0.021", "P= 0.50"),bty="n")
 summary(lm(t.gpp.lit~carbon,data=data1))
 
-plot(t.gpp.lit~din.out,xlab="N (DIN mg/L)*",ylab="GPP transformed",cex.lab=1.5,pch=16,data=data1)
+plot(t.gpp.lit~din.out,xlab="N (DIN mg/L)*",ylab="GPP Transformed",cex.lab=1.5,pch=16,data=data1)
 abline(lm(t.gpp.lit~din.out,data=data1))
 legend("topright", legend=c("R2= 0.13", "P= 0.050"),bty="n")
 summary(lm(t.gpp.lit~din.out,data=data1))
@@ -175,13 +177,15 @@ Mer.2=lme(t.er.lit~depth+slope, na.action=na.omit, random = ~1|stream, data=data
 x.er<-data1$t.er.lit[!is.na(data1$t.er.lit)]#removes na values from column
 E.2.er<-residuals(Mer.2,type="normalized")
 
+summary(Mer.2)
+which(E.2.er>2)
+
 qqnorm(E.2.er,main="",ylab="ER Quantiles",cex.lab=1.5,pch=16)
 qqline(E.2.er)
 legend("topleft", legend=c("AD normality test", "P= 0.16"),bty="n")
 ad.test(E.2.er)
 
 plot(Mer.2,cex.lab=1.5,pch=16,col=25,xlab="ER model fitted values",ylab="Standardized Residuals") 
-summary(Mer.2)
 
 plot(x.er, E.2.er,xlab="ER transformed",ylab="Normalized Residuals",cex.lab=1.5,pch=16)
 legend("topleft", legend=c("R2= 8.0e-4", "P= 0.32"),bty="n")
@@ -226,6 +230,7 @@ x.cut<-data1$t.cut.mass.m[!is.na(data1$cut.mass.m)]#removes na values from colum
 vf3=varExp(form = ~fitted(.))
 Mcut1.3<-gls(t.cut.mass.m~temp.min*canopy+width+basin, na.action=na.omit, data=data1, weights=vf3)
 E1.3.cut<-residuals(Mcut1.3,type="normalized")
+summary(Mcut1.3)
 
 qqnorm(E1.3.cut,main="",ylab="Trout Quantiles",cex.lab=1.5,pch=16)
 legend("topleft", legend=c("AD normality test", "P= 0.22"),bty="n")
@@ -233,7 +238,7 @@ qqline(E1.3.cut)
 ad.test(E1.3.cut)
 
 plot(Mcut1.3,cex.lab=1.5,pch=16,col=25,xlab="Trout model fitted values",ylab="Standardized Residuals") 
-summary(Mcut1.3) 
+which(E1.3.cut<(2))
 
 plot(x.cut, E1.3.cut,xlab="Trout Transformed",ylab="Normalized Residuals",cex.lab=1.5,pch=16)
 abline(0,0)
@@ -310,7 +315,7 @@ summary(lm(data1$t.cut.mass.m~data1$t.gpp.lit))
 plot(data1$t.cut.mass.m~data1$t.er.lit,xlab ="ER Transformed" , ylab ="Trout Transformed",cex.lab=1.5,pch=16)
 abline(lm(data1$t.cut.mass.m~data1$t.er.lit))
 summary(lm(data1$t.cut.mass.m~data1$t.er.lit))
-legend("bottomright", legend=c("R2= 0.84", "P= -0.053"),bty="n")
+legend("bottomright", legend=c("R2= -0.053", "P= 0.84"),bty="n")
 
 plot(data1$carbon~data1$phosphate,xlab ="P (mg P/L)" , ylab ="C (DOC mg C/L)",cex.lab=1.5,pch=16)
 abline(lm(data1$carbon~data1$phosphate))
