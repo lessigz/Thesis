@@ -25,18 +25,18 @@ dotchart(data1$t.er.lit,xlab="transformed ER",cex.lab=1.5,pch=16)
 # ER model selsection
 summary(lm(t.er.lit~basin,na.action=na.omit,data=data1))          #p .01   r2 .2
 summary(lm(t.er.lit~stream,na.action=na.omit,data=data1))         #p .9e-6 r2 .8
-summary(lm(t.er.lit~season.yr,na.action=na.omit,data=data1))      #p .6   r2 -.04 
+summary(lm(t.er.lit~season.yr,na.action=na.omit,data=data1))      #p .6    r2 -.04 
 summary(lm(t.er.lit~yr,na.action=na.omit,data=data1))             #p .6    r2 -.03
-summary(lm(t.er.lit~elev,na.action=na.omit,data=data1))           #p .4   r2 -.01
+summary(lm(t.er.lit~elev,na.action=na.omit,data=data1))           #p .4    r2 -.01
 summary(lm(t.er.lit~from.north,na.action=na.omit,data=data1))     #p .9    r2 -.04
-summary(lm(t.er.lit~slope,na.action=na.omit,data=data1))          #p .5e-6  r2 .6 
+summary(lm(t.er.lit~slope,na.action=na.omit,data=data1))          #p .5e-6 r2 .6 
 summary(lm(t.er.lit~bf,na.action=na.omit,data=data1))             #p .04   r2 .1
-summary(lm(t.er.lit~pebble,na.action=na.omit,data=data1))         #p .001   r2 .3  
+summary(lm(t.er.lit~pebble,na.action=na.omit,data=data1))         #p .001  r2 .3  
 summary(lm(t.er.lit~width,na.action=na.omit,data=data1))          #p .07   r2 .09
-summary(lm(t.er.lit~depth,na.action=na.omit,data=data1))          #p .7e-4  r2 .4  
-summary(lm(t.er.lit~velocity.mean,na.action=na.omit,data=data1))  #p .99    r2 -.04
+summary(lm(t.er.lit~depth,na.action=na.omit,data=data1))          #p .7e-4 r2 .4  
+summary(lm(t.er.lit~velocity.mean,na.action=na.omit,data=data1))  #p .99   r2 -.04
 summary(lm(t.er.lit~discharge,na.action=na.omit,data=data1))      #p .04   r2 .1
-summary(lm(t.er.lit~carbon,na.action=na.omit,data=data1))         #p .99    r2 -.04
+summary(lm(t.er.lit~carbon,na.action=na.omit,data=data1))         #p .99   r2 -.04
 summary(lm(t.er.lit~ammonia,na.action=na.omit,data=data1))        #p .6    r2 -.03
 summary(lm(t.er.lit~nitrate,na.action=na.omit,data=data1))        #p .4    r2 -.02
 summary(lm(t.er.lit~din,na.action=na.omit,data=data1))            #p .5    r2 -.02

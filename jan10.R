@@ -29,7 +29,6 @@ boxplot(data2$pebble,    xlab="All Sites",ylab="Pebble Median (mm)",cex.lab=1.5,
 # Variables that change over time
 interaction.plot(data1$season.yr,data1$stream,data1$width,xlab="Sampling Period", ylab="Wetted Width (m)",cex.lab=1.5,col="black",lwd=2.5,legend=F)
 plot(HSD.test(aov(data1$width~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="Width")
-TukeyHSD(aov(data1$width~data1$stream+data1$season.yr))
 
 
 interaction.plot(data1$season.yr,data1$stream,data1$depth,xlab="Sampling Period", ylab="Depth (m)",cex.lab=1.5,col="black",lwd=2.5,legend=F)
@@ -49,22 +48,34 @@ summary(lm(data1$discharge~data1$width))
 legend("topleft", legend=c("R2= 0.47", "P= 2.0e-5"),bty="n")
 
 interaction.plot(data1$season.yr,data1$stream,data1$carbon,xlab="Sampling Period", ylab="Carbon (DOC mg C/L)",ylim=c(0,14),cex.lab=1.5,col="black",lwd=2.5,legend=F)
+legend("topleft", legend=c("P= 1.2e-4"),bty="n")
 plot(HSD.test(aov(data1$carbon~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="Carbon")
+anova(aov(data1$carbon~data1$stream+data1$season.yr))
+
 
 interaction.plot(data1$season.yr,data1$stream,data1$phosphate,xlab="Sampling Period", ylab="Phosphate (SRP mg P/L)",ylim=c(0,.06),cex.lab=1.5,col="black",lwd=2.5,legend=F)
+legend("topleft", legend=c("P= 1.7e-7"),bty="n")
 plot(HSD.test(aov(data1$phosphate~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="Phosphate")
+anova(aov(data1$phosphate~data1$stream+data1$season.yr))
+
 
 interaction.plot(data1$season.yr,data1$stream,data1$din.out,xlab="Sampling Period", ylab="Nitrogen (DIN mg N/L)*",ylim=c(0,.017),cex.lab=1.5,col="black",lwd=2.5,legend=F) # added.016478 to ammonia and .0012613 to nitrate, dropped outliers
+legend("bottomright", legend=c("P= 4.6e-7"),bty="n")
 plot(HSD.test(aov(data1$din.out~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="DIN")
+anova(aov(data1$din.out~data1$stream+data1$season.yr))
 
 interaction.plot(data1$season.yr,data1$stream,data1$canopy,xlab="Sampling Period", ylab="Canopy (% open)",ylim=c(0,80),cex.lab=1.5,col="black",lwd=2.5,legend=F)
 plot(HSD.test(aov(data1$canopy~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="Canopy")
 
 interaction.plot(data1$season.yr,data1$stream,data1$par.integrative,xlab="Sampling Period", ylab="PAR (integrative mol/m2/d)",ylim=c(0,3.5),cex.lab=1.5,col="black",lwd=2.5,legend=F) #integrative seemed more informative than mean or max PAR
+legend("topright", legend=c("P= 0.0010"),bty="n")
 plot(HSD.test(aov(data1$par.integrative~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="PAR")
+anova(aov(data1$par.integrative~data1$stream+data1$season.yr))
 
 interaction.plot(data1$season.yr,data1$stream,data1$temp.min,xlab="Sampling Period", ylab="Minimum Temp (deg C)",ylim=c(0,11),cex.lab=1.5,col="black",lwd=2.5,legend=F) # stream daily minimum temp seemed a better predictor than mean or max temp
+legend("topright", legend=c("P= 2.6e-11"),bty="n")
 plot(HSD.test(aov(data1$temp.min~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="Min Temp")
+anova(aov(data1$temp.min~data1$stream+data1$season.yr))
 
 interaction.plot(data1cut$season.yr,data1cut$stream,data1cut$cut.mass.m,xlab="Sampling Period", ylab="Trout Biomass (g/m)",ylim=c(0,14),cex.lab=1.5,col="black",lwd=2.5,legend=F) # almost entirely CUTT with EBT in Jack summer '18 mixed in
 plot(HSD.test(aov(data1cut$cut.mass.m~data1cut$stream+data1cut$season.yr), 'data1cut$season.yr'),ylab="Trout Biomass")
@@ -87,10 +98,10 @@ abline(lm(gpp.my~gpp.lit,data=data1))
 legend("topleft", legend=c("R2= 0.54", "P= 9.1e-05"),bty="n")
 summary(lm(gpp.my~gpp.lit,data=data1))
 
-plot(er.my~er.lit,xlab = "ER Literature (g O2/m2/d)", ylab = "ER My Data",cex.lab=1.5,pch=16,data=data1)
-abline(lm(er.my~er.lit,data=data1))
+plot(abs(er.my)~abs(er.lit),xlab = "ER Literature (g O2/m2/d)", ylab = "ER My Data",cex.lab=1.5,pch=16,data=data1)
+abline(lm(abs(er.my)~abs(er.lit),data=data1))
 legend("topleft", legend=c("R2= 0.46", "P= 4e-4"),bty="n")
-summary(lm(er.my~er.lit,data=data1))
+summary(lm(abs(er.my)~abs(er.lit),data=data1))
 
 plot(pr.my~pr.lit,xlab = "PR ratio Literature", ylab = "PR Ratio My Data",cex.lab=1.5,pch=16,data=data1)
 abline(lm(pr.my~pr.lit,data=data1))
@@ -98,12 +109,20 @@ legend("topleft", legend=c("R2= 0.80", "P= 3.2e-8"),bty="n")
 summary(lm(pr.my~pr.lit,data=data1))
 
 plot(r2.my~r2.lit,xlab = "R2 of models Literature", ylab = "R2 of models My Data",cex.lab=1.5,pch=16,data=data1)
+abline(lm(r2.my~r2.lit,data=data1))
+legend("topleft", legend=c("R2= 0.96", "P= 2.1e-15"),bty="n")
+summary(lm(r2.my~r2.lit,data=data1))
+
 # metab.lit
 boxplot(data1$gpp.lit~data1$season.yr,xlab="Sampling Period", ylab="GPP (g O2/m2/d)",cex.lab=1.5,pch=16)
+legend("topright", legend=c("P= 0.020"),bty="n")
 plot(HSD.test(aov(data1$gpp.lit~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="GPP.lit")
+anova(aov(data1$gpp.lit~data1$stream+data1$season.yr))
 
 boxplot(abs(data1$er.lit)~data1$season.yr,xlab="Sampling Period", ylab="ER (g O2/m2/d)*",cex.lab=1.5,pch=16)
+legend("topright", legend=c("P= 0.052"),bty="n")
 plot(HSD.test(aov(abs(data1$er.lit)~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="ER.lit")
+anova(aov(abs(data1$er.lit)~data1$stream+data1$season.yr))
 
 boxplot(data1$pr.lit~data1$season.yr,xlab="Sampling Period", ylab="PR Ratio",cex.lab=1.5,pch=16)
 plot(HSD.test(aov(data1$pr.lit~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="PR.lit")
@@ -143,13 +162,13 @@ legend("topleft", legend=c("R2= 0.20", "P= 0.013"),bty="n")
 summary(lm(x.gpp~E1.1.gpp))
 
 plot(t.gpp.lit~season.yr,xlab="Sampling Period",ylab="GPP Transformed",cex.lab=1.5,pch=16,data=data1)
-legend("topright", legend=c("R2= 0.10", "P= 0.12"),bty="n")
-summary(lm(t.gpp.lit~season.yr,data=data1))
+legend("topright", legend=c("Model P< 0.0001"),bty="n")
+anova(M1.1)
 
 plot(t.gpp.lit~depth,xlab="Depth (m)",ylab="GPP Transformed",ylim=c(0,.75),xlim=c(.035,.13),cex.lab=1.5,pch=16,data=data1)
-legend("topleft", legend=c("R2= 0.13", "P= 0.038"),bty="n")
+legend("topleft", legend=c("R2= 0.13", "Model P< 0.0001"),bty="n")
 abline(lm(t.gpp.lit~depth,data=data1))
-summary(lm(t.gpp.lit~depth,data=data1))
+anova(M1.1)
 #GPP non model graphs
 plot(t.gpp.lit~carbon,xlab="C (DOC mg/L)",ylab="GPP Transformed",cex.lab=1.5,pch=16,data=data1)
 abline(lm(t.gpp.lit~carbon,data=data1))
@@ -179,6 +198,8 @@ E.2.er<-residuals(Mer.2,type="normalized")
 
 summary(Mer.2)
 which(E.2.er>2)
+E.2.er
+
 
 qqnorm(E.2.er,main="",ylab="ER Quantiles",cex.lab=1.5,pch=16)
 qqline(E.2.er)
@@ -194,13 +215,15 @@ summary(lm(x.er~E.2.er))
 
 plot(t.er.lit~depth,xlab="Depth (m)",ylab="ER Transformed",ylim=c(1.5,3.5),xlim=c(.04,.13),data=data1,cex.lab=1.5,pch=16)
 abline(lm(t.er.lit~depth,data=data1))
-legend("topleft", legend=c("R2= 0.36", "P= 6.7e-4"),bty="n")
+legend("bottomright", legend=c("R2= 0.36", "Model P< 0.0001"),bty="n")
 summary(lm(t.er.lit~depth,data=data1))
+anova(Mer.2)
 
 plot(t.er.lit~slope,xlab="Slope (%)",ylab="ER Transformed",ylim=c(1.5,3.5),xlim=c(1.5,10.5),data=data1,cex.lab=1.5,pch=16)
 abline(lm(t.er.lit~slope,data=data1))
-legend("topleft", legend=c("R2= 0.57", "P= 5.1e-6"),bty="n")
+legend("topleft", legend=c("R2= 0.57", "Model P= <0.0001"),bty="n")
 summary(lm(t.er.lit~slope,data=data1))
+anova(Mer.2)
 
 # ER non model plots
 plot(t.er.lit~carbon,xlab="C (DOC mg/L)",ylab="ER Transformed",cex.lab=1.5,pch=16,data=data1)
@@ -237,8 +260,7 @@ legend("topleft", legend=c("AD normality test", "P= 0.22"),bty="n")
 qqline(E1.3.cut)
 ad.test(E1.3.cut)
 
-plot(Mcut1.3,cex.lab=1.5,pch=16,col=25,xlab="Trout model fitted values",ylab="Standardized Residuals") 
-which(E1.3.cut<(2))
+plot(Mcut1.3,cex.lab=1.5,pch=16,col=25,xlab="Trout model fitted values",ylab="Standardized Residuals") # outlier? Hurley Summer '18
 
 plot(x.cut, E1.3.cut,xlab="Trout Transformed",ylab="Normalized Residuals",cex.lab=1.5,pch=16)
 abline(0,0)
@@ -247,26 +269,32 @@ summary(lm(x.cut~E1.3.cut))
 
 
 plot(t.cut.mass.m~basin,xlab="Basin",ylab="Trout Transformed",cex.lab=1.5,pch=16,data=data1)
-legend("top", legend=c("R2= 0.54", "P= 5.1e-4"),bty="n")
-summary(lm(t.cut.mass.m~basin,data=data1))
+legend("top", legend=c("Model P= 3e-4"),bty="n")
+anova(Mcut1.3)
 
 plot(t.cut.mass.m~temp.min,xlab="Temp. min (deg C)",ylab="Trout Transformed",xlim=c(6.5,11),ylim=c(0,3),cex.lab=1.5,pch=16,data=data1)
-legend("topright", legend=c("R2= 0.19", "P= 0.032"),bty="n")
+legend("topright", legend=c("R2= 0.19", "Model P= 0.0001"),bty="n")
 abline(lm(t.cut.mass.m~temp.min,data=data1))
 summary(lm(t.cut.mass.m~temp.min,data=data1))
+anova(Mcut1.3)
 
 plot(t.cut.mass.m~canopy,xlab="Canopy (% open)",ylab="Trout Transformed",xlim=c(0,60),ylim=c(0,3),cex.lab=1.5,pch=16,data=data1)
 abline(lm(t.cut.mass.m~canopy,data=data1))
-legend("topleft", legend=c("R2= -0.033", "P= 0.54"),bty="n")
+legend("bottomright", legend=c("R2= -0.033", "Model P= 0.026"),bty="n")
 summary(lm(t.cut.mass.m~canopy,data=data1))
+anova(Mcut1.3)
 
 data1cut$t.cut.mass.m=log(1+data1cut$cut.mass.m)
-interaction.plot(data1cut$canopy.cat,data1cut$temp.min.cat,data1cut$t.cut.mass.m,xlab="Canopy Openness",ylab="Trout Transformed",cex.lab=1.5,col="black",lwd=2.5,legend=F ) #
+interaction.plot(data1cut$temp.min.cat,data1cut$canopy.cat,data1cut$t.cut.mass.m,ylab="Trout Transformed",xlab="Temperature Category",cex.lab=1.5,col="black",lwd=2.5,legend=F ) 
+legend("bottomleft", legend=c("Model P= 0.0018"),bty="n")
+anova(Mcut1.3)
+
 
 plot(t.cut.mass.m~width,xlab="Width (m)",ylab="Trout Transformed",cex.lab=1.5,pch=16,data=data1)
 abline(lm(t.cut.mass.m~width,data=data1))
-legend("topleft", legend=c("R2= 0.27", "P= 0.011"),bty="n")
+legend("bottomright", legend=c("R2= 0.27", "Model P= 0.0007"),bty="n")
 summary(lm(t.cut.mass.m~width,data=data1))
+anova(Mcut1.3)
 
 # CUT non model graphs
 plot(t.cut.mass.m~carbon,xlab="C (DOC mg/L)",ylab="Trout Transformed",cex.lab=1.5,pch=16,data=data1)
@@ -281,7 +309,7 @@ summary(lm(t.cut.mass.m~din.out,data=data1))
 
 plot(t.cut.mass.m~phosphate,xlab="P (SRP mg/L)",ylab="Trout Transformed",cex.lab=1.5,pch=16,data=data1)
 abline(lm(t.cut.mass.m~phosphate,data=data1))
-legend("topright", legend=c("R2= 0.15", "P= 0.054"),bty="n")
+legend("bottomleft", legend=c("R2= 0.15", "P= 0.054"),bty="n")
 summary(lm(t.cut.mass.m~phosphate,data=data1))
 
 plot(t.cut.mass.m~par.integrative,xlab="Light (PAR mol/m2/d)",ylab="Trout Transformed",cex.lab=1.5,pch=16,data=data1)
@@ -297,15 +325,8 @@ summary(lm(data1$t.er.lit~data1$t.gpp.lit))
 
 plot(data1$er.lit~data1$gpp.lit,xlab ="GPP (g O2/m2/d)" , ylab ="ER (g O2/m2/d)",cex.lab=1.5,pch=16)
 abline(lm(data1$er.lit~data1$gpp.lit))
-legend("topright", legend=c("R2= 0.41", "P= 2.6e-4"),bty="n")
+legend("bottomleft", legend=c("R2= 0.41", "P= 2.6e-4"),bty="n")
 summary(lm(data1$er.lit~data1$gpp.lit))
-
-
-
-
-
-
-
 
 plot(data1$t.cut.mass.m~data1$t.gpp.lit,xlab ="GPP Transformed" , ylab ="Trout Transformed",cex.lab=1.5,pch=16)
 abline(lm(data1$t.cut.mass.m~data1$t.gpp.lit))
