@@ -31,6 +31,7 @@ x=data1%>% group_by(season.yr)%>%   # Grouping function causes subsequent functi
             par.integrative.se=par.integrative.sd/sqrt(n))
 
 
+
 #    , fill=reach  labs(fill="Reach") +
 
 
@@ -60,7 +61,7 @@ ggplot(data=x,
   annotate("text", x=1.75, y=1.7, label="label", size=3, hjust=0) +
   annotate("text", x=1.75, y=1.6, label="p=0.00", size=3, hjust=0)
 
-ggsave('N:/Thesis/light.tiff',
+ggsave('N:/Thesis/light1.tiff',
        units="in",
        width=3.25,
        height=3.25,
@@ -69,14 +70,21 @@ ggsave('N:/Thesis/light.tiff',
 
 
 
-#interaction plot
-op<-par(mfrow=c(1,1), mar=c(4,4,2,1))
+#interaction plot   par(op)
 xx<-data1$par.integrative[!is.na(data1$par.integrative)]#removes na values from column
+
+op<-par(mfrow=c(1,1), mar=c(4,4,2,1))
 interaction.plot(data1$season.yr,data1$stream,xx,
                       ylim=c(0,4),lty=c(1,12),lwd=2,ylab="PPFD", 
                       xlab="Sampling Period", trace.label="Stream",legend=F)
-par(op)
 
+
+ggsave('N:/Thesis/light2.tiff',
+       units="in",
+       width=3.25,
+       height=3.25,
+       dpi=1200,
+       compression="lzw")
 
 
 
@@ -103,24 +111,17 @@ ggplot(data=x, aes(x=season.yr, y=par.integrative.mean)) +
         legend.background = element_blank(), 
         legend.key.size = unit(0.3, "cm"))
 
-
-
-
-x1=data1%>% group_by(season.yr)%>%   # Grouping function causes subsequent functions to aggregate by season and reach
-  summarize(cut.ln.mean = mean(, na.rm = TRUE), # na.rm = TRUE to remove missing values
-            par.integrative.sd=sd(par.integrative, na.rm = TRUE),  # na.rm = TRUE to remove missing values
-            n = sum(!is.na(par.integrative)), # of observations, excluding NAs. 
-            par.integrative.se=par.integrative.sd/sqrt(n))
-
-
+ggsave('N:/Thesis/light3.tiff',
+       units="in",
+       width=3.25,
+       height=3.25,
+       dpi=1200,
+       compression="lzw")
 
 
 
 
-
-
-
-
+#################################################################################
 
 
 

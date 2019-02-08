@@ -47,6 +47,9 @@ abline(lm(data1$discharge~data1$width))
 summary(lm(data1$discharge~data1$width))
 legend("topleft", legend=c("R2= 0.47", "P= 2.0e-5"),bty="n")
 
+plot(data1$cut.mass~data1$cut.pop.dens)
+
+
 interaction.plot(data1$season.yr,data1$stream,data1$carbon,xlab="Sampling Period", ylab="Carbon (DOC mg C/L)",ylim=c(0,14),cex.lab=1.5,col="black",lwd=2.5,legend=F)
 legend("topleft", legend=c("P= 1.2e-4"),bty="n")
 plot(HSD.test(aov(data1$carbon~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="Carbon")
@@ -246,13 +249,19 @@ abline(lm(t.er.lit~par.integrative,data=data1))
 legend("topright", legend=c("R2= -0.030", "P= 0.61"),bty="n")
 summary(lm(t.er.lit~par.integrative,data=data1))
 
+plot(t.er.lit~t.gpp.lit,data=data1)
+summary(lm(t.er.lit~t.gpp.lit,data=data1))
+
+plot(abs(er.lit)~gpp.lit,data=data1)
+summary(lm(abs(er.lit)~gpp.lit,data=data1))
+
+
 
 ############################### CUT
-data1$t.cut.mass.m=log(1+data1$cut.mass.m)
-x.cut<-data1$t.cut.mass.m[!is.na(data1$cut.mass.m)]#removes na values from column
+data1$t.cut.mass.m2=log(1+data1$cut.mass.m2)
+x.cut<-data1$t.cut.mass.m2[!is.na(data1$cut.mass.m2)]#removes na values from column
 vf3=varExp(form = ~fitted(.))
-Mcut1.3<-gls(t.cut.mass.m~temp.min*canopy+width+basin, na.action=na.omit, data=data1, weights=vf3)
-E1.3.cut<-residuals(Mcut1.3,type="normalized")
+Mcut1.3<-gls(t.cut.mass.m2~temp.min*canopy+basin, na.action=na.omit, data=data1, weights=vf3)
 summary(Mcut1.3)
 
 qqnorm(E1.3.cut,main="",ylab="Trout Quantiles",cex.lab=1.5,pch=16)
@@ -349,3 +358,4 @@ Ecarb=residuals(Mcarb)
 
 plot(data1$carbon,Ecarb,xlab="C (DOC mg C/L)",ylab="Residuals",cex.lab=1.5,pch=16)
 abline(0,0)
+

@@ -250,14 +250,20 @@ onestationplot<-function(GPP, ER, oxy, z, temp, K, light, bp, ts) {
   # this is the metabolism equation as in Van de Bogert et al (2007) L&OMethods
   for (i in 2:length(oxy)) { oxy.mod[i]<-oxy.mod[i-1]+((GPP/z)*(light[i]/sum(light)))+ ER*ts/z+(Kcor(temp[i],K))*ts*(osat(temp[i],bp)-oxy.mod[i-1]) }
   
-  plot(seq(1:length(oxy)),oxy.mod, type="l",ylim=c(9,9.8),xlab="Time (Midnight to Midnight)", ylab="O2 (mg/L)", cex.lab=1.5,xaxt="n", lwd=2)
+  plot(seq(1:length(oxy)),oxy.mod, 
+       type="l",
+       ylim=c(9,9.8),
+       xlab="Time (Midnight to Midnight)",
+       ylab="O2 (mg/L)",
+       cex.lab=1.5,
+       xaxt="n", 
+       lwd=2)
   points(seq(1:length(oxy)),oxy)
-  
   legend("topright", legend=c("R2= 0.995", "P= 2e-16"),bty="n")
-  
-  
   print(summary(lm(oxy~oxy.mod)))
   
+
+
 }
 # end of function
 ####### END loading rivermetab function ####### 
