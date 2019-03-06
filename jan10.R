@@ -347,6 +347,12 @@ abline(lm(data1$t.cut.mass.m~data1$t.er.lit))
 summary(lm(data1$t.cut.mass.m~data1$t.er.lit))
 legend("bottomright", legend=c("R2= -0.053", "P= 0.84"),bty="n")
 
+plot(data1$cut.mass.m2~data1$gpp.lit,xlab ="GPP" , ylab ="Trout",cex.lab=1.5,pch=16)
+abline(lm(data1$cut.mass.m2~data1$gpp.lit))
+legend("topright", legend=c("R2= 0.012", "P= 0.28"),bty="n")
+summary(lm(data1$cut.mass.m2~data1$gpp.lit))
+
+
 plot(data1$carbon~data1$phosphate,xlab ="P (mg P/L)" , ylab ="C (DOC mg C/L)",cex.lab=1.5,pch=16)
 abline(lm(data1$carbon~data1$phosphate))
 summary(lm(data1$carbon~data1$phosphate))

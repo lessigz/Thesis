@@ -44,7 +44,7 @@ ggplot(data=xgpp.lit,
   scale_fill_manual(values=c("black","white")) +
   xlab("Sampling Period") +
   scale_x_discrete(labels=c("1sum17" = "Summer '17", "2fall17" = "Fall '17","3sum18" = "Summer '18"))+
-  ylab(bquote('GPP ('*g~O[2]~ m^-2~d^-1*')'))+
+  ylab(bquote('GPP ('*g~O[2]~  m^-2~d^-1*')'))+
   ylim(0,.4) +
   theme_bw() +
   theme(panel.grid.major=element_blank(),
@@ -62,11 +62,9 @@ ggplot(data=xgpp.lit,
   annotate("text", x=.95, y=.37, label="A", size=3, hjust=0) +
   annotate("text", x=1.95, y=.178, label="B", size=3, hjust=0)+
   annotate("text", x=2.95, y=.2, label="B", size=3, hjust=0)+
-  annotate("text", x=2.2, y=.4, label="Tukey HSD p= 0.020", size=3, hjust=0)+
-annotate("text", x=2.2, y=.38, label="Model p< 0.0001", size=3, hjust=0)
+  annotate("text", x=2.4, y=.4, label="Model p< 0.0001", size=3, hjust=0)
 
-
-ggsave('N:/Thesis/Rplot.gpp.lit1.tiff',
+ggsave('N:/Thesis/Rplot1.gpp.lit1.tiff',
        units="in",
        width=3.25,
        height=3.25,
@@ -78,7 +76,7 @@ ggplot(data=data1, aes(x=depth, y=t.gpp.lit)) +
   geom_point(size=2, shape=16,color="gray30") +
   scale_fill_manual(name="Carbon", values=c("white", "gray", "black")) +
   xlab ("Depth (m)")+
-  ylab ("Transformed GPP")+
+  ylab (expression(sqrt(ln(1+GPP))))+
   #ylim(0,0.8)+
   xlim(.04,.13)+
   stat_smooth(method="lm", se=F, col="black") +
@@ -97,7 +95,7 @@ ggplot(data=data1, aes(x=depth, y=t.gpp.lit)) +
   annotate("text", x=0.04, y=.75,  size=3, hjust=0,parse = TRUE, label = as.character(expression(paste(R[adj]^"2","=0.13"))))+
   annotate("text", x=0.04, y=.71, label="Model p< 0.0001", size=3, hjust=0)
 
-ggsave('N:/Thesis/Rplot.depth.t.gpp1.tiff',
+ggsave('N:/Thesis/Rplot2.depth.t.gpp1.tiff',
        units="in",
        width=3.25,
        height=3.25,
@@ -122,7 +120,7 @@ ggplot(data=xer.lit,
   scale_fill_manual(values=c("black","white")) +
   xlab("Sampling Period") +
   scale_x_discrete(labels=c("1sum17" = "Summer '17", "2fall17" = "Fall '17","3sum18" = "Summer '18"))+
-  ylab(bquote('ER (Absolute Value '*g~O[2]~ m^-2~d^-1*')'))+
+  ylab(bquote('ER (|'*g~O[2]~ m^-2~d^-1*'|)'))+
   ylim(0,15) +
   theme_bw() +
   theme(panel.grid.major=element_blank(),
@@ -142,7 +140,7 @@ ggplot(data=xer.lit,
   annotate("text", x=2.91, y=11.9, label="AB", size=3, hjust=0)+
   annotate("text", x=2.2, y=15, label="Tukey HSD p= 0.052", size=3, hjust=0)
 
-ggsave('N:/Thesis/Rplot.er.lit1.tiff',
+ggsave('N:/Thesis/Rplot3.er.lit1.tiff',
        units="in",
        width=3.25,
        height=3.25,
@@ -154,7 +152,7 @@ ggplot(data=data1, aes(x=depth, y=t.er.lit)) +
   geom_point(size=2, shape=16,color="gray30") +
   scale_fill_manual(name="Carbon", values=c("white", "gray", "black")) +
   xlab ("Depth (m)")+
-  ylab ("Transformed ER")+
+  ylab (bquote('ln (1+|'*ER*'|)'))+
   #ylim(0,0.8)+
   xlim(.04,.13)+
   stat_smooth(method="lm", se=F, col="black") +
@@ -173,7 +171,7 @@ ggplot(data=data1, aes(x=depth, y=t.er.lit)) +
   annotate("text", x=0.04, y=3.2, size=3, hjust=0,parse = TRUE, label = as.character(expression(paste(R[adj]^"2","=0.36"))))+
   annotate("text", x=0.04, y=3.1, label="Model p< 0.0001", size=3, hjust=0)
 
-ggsave('N:/Thesis/Rplot.depth.t.er1.tiff',
+ggsave('N:/Thesis/Rplot4.depth.t.er1.tiff',
        units="in",
        width=3.25,
        height=3.25,
@@ -185,7 +183,7 @@ ggplot(data=data1, aes(x=slope, y=t.er.lit)) +
   geom_point(size=2, shape=16,color="gray30") +
   scale_fill_manual(name="Carbon", values=c("white", "gray", "black")) +
   xlab ("Slope (%)")+
-  ylab ("Transformed ER")+
+  ylab (bquote('ln (1+|'*ER*'|)'))+
   #ylim(0,0.8)+
   xlim(2,10)+
   stat_smooth(method="lm", se=F, col="black") +
@@ -204,7 +202,7 @@ ggplot(data=data1, aes(x=slope, y=t.er.lit)) +
   annotate("text", x=2, y=3.2,size=3, hjust=0,parse = TRUE, label = as.character(expression(paste(R[adj]^"2","=0.57"))))+
   annotate("text", x=2, y=3.1, label="Model p< 0.0001", size=3, hjust=0)
 
-ggsave('N:/Thesis/Rplot.slope.t.er1.tiff',
+ggsave('N:/Thesis/Rplot5.slope.t.er1.tiff',
        units="in",
        width=3.25,
        height=3.25,
@@ -235,7 +233,7 @@ ggplot(data=data1, aes(x=gpp.lit, y=abs(er.lit))) +
   annotate("text", x=0, y=24,size=3, hjust=0,parse = TRUE, label = as.character(expression(paste(R[adj]^"2","=0.41"))))+
   annotate("text", x=0, y=22.5, label="p= 0.00026", size=3, hjust=0)
 
-ggsave('N:/Thesis/Rplot.gpp.er1.tiff',
+ggsave('N:/Thesis/Rplot6.gpp.er1.tiff',
        units="in",
        width=3.25,
        height=3.25,
@@ -251,7 +249,7 @@ ggplot(data=data1, aes(stream, cut.pop.dens, fill=yr))+
                     labels=c("2017", "2018"))+ 
   xlab("Stream")+ 
   scale_x_discrete(limits=c("first","frost","hurley","hovey","blue","swauk","iron","jack","miller","standup"),labels=c("blue" = "Blue","first"="First","frost"="Frost","hovey"="Hovey","hurley"="Hurley","iron"="Iron","jack"="Jack","miller"="Miller","standup"="Standup","swauk"="Swauk"))+
-  ylab(bquote('Trout Density ('*fish~m^-1*')'))+
+  ylab(bquote('Trout Population ('*fish~m^-1*')'))+
   ylim(0,2)+
   theme_bw()+ 
   theme(panel.grid.major=element_blank(),
@@ -267,7 +265,7 @@ ggplot(data=data1, aes(stream, cut.pop.dens, fill=yr))+
         axis.title.x=element_text(size=8),
         axis.text.x=element_text(size=8,angle = 40, hjust = 1))
 
-ggsave('N:/Thesis/Rplot.trout.density1.tiff',
+ggsave('N:/Thesis/Rplot7.trout.density1.tiff',
        units="in",
        width=3.25,
        height=3.25,
@@ -300,7 +298,7 @@ ggplot(data=data1, aes(stream, cut.mass, fill=yr))+
         axis.title.x=element_text(size=8),
         axis.text.x=element_text(size=8,angle = 40, hjust = 1))
 
-ggsave('N:/Thesis/Rplot.trout.mass1.tiff',
+ggsave('N:/Thesis/Rplot8.trout.mass1.tiff',
        units="in",
        width=3.25,
        height=3.25,
@@ -333,7 +331,7 @@ ggplot(data=data1, aes(stream, cut.mass.m2, fill=yr))+
         axis.title.x=element_text(size=8),
         axis.text.x=element_text(size=8,angle = 40, hjust = 1))
 
-ggsave('N:/Thesis/Rplot.biomasssquared1.tiff',
+ggsave('N:/Thesis/Rplot9.biomasssquared1.tiff',
        units="in",
        width=3.25,
        height=3.25,
@@ -341,21 +339,12 @@ ggsave('N:/Thesis/Rplot.biomasssquared1.tiff',
        compression="lzw")
 
 #############  t.cut.mass.m.basin
-xt.cut.mass.m2.basin=data1%>% group_by(basin)%>%   # Grouping function causes subsequent functions to aggregate by season and reach
-  summarize(t.cut.mass.m2.mean = mean(t.cut.mass.m2, na.rm = TRUE), # na.rm = TRUE to remove missing values
-            t.cut.mass.m2.max=max(t.cut.mass.m2, na.rm = TRUE),  # na.rm = TRUE to remove missing values
-            t.cut.mass.m2.min=min(t.cut.mass.m2, na.rm = TRUE))  # na.rm = TRUE to remove missing values
-
-ggplot(data=xt.cut.mass.m2.basin, 
-       aes(x=basin, y=t.cut.mass.m2.mean)) + 
-  geom_bar(stat="identity", position=position_dodge(), color = "black") + 
-  geom_errorbar(aes(ymin=t.cut.mass.m2.min, ymax=t.cut.mass.m2.max), width=0.2, 
-                position=position_dodge(0.9)) + 
-  scale_fill_manual(values=c("black","white")) +
-  xlab("Watershed") +
+ggplot(data=data1, aes(x=basin, y=t.cut.mass.m2)) + 
+  geom_boxplot(position=position_dodge(),color = "black",fill="gray65") + 
+  xlab("Catchment") +
   scale_x_discrete(limits=c("taneum","swauk","teanaway"),
-    labels=c("swauk" = "Swauk", "taneum" = "Taneum","teanaway" = "Teanaway"))+
-  ylab("Transformed Trout Biomass")+
+                   labels=c("swauk" = "Swauk", "taneum" = "Taneum","teanaway" = "Teanaway"))+
+  ylab("ln(1+Trout Biomass)")+
   ylim(0,2.3) +
   theme_bw() +
   theme(panel.grid.major=element_blank(),
@@ -372,7 +361,7 @@ ggplot(data=xt.cut.mass.m2.basin,
         axis.text.x=element_text(size=8))+
   annotate("text", x=2.4, y=2.3, label="Model p= 0.0007", size=3, hjust=0)
 
-ggsave('N:/Thesis/Rplot.t.cut.mass.m.basin1.tiff',
+ggsave('N:/Thesis/Rplot10.t.cut.mass.m.basin1.tiff',
        units="in",
        width=3.25,
        height=3.25,
@@ -380,40 +369,70 @@ ggsave('N:/Thesis/Rplot.t.cut.mass.m.basin1.tiff',
        compression="lzw")
 
 ############# t.cut.mass.m.temp.min.canopy 
-ggplot(data=dataint, aes(temp.min.cat, t.cut.mass.m2.mean, fill=canopy.cat))+
-  geom_bar(stat="identity", position='dodge', color = "black")+  
-  geom_errorbar(aes(ymin=t.cut.mass.m2.min, ymax=t.cut.mass.m2.max), width=0.2, position=position_dodge(0.9))+ 
-  scale_fill_manual(values=c("gray15","gray65"),name="Canopy Openness (%)",
+ggplot(data=dataint, aes(temp.min.cat, t.cut.mass.m2, fill=canopy.cat))+
+  geom_boxplot(width=0.7, position=position_dodge(0.9)) +
+  scale_fill_manual(values=c("gray35","gray75"),name="",
                     breaks=c("c.closed", "c.open"),
-                    labels=c("4.9-30.2", "30.2-55.5"))+ 
-  xlab("Stream Temperature Category (Daily Min. °C)")+ 
+                   labels=c("Less open   ", "More open")) +
+  xlab("Stream Temperature Category (Daily Min. °C)") +
   scale_x_discrete(limits=c("te.lo","te.mid", "te.hi"),
-                   labels=c("te.lo"="6.8-8.1","te.mid"="8.1-9.5", "te.hi"="9.5-10.9"))+
- # step =1.4 degrees between temp categories and 25.3 % openness between canopy categories
-   ylab("Transformed Trout Biomass")+
+                   labels=c("te.lo"="Low","te.mid"="Mid", "te.hi"="Hi"))+
+  # step =1.4 degrees between temp categories and 25.3 % openness between canopy categories
+  # less open=4.9-30.2 %, more open=30.2-55.5 %, lo=6.8-8.1, mid=8.1-9.5, hi=9.5-10.9 deg
+  ylab("ln(1+Trout Biomass)")+
   ylim(0,2.5)+
   theme_bw()+ 
   theme(panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),
         legend.title=element_text(size=6),
         legend.key=element_blank(),
-        legend.position=c(.53,.95),
+        legend.position=c(.8,.9),
         legend.text=element_text(size=8),
         legend.background=element_blank(),
-        legend.direction="horizontal",
+        legend.direction="vertical",
         legend.key.size=unit(0.3, "cm"),
         axis.title.y=element_text(size=8),
         axis.title.x=element_text(size=8),
         axis.text.x=element_text(size=8,angle = 0, hjust = 1))+
-annotate("text", x=2.32, y=2.35, label="Model p= 0.0071", size=3, hjust=0)
+  annotate("text", x=2.32, y=2.5, label="Model p= 0.0071", size=3, hjust=0)
 
-ggsave('N:/Thesis/Rplot.interaction1.tiff',
+ggsave('N:/Thesis/Rplot11.interaction1.tiff',
        units="in",
        width=3.25,
        height=3.25,
        dpi=1200,
        compression="lzw")
 
+#############   t.gpp.depth
+ggplot(data=data1, aes(x=gpp.lit, y=cut.mass.m2)) +
+  geom_point(size=2, shape=16,color="gray30") +
+  scale_fill_manual(name="Carbon", values=c("white", "gray", "black")) +
+  xlab(bquote('GPP ('*g~O[2]~ m^-2~d^-1*')'))+
+  ylab(bquote('Trout Biomass ('*g~m^-2*')'))+
+  ylim(0,8.5)+
+  xlim(0,.71)+
+  stat_smooth(method="lm", se=F, col="black") +
+  theme_bw() +
+  theme(panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),
+        axis.title.y=element_text(size=8),
+        axis.title.x=element_text(size=8),
+        axis.text.x=element_text(size=8),
+        legend.title = element_text(size = 6),
+        legend.key = element_blank(),  
+        legend.position = c(0.2, 0.85),  
+        legend.text=element_text(size=8),  
+        legend.background = element_blank(), 
+        legend.key.size = unit(0.3, "cm"))+
+  annotate("text", x=0.55, y=8.25,  size=3, hjust=0,parse = TRUE, label = as.character(expression(paste(R[adj]^"2","=0.012"))))+
+  annotate("text", x=0.55, y=7.7, label="p= 0.28", size=3, hjust=0)
+
+ggsave('N:/Thesis/Rplot0.gpp.trout.tiff',
+       units="in",
+       width=3.25,
+       height=3.25,
+       dpi=1200,
+       compression="lzw")
 
 
 
