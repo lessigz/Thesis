@@ -909,6 +909,38 @@ ggsave('N:/Thesis/Rplot.biomasssquared1.tiff',
        compression="lzw")
 
 
+###########  Jason's fish pop removed from OnThesis tab
+ggplot(data=data1, aes(stream, cut.pop.dens, fill=yr))+
+  geom_bar(stat="identity", position='dodge', color = "black")+  
+  geom_errorbar(aes(ymin=cut.pop.dens, ymax=cut.pop.dens+cut.pop.dens.se), width=0.2, position=position_dodge(0.9))+ 
+  scale_fill_manual(values=c("gray15","gray65"),name="",
+                    breaks=c("A17", "B18"),
+                    labels=c("2017", "2018"))+ 
+  xlab("Stream")+ 
+  scale_x_discrete(limits=c("first","frost","hurley","hovey","blue","swauk","iron","jack","miller","standup"),labels=c("blue" = "Blue","first"="First","frost"="Frost","hovey"="Hovey","hurley"="Hurley","iron"="Iron","jack"="Jack","miller"="Miller","standup"="Standup","swauk"="Swauk"))+
+  ylab(bquote('Trout Population ('*fish~m^-1*')'))+
+  ylim(0,2)+
+  theme_bw()+ 
+  theme(panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),
+        legend.title=element_text(size=6),
+        legend.key=element_blank(),
+        legend.position=c(.2,.95),
+        legend.text=element_text(size=8),
+        legend.background=element_blank(),
+        legend.direction="horizontal",
+        legend.key.size=unit(0.3, "cm"),
+        axis.title.y=element_text(size=8),
+        axis.title.x=element_text(size=8),
+        axis.text.x=element_text(size=8,angle = 40, hjust = 1))
+
+ggsave('N:/Thesis/Rplot7.trout.density1.tiff',
+       units="in",
+       width=3.25,
+       height=3.25,
+       dpi=1200,
+       compression="lzw")
+
 
 
 
