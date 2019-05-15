@@ -36,6 +36,7 @@ plot(HSD.test(aov(data1$depth~data1$stream+data1$season.yr), 'data1$season.yr'),
 
 interaction.plot(data1$season.yr,data1$stream,data1$discharge,xlab="Sampling Period", ylab="Discharge (L/s)",cex.lab=1.5,col="black",lwd=2.5,legend=F)
 plot(HSD.test(aov(data1$discharge~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="Discharge")
+summary(aov(data1$discharge~data1$stream+data1$season.yr))
 
 plot(data1$depth~data1$width,xlab = "Wetted Width (m)", ylab = "Depth (m)",cex.lab=1.5,pch=16)
 abline(lm(data1$depth~data1$width))
@@ -69,11 +70,14 @@ anova(aov(data1$din.out~data1$stream+data1$season.yr))
 
 interaction.plot(data1$season.yr,data1$stream,data1$canopy,xlab="Sampling Period", ylab="Canopy (% open)",ylim=c(0,80),cex.lab=1.5,col="black",lwd=2.5,legend=F)
 plot(HSD.test(aov(data1$canopy~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="Canopy")
+summary(aov(data1$canopy~data1$stream+data1$season.yr))
+
 
 interaction.plot(data1$season.yr,data1$stream,data1$par.integrative,xlab="Sampling Period", ylab="PAR (integrative mol/m2/d)",ylim=c(0,3.5),cex.lab=1.5,col="black",lwd=2.5,legend=F) #integrative seemed more informative than mean or max PAR
 legend("topright", legend=c("P= 0.0010"),bty="n")
 plot(HSD.test(aov(data1$par.integrative~data1$stream+data1$season.yr), 'data1$season.yr'),ylab="PAR")
 anova(aov(data1$par.integrative~data1$stream+data1$season.yr))
+
 
 interaction.plot(data1$season.yr,data1$stream,data1$temp.min,xlab="Sampling Period", ylab="Minimum Temp (deg C)",ylim=c(0,11),cex.lab=1.5,col="black",lwd=2.5,legend=F) # stream daily minimum temp seemed a better predictor than mean or max temp
 legend("topright", legend=c("P= 2.6e-11"),bty="n")
@@ -82,6 +86,7 @@ anova(aov(data1$temp.min~data1$stream+data1$season.yr))
 
 interaction.plot(data1cut$season.yr,data1cut$stream,data1cut$cut.mass.m,xlab="Sampling Period", ylab="Trout Biomass (g/m)",ylim=c(0,14),cex.lab=1.5,col="black",lwd=2.5,legend=F) # almost entirely CUTT with EBT in Jack summer '18 mixed in
 plot(HSD.test(aov(data1cut$cut.mass.m~data1cut$stream+data1cut$season.yr), 'data1cut$season.yr'),ylab="Trout Biomass")
+summary(aov(data1cut$cut.mass.m~data1cut$stream+data1cut$season.yr))
 
 #metabolism modeling
 # insert "example" graphs, may need to load things from "example" tab
