@@ -279,7 +279,7 @@ ggplot(data=data1, aes(x=depth, y=t.gpp.lit)) +
   geom_point(size=2, shape=16,color="gray30") +
   scale_fill_manual(name="Carbon", values=c("white", "gray", "black")) +
   xlab ("Depth (m)")+
-  ylab (expression(sqrt(ln(1+GPP))))+
+  ylab (expression(sqrt(ln(GPP+1))))+
   #ylim(0,0.8)+
   xlim(.04,.13)+
   stat_smooth(method="lm", se=F, col="black") +
@@ -328,11 +328,11 @@ ggplot(data=data1, aes(x=season.yr, y=abs(er.lit))) +
         legend.key.size=unit(0.3, "cm"),
         axis.title.y=element_text(size=9),
         axis.title.x=element_text(size=9),
-        axis.text.x=element_text(size=9))+
-  annotate("text", x=.95, y=24.9, label="A", size=3.5, hjust=0) +
-  annotate("text", x=1.95, y=14.9, label="B", size=3.5, hjust=0)+
-  annotate("text", x=2.91, y=21.85, label="AB", size=3.5, hjust=0)+
-  annotate("text", x=2.7, y=24.9, label="p=0.052", size=3.5, hjust=0)
+        axis.text.x=element_text(size=9))
+  #annotate("text", x=.95, y=24.9, label="A", size=3.5, hjust=0) +
+  #annotate("text", x=1.95, y=14.9, label="B", size=3.5, hjust=0)+
+  #annotate("text", x=2.91, y=21.85, label="AB", size=3.5, hjust=0)+
+  #annotate("text", x=2.7, y=24.9, label="p=0.052", size=3.5, hjust=0)
 # P value from tukey hsd
 
 ggsave('N:/Thesis/Rplot5.er.lit.tiff',
@@ -348,7 +348,7 @@ ggplot(data=data1, aes(x=depth, y=t.er.lit)) +
   geom_point(size=2, shape=16,color="gray30") +
   scale_fill_manual(name="Carbon", values=c("white", "gray", "black")) +
   xlab ("Depth (m)")+
-  ylab (bquote('ln (1+|'*ER*'|)'))+
+  ylab (bquote('ln (|'*ER*'|+1)'))+
   #ylim(0,0.8)+
   xlim(.04,.13)+
   stat_smooth(method="lm", se=F, col="black") +
@@ -380,7 +380,7 @@ ggplot(data=data1, aes(x=slope, y=t.er.lit)) +
   geom_point(size=2, shape=16,color="gray30") +
   scale_fill_manual(name="Carbon", values=c("white", "gray", "black")) +
   xlab ("Slope (%)")+
-  ylab (bquote('ln (1+|'*ER*'|)'))+
+  ylab (bquote('ln (|'*ER*'|+1)'))+
   #ylim(0,0.8)+
   xlim(2,10)+
   stat_smooth(method="lm", se=F, col="black") +
@@ -570,7 +570,7 @@ ggplot(data=data1, aes(x=basin, y=t.cut.mass.m2)) +
   xlab("Catchment") +
   scale_x_discrete(limits=c("taneum","swauk","teanaway"),
                    labels=c("swauk" = "Swauk", "taneum" = "Taneum","teanaway" = "Teanaway"))+
-  ylab("ln(1+Trout Biomass)")+
+  ylab("ln(Trout Biomass+1)")+
   #ylim(0,2.3) +
   theme_bw() +
   theme(panel.grid.major=element_blank(),
@@ -607,7 +607,7 @@ ggplot(data=dataint, aes(temp.min.cat, t.cut.mass.m2, fill=canopy.cat))+
                    labels=c("te.lo"="Low","te.mid"="Mid", "te.hi"="Hi"))+
   # step =1.4 degrees between temp categories and 25.3 % openness between canopy categories
   # less open=4.9-30.2 %, more open=30.2-55.5 %, lo=6.8-8.1, mid=8.1-9.5, hi=9.5-10.9 deg
-  ylab("ln(1+Trout Biomass)")+
+  ylab("ln(Trout Biomass+1)")+
   #ylim(0,2.5)+
   theme_bw()+ 
   theme(panel.grid.major=element_blank(),
