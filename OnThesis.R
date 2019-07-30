@@ -1,5 +1,5 @@
 install.packages("tidyverse")
-install.packages("nlme")
+install.packages("nlme4")
 install.packages("nortest")
 install.packages("multcomp")
 install.packages("MASS")
@@ -8,7 +8,7 @@ install.packages("vegan")
 install.packages("agricolae")
 
 library(tidyverse)
-library(nlme)
+library(nlme4)
 library(nortest)
 library(multcomp)
 library(MASS)
@@ -313,7 +313,7 @@ ggplot(data=data1, aes(x=basin, y=t.cut.mass.m2)) +
   xlab("Catchment") +
   scale_x_discrete(limits=c("taneum","swauk","teanaway"),
                    labels=c("swauk" = "Swauk", "taneum" = "Taneum","teanaway" = "Teanaway"))+
-  ylab("ln(1+Trout Biomass)")+
+  ylab("ln(Trout Biomass+1)")+
   ylim(0,2.3) +
   theme_bw() +
   theme(panel.grid.major=element_blank(),
@@ -328,7 +328,10 @@ ggplot(data=data1, aes(x=basin, y=t.cut.mass.m2)) +
         axis.title.y=element_text(size=8),
         axis.title.x=element_text(size=8),
         axis.text.x=element_text(size=8))+
-  annotate("text", x=2.4, y=2.3, label="GLS p= 0.0007", size=3, hjust=0)
+  annotate("text", x=0.6, y=2.3, label="p=0.0007", size=3, hjust=0)+
+annotate("text", x=1.95, y=2.30, label="A", size=3, hjust=0)+
+annotate("text", x=2.90, y=2.10, label="AB", size=3, hjust=0)+
+annotate("text", x=0.95, y=1.86, label="B", size=3, hjust=0)
 
 ggsave('N:/Thesis/Rplot9.t.cut.mass.m.basin1.tiff',
        units="in",

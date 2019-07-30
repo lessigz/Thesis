@@ -585,7 +585,10 @@ ggplot(data=data1, aes(x=basin, y=t.cut.mass.m2)) +
         axis.title.y=element_text(size=9),
         axis.title.x=element_text(size=9),
         axis.text.x=element_text(size=9))+
-  annotate("text", x=0.65, y=2.2, label="p=0.0007", size=3.5, hjust=0)
+  annotate("text", x=0.65, y=2.2, label="p=0.0007", size=3.5, hjust=0)+
+  annotate("text", x=1.95, y=2.30, label="A", size=3, hjust=0)+
+  annotate("text", x=2.90, y=2.10, label="AB", size=3, hjust=0)+
+  annotate("text", x=0.95, y=1.86, label="B", size=3, hjust=0)
 # p value from GLS
 
 ggsave('N:/Thesis/Rplot10.t.cut.mass.catchment.tiff',
@@ -641,7 +644,7 @@ ggplot(data=data1, aes(x=gpp.lit, y=cut.mass.m2)) +
   ylab(bquote('Trout Biomass ('*g~m^-2*')'))+
   ylim(0,8.5)+
   xlim(0,.71)+
-  stat_smooth(method="lm", se=F, col="black") +
+  #stat_smooth(method="lm", se=F, col="black") +
   theme_bw() +
   theme(panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),
@@ -665,9 +668,46 @@ ggsave('N:/Thesis/Rplot12.gpp.fish.tiff',
        compression="lzw")
 #############################################################################################
 ##########################################################################################
+setwd("N:/Thesis")
+swaukexample=read.csv("N:/Thesis/swauk18example2.csv")
 
 
 
+
+ggplot() +
+  geom_point(data=swaukexample, aes(x=seq, y=value,group="oxy", 
+                                    color=(oxy),size=(oxy)))+
+  scale_color_manual(labels=c(" Modeled  "," Observed   "),values=c("black", "gray50"))+
+  
+  
+  scale_size_manual(values=c(.5,.9))+
+  xlab("Time (Midnight to Midnight)")+
+  ylab(bquote(''*O[2]~(mg~L^-1*'')))+
+#  #ylim(8.99,9.81)+
+#  #xlim(0,300)+
+  #stat_smooth(method="lm", se=F, col="black") 
+  theme_bw() +
+  theme(panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),
+        axis.title.y=element_text(size=9),
+        axis.title.x=element_text(size=9),
+        axis.text.x=element_blank(),
+        axis.ticks.x = element_blank(),
+        legend.title = element_blank(),
+        legend.key = element_blank(),  
+        legend.position = c(0.8, 1),  
+        legend.text=element_text(size=9),  
+        legend.background = element_blank(), 
+        legend.key.size = unit(0.3, "cm"))+
+  annotate("text", x=1, y=9.79,  size=3.5, hjust=0,parse = TRUE, label = as.character(expression(paste(R[adj]^"2","=0.99"))))
+#  annotate("text", x=0.5, y=7.65, label="p= 0.28", size=3.5, hjust=0)
+
+ggsave('N:/Thesis/Rplot.oxy.mod.tiff',
+       units="in",
+       width=3.25,
+       height=3.25,
+       dpi=1200,
+       compression="lzw")
 
 
 

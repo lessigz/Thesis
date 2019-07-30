@@ -243,10 +243,8 @@ onestationmle<-function(MET,temp, oxy, light, z, bp, ts, K) {
 # Calls same metabolism equation as in mle function, but plots modeled O2 as a function of GPP, ER estimates from mle
 # use this to visually assess your model estimates (should be good agreement between modeled and measured O2)
 onestationplot<-function(GPP, ER, oxy, z, temp, K, light, bp, ts) {
-  
   oxy.mod<-numeric(length(oxy))
   oxy.mod[1]<-oxy[1]
-  
   # this is the metabolism equation as in Van de Bogert et al (2007) L&OMethods
   for (i in 2:length(oxy)) { oxy.mod[i]<-oxy.mod[i-1]+((GPP/z)*(light[i]/sum(light)))+ ER*ts/z+(Kcor(temp[i],K))*ts*(osat(temp[i],bp)-oxy.mod[i-1]) }
   
@@ -260,17 +258,17 @@ onestationplot<-function(GPP, ER, oxy, z, temp, K, light, bp, ts) {
        lwd=2)
   points(seq(1:length(oxy)),oxy)
   legend("topright", legend=c("R2= 0.995", "P= 2e-16"),bty="n")
-  print(summary(lm(oxy~oxy.mod)))
-  
-
-
+  #print(summary(lm(oxy~oxy.mod)))
+  view(oxy.mod)
+  view(oxy)
 }
-# end of function
+
 ####### END loading rivermetab function ####### 
 
 plot(StreamData$dtime, StreamData$light,cex.lab=1.5,xaxt="n",ylim=c(0,50000),xlab="Time (Midnight to Midnight)",ylab="PAR (phot/m2/s)")
 plot(StreamData$dtime, StreamData$temp,cex.lab=1.5,xaxt="n",ylim=c(7,11),xlab="Time (Midnight to Midnight)",ylab="Temp (Deg. C)")
 plot(StreamData$dtime, StreamData$oxy,cex.lab=1.5,xaxt="n",ylim=c(9,9.8),xlab="Time (Midnight to Midnight)",ylab="O2 (mg/L)")
+
 StreamData2=read.csv("SW30jun18_example.csv",header=TRUE)
 StreamData2$dtime<-chron(StreamData2$time/86400)-(7/24)
 plot(StreamData2$dtime, StreamData2$sat,cex.lab=1.5,xaxt="n",ylim=c(91.75,94),xlab="Time (Midnight to Midnight)",ylab="O2 (% saturation)")

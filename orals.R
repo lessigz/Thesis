@@ -92,6 +92,11 @@ plot(HSD.test(aov(data1cut$sculp.mass.m~data1cut$stream+data1cut$season.yr), 'da
 interaction.plot(data1cut$season.yr,data1cut$stream,data1cut$cut.mass.m,xlab="Season", ylab="Trout Biomass (g/m)*",ylim=c(0,14),cex.lab=1.5,col="black",lwd=2.5,legend=F) # almost entirely CUTT with EBT in Jack summer '18 mixed in
 plot(HSD.test(aov(data1cut$cut.mass.m~data1cut$stream+data1cut$season.yr), 'data1cut$season.yr'))
 
+
+plot(HSD.test(aov(data1$t.cut.mass.m2~data1$stream+data1$basin), 'data1$basin'))
+
+
+
 # modeling
 # GPP modeling
 lmGPP2=lm(t.gpp~pebble+from.north,data=data1omit)
